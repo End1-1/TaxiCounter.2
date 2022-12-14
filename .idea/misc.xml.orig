@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+<<<<<<< HEAD
+        <entry key="..\:/Projects/TaxiCounter/app/src/main/res/drawable/btn_color_move_gray.xml" value="0.20364583333333333" />
+        <entry key="..\:/Projects/TaxiCounter/app/src/main/res/drawable/btn_color_move_green.xml" value="0.20364583333333333" />
+        <entry key="..\:/Projects/TaxiCounter/app/src/main/res/drawable/btn_real_yellow.xml" value="0.20364583333333333" />
+        <entry key="..\:/Projects/TaxiCounter/app/src/main/res/drawable/btn_yellow.xml" value="0.20364583333333333" />
+=======
+        <entry key="..\:/Projects/TaxiCounter/app/src/main/res/drawable/btn_circle.xml" value="0.1609375" />
+        <entry key="..\:/Projects/TaxiCounter/app/src/main/res/drawable/btn_color_move_gray.xml" value="0.1609375" />
+>>>>>>> d366f14f10a238db9fa1424479413dba7afe30cf
+        <entry key="..\:/Projects/TaxiCounter/app/src/main/res/layout/activity_chat.xml" value="0.5" />
+        <entry key="..\:/Projects/TaxiCounter/app/src/main/res/layout/activity_orders_history.xml" value="0.2421875" />
+        <entry key="..\:/Projects/TaxiCounter/app/src/main/res/layout/activity_orders_history_route.xml" value="0.2421875" />
+        <entry key="..\:/Projects/TaxiCounter/app/src/main/res/layout/activity_profile.xml" value="0.16927083333333334" />
+        <entry key="..\:/Projects/TaxiCounter/app/src/main/res/layout/activity_reject_order.xml" value="0.33" />
+        <entry key="..\:/Projects/TaxiCounter/app/src/main/res/layout/activity_workspace.xml" value="0.1308876811594203" />
+        <entry key="..\:/Projects/TaxiCounter/app/src/main/res/layout/fragment_fragment_in_place.xml" value="0.19157608695652173" />
+        <entry key="..\:/Projects/TaxiCounter/app/src/main/res/layout/fragment_fragment_ride_counter.xml" value="0.5" />
+        <entry key="..\:/Projects/TaxiCounter/app/src/main/res/layout/fragment_fragment_working_menu.xml" value="0.20572916666666666" />
+        <entry key="..\:/Projects/TaxiCounter/app/src/main/res/layout/fragment_intro.xml" value="0.25" />
+        <entry key="..\:/Projects/TaxiCounter/app/src/main/res/layout/fragment_offer_route.xml" value="0.17831813576494426" />
+        <entry key="..\:/Projects/TaxiCounter/app/src/main/res/layout/fragment_order_offer.xml" value="0.33" />
+        <entry key="..\:/Projects/TaxiCounter/app/src/main/res/layout/fragment_order_withour_route.xml" value="0.17831813576494426" />
+        <entry key="..\:/Projects/TaxiCounter/app/src/main/res/layout/item_reject_option.xml" value="0.1" />
+        <entry key="..\:/Projects/TaxiCounter/app/src/main/res/layout/item_work_menu.xml" value="0.2421875" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

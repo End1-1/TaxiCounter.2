@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@color/colorWhite"
+    tools:context=".Activities.OrdersHistoryActivity">
+
+    <LinearLayout
+    style="@style/LinearVLayoutHeader">
+    <LinearLayout
+        style="@style/LinearHLayoutHeader">
+        <LinearLayout
+            android:id="@+id/back"
+            style="@style/LinearLayoutButton">
+            <ImageButton
+                style="@style/ImageButtonInsideLinearLayout" />
+        </LinearLayout>
+        <TextView
+            style="@style/HeaderTextView"
+            android:text="@string/HISTORY_OF_ORDERS" />
+    </LinearLayout>
+        <View
+        style="@style/HeaderSeparatorView" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/orders"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"/>
+
+</LinearLayout>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "246920741462",
+    "project_id": "ithit-1551034355137",
+    "storage_bucket": "ithit-1551034355137.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:246920741462:android:3fd19516136510ade431f7",
+        "android_client_info": {
+          "package_name": "com.nyt.taxi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "246920741462-8voqsdgmegmj5i0a7nj0me2vjpsql9ab.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwjmD5D6cDz-k8ol-MlkulMN6zBQuO9os"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "246920741462-8voqsdgmegmj5i0a7nj0me2vjpsql9ab.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

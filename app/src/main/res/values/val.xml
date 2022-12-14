@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="bigFont">22sp</dimen>
+    <dimen name="middleFont">20sp</dimen>
+    <dimen name="smallFont">16sp</dimen>
+    <dimen name="veryBigFont">26sp</dimen>
+    <dimen name="rightParent">20dp</dimen>
+    <dimen name="bellow">5dp</dimen>
+    <dimen name="sepviewheight">2dp</dimen>
+    <dimen name="sepviewheightX2">4dp</dimen>
+    <dimen name="marginStandardTop">10dp</dimen>
+    <dimen name="marginStandardLeftRight">10dp</dimen>
+</resources>
