@@ -3,10 +3,8 @@ package com.nyt.taxi.Activities;
 import static com.nyt.taxi.Utils.UConfig.mHostUrl;
 
 import android.Manifest;
-import android.app.DownloadManager;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -16,7 +14,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
+import android.text.InputType;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,7 +27,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,14 +36,11 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.nyt.taxi.BuildConfig;
-import com.nyt.taxi.Fragments.LLIntro;
 import com.nyt.taxi.Model.GCarClasses;
 import com.nyt.taxi.Model.GDriverStatus;
 import com.nyt.taxi.R;
 import com.nyt.taxi.Services.FileLogger;
 import com.nyt.taxi.Services.WebRequest;
-import com.nyt.taxi.Utils.DownloadController;
-import com.nyt.taxi.Utils.DownloadControllerVer;
 import com.nyt.taxi.Utils.DriverState;
 import com.nyt.taxi.Utils.UConfig;
 import com.nyt.taxi.Utils.UDialog;
@@ -57,14 +56,10 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.security.Permission;
 
 public class MainActivity extends BaseActivity implements
-        ActivityCompat.OnRequestPermissionsResultCallback,
-        LLIntro.IntroInterface {
+        ActivityCompat.OnRequestPermissionsResultCallback {
 
-    static private String FRAGMENT_INTRO = "INTRO";;
-    //static final private int  MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
     static final private int REQUEST_ACCESS_FINE_LOCATION = 2;
     static final private int REQUEST_ACCESS_ALWAYS_ON_TOP = 3;
     static final private int REQUEST_BATTARY_OPTIMIZATION_OFF = 4;
@@ -72,24 +67,37 @@ public class MainActivity extends BaseActivity implements
     static final private int REQUEST_FILES_PERMISSIONS = 6;
     static final private int REQUEST_CODE_PACKAGE = 7;
 
-    LLIntro fragmentIntro = null;
+    private Button mBtnLogin;
+    private ImageView mBtnShowPassword;
+    private TextView mTxtVersion;
+    private TextView mTxtServer;
+    private TextView mTxtPolicy;
+    private EditText mEdtUsername;
+    private EditText mEdtPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
+        mBtnLogin = findViewById(R.id.btnLogin);
+        mBtnShowPassword = findViewById(R.id.btnShowPassword);
+        mTxtServer = findViewById(R.id.txtServer);
+        mTxtVersion = findViewById(R.id.txtVersion);
+        mTxtPolicy = findViewById(R.id.mTxtPrivacyPolicy);
+        mEdtUsername = findViewById(R.id.edtUsername);
+        mEdtPassword = findViewById(R.id.edtPassword);
+        mBtnLogin.setOnClickListener(this);
+        mBtnShowPassword.setOnClickListener(this);
+        mTxtPolicy.setOnClickListener(this);
+        mTxtVersion.setText(UPref.infoCode());
+        mTxtServer.setText(UConfig.host());
+
         FirebaseApp.initializeApp(this);
-        fragmentIntro = new LLIntro();
 
         if (!UPref.getBoolean("first_run")) {
             UPref.setBoolean("navigator_on", true);
             UPref.setBoolean("first_run", true);
         }
-
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.lvFragment, fragmentIntro, FRAGMENT_INTRO);
-        fragmentTransaction.commit();
 
         if (UPref.mBearerKey.isEmpty()) {
             GDriverStatus ds = new GDriverStatus();
@@ -103,12 +111,6 @@ public class MainActivity extends BaseActivity implements
 
         checkPermissions();
 
-//        WebRequest.create("https://breezedevs.ru/russian.txt", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
-//            @Override
-//            public void httpRespone(int httpReponseCode, String data) {
-//                UDialog.alertOK(MainActivity.this, data);
-//            }
-//        }).request();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -156,6 +158,24 @@ public class MainActivity extends BaseActivity implements
     public void handleClick(int id) {
         super.handleClick(id);
         switch (id) {
+            case R.id.btnLogin:
+                if (mEdtUsername.getText().toString().equalsIgnoreCase("server")) {
+                    startActivity(new Intent(this, ActivityServer.class));
+                    return;
+                }
+                onLogin(mEdtUsername.getText().toString(), mEdtPassword.getText().toString());
+            case R.id.btnShowPassword:
+                if (mEdtPassword.getInputType() == InputType.TYPE_CLASS_TEXT) {
+                    mEdtPassword.setInputType(129);
+                } else {
+                    mEdtPassword.setInputType(InputType.TYPE_CLASS_TEXT);
+                }
+                break;
+            case R.id.mTxtPrivacyPolicy:
+                String url = "https://nyt.ru/politika-konfidenczialnosti/";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
             default:
                 break;
         }
@@ -235,7 +255,7 @@ public class MainActivity extends BaseActivity implements
                             com.nyt.taxi.Services.WebRequest.create(jdriver.getJSONObject("driver_info").get("photo").toString(), WebRequest.HttpMethod.GET, mPhotoReply).request();
                             JSONObject jkeys = jo.getJSONObject("keys");
                             UConfig.mGeocoderApiKey = jkeys.getString("y_geocode");
-                            Intent  intent = new Intent(MainActivity.this, Workspace.class);
+                            Intent  intent = new Intent(MainActivity.this, ActivityCity.class);
                             startActivity(intent);
                         } else {
                             UDialog.alertError(MainActivity.this, R.string.AuthNickError);
@@ -267,8 +287,6 @@ public class MainActivity extends BaseActivity implements
         }
     };
 
-
-    @Override
     public void onLogin(String username, String password) {
         if (!createProgressDialog(R.string.Empty, R.string.Login)) {
             return;
@@ -286,7 +304,7 @@ public class MainActivity extends BaseActivity implements
         switch (ds.state) {
             case DriverState.Free:
                 if (ds.is_ready) {
-                    intent = new Intent(this, Workspace.class);
+                    intent = new Intent(this, ActivityCity.class);
                     startActivity(intent);
                 }
                 break;
@@ -295,7 +313,7 @@ public class MainActivity extends BaseActivity implements
             case DriverState.DriverInPlace:
             case DriverState.DriverInRide:
             case DriverState.Rate: {
-                intent = new Intent(this, Workspace.class);
+                intent = new Intent(this, ActivityCity.class);
                 startActivity(intent);
                 break;
             }

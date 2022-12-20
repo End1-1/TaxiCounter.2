@@ -32,7 +32,7 @@
     <string name="ChooseFranchisee">ВЫБОР ТАКСОПАРКА</string>
     <string name="LoginByNickAndPassword">Вход по имени пользователя с паролем</string>
     <string name="Nickname">ПОЛЬЗОВАТЕЛЬ</string>
-    <string name="Password">ПАРОЛЬ</string>
+    <string name="Password">Пароль</string>
     <string name="Submit">Начать</string>
     <string name="Accept">Принять</string>
     <string name="ACTIVITY">АКТИВНОСТЬ</string>
@@ -173,5 +173,8 @@
     <string name="dispatcher">Диспетчер</string>
     <string name="you_take_order">Вы взяли срочный заказ</string>
     <string name="ClearChat">Очистить</string>
+    <string name="GoodsMorning">Доброе утро</string>
+    <string name="BALANCE">ОБОРОТ</string>
+    <string name="RATE">ОЦЕНКА</string>
 
 </resources>

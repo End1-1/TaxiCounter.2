@@ -56,11 +56,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".Activities.ActivityCity"
+            android:exported="false"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
+        <activity
             android:name=".Activities.ActivityChatAdmin"
             android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
+
         </activity>
         <activity
             android:name=".Activities.NotificationActivity"
@@ -68,9 +75,6 @@
             android:showWhenLocked="true"
             android:theme="@style/Theme.AppCompat.Dialog"
             android:turnScreenOn="true">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
         </activity>
         <activity
             android:name=".Activities.ActivityServer"
