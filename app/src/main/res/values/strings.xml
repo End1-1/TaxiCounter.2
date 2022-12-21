@@ -74,14 +74,15 @@
     <string name="Done">ВЫПОЛНЕНО</string>
     <string name="TOTALAMOUNT">ИТОГО</string>
     <string name="DISTANCE">РАССТОЯНИЕ</string>
-    <string name="NEWORDER">НОВЫЙ ЗАКАЗ</string>
+    <string name="NEWORDER">ПОСТУПИЛ НОВЫЙ ЗАКАЗ</string>
     <string name="MAKEROUTE">ПРОЛОЖИТЬ МАРШРУТ</string>
     <string name="OrderHardReset">Принудительно завершить заказ</string>
     <string name="HistoryOfOrders">История заказов</string>
     <string name="StartDate">Начало заказа</string>
+    <string name="Where">Подача</string>
     <string name="EndDate">Окончание заказа</string>
     <string name="From">От</string>
-    <string name="To">До</string>
+    <string name="To">Куда</string>
     <string name="Slip">Слип</string>
     <string name="SlipNumber">Номер слипа</string>
     <string name="EnterAddress">Введите адрес</string>

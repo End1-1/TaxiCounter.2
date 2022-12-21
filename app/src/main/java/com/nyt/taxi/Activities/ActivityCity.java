@@ -2,14 +2,14 @@ package com.nyt.taxi.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.CompoundButton;
+import android.view.View;
 import android.widget.ImageView;
-import android.widget.Switch;
+import android.widget.LinearLayout;
+
+import androidx.cardview.widget.CardView;
 
 import com.nyt.taxi.Model.GDriverStatus;
 import com.nyt.taxi.R;
-import com.nyt.taxi.Services.WebRequest;
-import com.nyt.taxi.Utils.DriverState;
 import com.nyt.taxi.Utils.UConfig;
 import com.nyt.taxi.Utils.UDialog;
 import com.nyt.taxi.Utils.UPref;
@@ -20,8 +20,9 @@ import com.nyt.taxi.Web.WebResponse;
 public class ActivityCity extends BaseActivity {
 
     private ImageView btnChat;
-    private ImageView btnProfile;
-    private Switch swOnline;
+    private ImageView btnProfile2;
+    private LinearLayout llGoOnline;
+    private CardView btnProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +30,14 @@ public class ActivityCity extends BaseActivity {
         setContentView(R.layout.activity_city);
 
         btnChat = findViewById(R.id.btnChat);
+        btnProfile2 = findViewById(R.id.btnProfile2);
         btnProfile = findViewById(R.id.btnProfile);
-        swOnline = findViewById(R.id.swOnline);
+        llGoOnline = findViewById(R.id.llGoOnline);
 
         btnChat.setOnClickListener(this);
+        btnProfile2.setOnClickListener(this);
         btnProfile.setOnClickListener(this);
-        swOnline.setOnClickListener(this);
+        llGoOnline.setOnClickListener(this);
     }
 
     @Override
@@ -51,47 +54,29 @@ public class ActivityCity extends BaseActivity {
                 startActivity(intent);
                 break;
             }
+            case R.id.btnProfile2:
             case R.id.btnProfile: {
                 Intent intent = new Intent(this, Today.class);
                 startActivity(intent);
                 break;
             }
-            case R.id.swOnline: {
-                if (swOnline.isChecked()) {
-                    createProgressDialog(R.string.Empty, R.string.Wait);
-                    String link = String.format("%s", UConfig.mHostOrderReady);
-                    WebQuery webQuery = new WebQuery(link, WebQuery.HttpMethod.POST, WebResponse.mResponseDriverOn, new WebResponse() {
-                        @Override
-                        public void webResponse(int code, int webResponse, String s) {
-                            if (!webResponseOK(webResponse, s)) {
-                                return;
-                            }
-                            swOnline.setChecked(true);
+            case R.id.llGoOnline: {
+                createProgressDialog(R.string.Empty, R.string.Wait);
+                String link = String.format("%s", UConfig.mHostOrderReady);
+                WebQuery webQuery = new WebQuery(link, WebQuery.HttpMethod.POST, WebResponse.mResponseDriverOn, new WebResponse() {
+                    @Override
+                    public void webResponse(int code, int webResponse, String s) {
+                        if (!webResponseOK(webResponse, s)) {
+                            return;
                         }
-                    });
-                    webQuery.setParameter("ready", Integer.toString(1))
-                            .setParameter("online", "1")
-                            .setParameter("lat", UText.valueOf(UPref.getFloat("last_lat")))
-                            .setParameter("lut", UText.valueOf(UPref.getFloat("last_lon")))
-                            .request();
-                } else {
-                    createProgressDialog(R.string.Empty, R.string.Wait);
-                    String link = String.format("%s", UConfig.mHostOrderReady);
-                    WebQuery webQuery = new WebQuery(link, WebQuery.HttpMethod.POST, WebResponse.mResponseDriverOn, new WebResponse() {
-                        @Override
-                        public void webResponse(int code, int webResponse, String s) {
-                            if (!webResponseOK(webResponse, s)) {
-                                return;
-                            }
-                            swOnline.setChecked(false);
-                        }
-                    });
-                    webQuery.setParameter("ready", Integer.toString(0))
-                            .setParameter("online", "1")
-                            .setParameter("lat", UText.valueOf(UPref.getFloat("last_lat")))
-                            .setParameter("lut", UText.valueOf(UPref.getFloat("last_lon")))
-                            .request();
-                }
+                        llGoOnline.setVisibility(View.GONE);
+                    }
+                });
+                webQuery.setParameter("ready", Integer.toString(1))
+                        .setParameter("online", "1")
+                        .setParameter("lat", UText.valueOf(UPref.getFloat("last_lat")))
+                        .setParameter("lut", UText.valueOf(UPref.getFloat("last_lon")))
+                        .request();
                 break;
             }
         }
@@ -105,7 +90,7 @@ public class ActivityCity extends BaseActivity {
                     return;
                 }
                 GDriverStatus g = GDriverStatus.parse(s, GDriverStatus.class);
-                swOnline.setChecked(g.is_ready);
+                llGoOnline.setVisibility(g.is_ready ? View.GONE : View.VISIBLE);
             }
         });
 //        WebRequest.create("/api/driver/commons", WebRequest.HttpMethod.GET, mCommonOrderData).request();
