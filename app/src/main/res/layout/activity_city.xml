@@ -28,9 +28,9 @@
 
                 <ImageView
                     android:id="@+id/imageView16"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/center" />
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    app:srcCompat="@drawable/rating" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -53,13 +53,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/imageView17"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/attachment" />
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    app:srcCompat="@drawable/ruble" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -82,13 +83,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/imageView18"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/clock" />
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    app:srcCompat="@drawable/rating" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -118,6 +120,20 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/airport" />
 
+        <Switch
+            android:id="@+id/swOnline"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:checked="true"
+            android:switchMinWidth="56dp"
+            android:textOff="OFF"
+            android:textOn="ON"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--
         <androidx.cardview.widget.CardView
             android:id="@+id/btnProfile"
             android:layout_width="76dp"
@@ -145,6 +161,8 @@
                 android:src="@drawable/roza" />
 
         </androidx.cardview.widget.CardView>
+
+        -->
 
         <TextView
             android:id="@+id/txtGoodsMorning"
@@ -175,70 +193,89 @@
         android:id="@+id/clFirstPage"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:layout_above="@id/llDownMenu"
         android:layout_below="@id/clUp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="0dp"
         android:background="@drawable/login_down">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
+        android:id="@+id/llDownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp"
         android:background="@color/lightfiolet"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            app:srcCompat="@drawable/dst" />
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingTop="20dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="20dp">
 
         <LinearLayout
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"></LinearLayout>
-
-        <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            app:srcCompat="@drawable/close" />
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@drawable/gradient_line_hor"
+            android:orientation="horizontal" />
 
         <LinearLayout
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"></LinearLayout>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/imageButton3"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            app:srcCompat="@drawable/railway" />
+            <ImageButton
+                android:id="@+id/btnProfile"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/profile_passive"
+                tools:ignore="SpeakableTextPresentCheck" />
 
-        <LinearLayout
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"></LinearLayout>
+            <LinearLayout
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/gradient_line_vert"
+                android:orientation="vertical" />
 
-        <ImageView
-            android:id="@+id/imageView19"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            app:srcCompat="@drawable/calendar" />
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/home_passive"
+                tools:ignore="SpeakableTextPresentCheck" />
 
-        <LinearLayout
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"></LinearLayout>
+            <LinearLayout
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/gradient_line_vert"
+                android:orientation="vertical"/>
+
+            <ImageButton
+                android:id="@+id/imageButton3"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/time"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <LinearLayout
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/gradient_line_vert"
+                android:orientation="vertical"/>
+
+            <ImageView
+                android:id="@+id/btnChat"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/chat_passive" />
+
+        </LinearLayout>
+
     </LinearLayout>
+
 </RelativeLayout>
