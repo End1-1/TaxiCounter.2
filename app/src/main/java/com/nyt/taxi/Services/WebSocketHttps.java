@@ -45,6 +45,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.nyt.taxi.Activities.AcceptPreorderMessage;
+import com.nyt.taxi.Activities.ActivityCity;
 import com.nyt.taxi.Activities.ChatActivity;
 import com.nyt.taxi.Activities.MainActivity;
 import com.nyt.taxi.Activities.NotificationActivity;
@@ -423,25 +424,20 @@ public class WebSocketHttps extends Service {
                         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
                         boolean isScreenOn = pm.isInteractive();
                         FileLogger.write(String.format("Screen is %s", isScreenOn ? "ON" : "OFF"));
+                        JSONObject jb;
+                        JSONObject jord;
                         try {
-                            JSONObject jb = new JSONObject(s);
-                            JSONObject jord = new JSONObject(jb.getString("data"));
-                            if (jord.getJSONObject("order").getJSONArray("points").length() > 2) {
-                                JSONArray jat = new JSONArray();
-                                jat.put(jord.getJSONObject("order").getJSONArray("points").get(0));
-                                jat.put(jord.getJSONObject("order").getJSONArray("points").get(jord.getJSONObject("order").getJSONArray("points").length() - 1));
-                                jord.getJSONObject("order").remove("points");
-                                jord.getJSONObject("order").put("points", jat);
-                            }
+                            jb = new JSONObject(s);
+                            jord = new JSONObject(jb.getString("data"));
                             jb.put("data", jord.toString());
-                            //if (jb.get(""))
-                            UPref.setString("order_event", jb.getString("data"));
                         } catch (Exception e) {
                             e.printStackTrace();
                             return;
                         }
 
-                        Intent intent = new Intent(WebSocketHttps.this, Workspace.class);
+                        jord = jord.getJSONObject("order");
+                        Intent intent = new Intent(WebSocketHttps.this, ActivityCity.class);
+                        intent.putExtra("neworder", jord.toString());
                         intent.setAction(Intent.ACTION_VIEW);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

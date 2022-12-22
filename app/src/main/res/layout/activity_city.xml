@@ -37,8 +37,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:text="@string/RATING"
                     android:lines="1"
+                    android:text="@string/RATING"
                     android:textSize="@dimen/smallFont" />
 
                 <TextView
@@ -54,8 +54,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:layout_weight="1.2">
+                android:layout_weight="1.2"
+                android:gravity="center_horizontal">
+
                 <LinearLayout
                     android:layout_width="2dp"
                     android:layout_height="match_parent"
@@ -96,8 +97,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:layout_weight="1.2">
+                android:layout_weight="1.2"
+                android:gravity="center_horizontal">
+
                 <LinearLayout
                     android:layout_width="2dp"
                     android:layout_height="match_parent"
@@ -108,9 +110,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:layout_marginRight="10dp"
                 android:orientation="vertical">
 
                 <ImageView
@@ -232,30 +234,34 @@
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="8dp"
+            android:background="@color/colorButtonBgYellow"
             android:gravity="center"
+            android:text="@string/Online"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:background="@color/colorButtonBgYellow"
-            android:text="@string/Online">
+            app:layout_constraintStart_toStartOf="parent">
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal">
+
                 <ImageView
                     android:layout_width="36dp"
                     android:layout_height="wrap_content"
                     android:src="@drawable/taxi" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:textSize="@dimen/middleFont"
-                android:textStyle="bold"
-                android:textAllCaps="true"
-                android:text="@string/Online" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/Online"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/middleFont"
+                    android:textStyle="bold" />
             </LinearLayout>
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -296,13 +302,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:layout_weight="1">
-            <LinearLayout
-                android:layout_width="2dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/gradient_line_vert"
-                android:orientation="vertical" />
+                android:layout_weight="1"
+                android:gravity="center_horizontal">
+
+                <LinearLayout
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/gradient_line_vert"
+                    android:orientation="vertical" />
             </LinearLayout>
 
             <ImageView
@@ -316,8 +323,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:gravity="center_horizontal">
+
                 <LinearLayout
                     android:layout_width="2dp"
                     android:layout_height="match_parent"
@@ -336,8 +344,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:gravity="center_horizontal">
+
                 <LinearLayout
                     android:layout_width="2dp"
                     android:layout_height="match_parent"
@@ -357,14 +366,16 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llNewOrder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/clUp"
         android:layout_alignTop="@+id/clFirstPage"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
         android:background="@drawable/login_down"
-        android:layout_marginBottom="0dp">
+        android:visibility="gone">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -376,12 +387,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/NEWORDER"
+                android:textColor="@color/colorButtonBgYellow"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:textColor="@color/colorButtonBgYellow"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <View
                 android:id="@+id/view13"
@@ -437,19 +447,19 @@
                 app:srcCompat="@drawable/location" />
 
             <TextView
-                android:id="@+id/textView20"
+                android:id="@+id/tvAddressFrom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:text="Россия, Москва, Чебурашкенский переулок, дом 54б квартира 10"
-                app:layout_constraintStart_toEndOf="@+id/imageView20"
-                app:layout_constraintTop_toBottomOf="@+id/view14"
                 android:textSize="@dimen/middleFont"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/imageView20"
+                app:layout_constraintTop_toBottomOf="@+id/view14" />
 
             <TextView
-                android:id="@+id/textView23"
+                android:id="@+id/tvAddressTo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -480,7 +490,7 @@
                 android:text="@string/To"
                 android:textAllCaps="true"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView20" />
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressFrom" />
 
             <TextView
                 android:id="@+id/textView24"
@@ -491,7 +501,7 @@
                 android:text="@string/comment"
                 android:textAllCaps="true"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView23" />
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressTo" />
 
             <View
                 android:id="@+id/view16"
@@ -515,7 +525,7 @@
                 app:srcCompat="@drawable/information" />
 
             <TextView
-                android:id="@+id/tvComment"
+                android:id="@+id/tvAddressComment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -526,13 +536,56 @@
                 app:layout_constraintStart_toEndOf="@+id/imageView22"
                 app:layout_constraintTop_toBottomOf="@+id/view16" />
 
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/PaymentMethod"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/llOrderOptions" />
+
+            <TextView
+                android:id="@+id/tvPaymentMethod"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/Cash"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/llOrderOptions" />
+
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/ArrivalTime"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+            <TextView
+                android:id="@+id/tvArrivalTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="15:30"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvPaymentMethod" />
+
             <LinearLayout
+                android:id="@+id/llOrderOptions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvComment">
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressComment">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -628,6 +681,20 @@
                     android:layout_weight="1" />
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/btnAcceptGreen"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/btn_fill"
+                android:text="ACCEPT (+3)"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

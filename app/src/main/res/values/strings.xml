@@ -13,6 +13,7 @@
     <string name="YouMustBatteryOptimizatinOff">Вы должны отключить оптимизацию батареи для этого приложения</string>
     <string name="Profile">Профиль</string>
     <string name="Empty"></string>
+    <string name="ArrivalTime">Время прибытия к клиенту</string>
     <string name="CloseAppQuestion">Закрыть приложение?</string>
     <string name="QuestionGoOffline">Перейти в автономный режим?</string>
     <string name="PREORDERS">ПРЕДВАРИТЕЛЬНЫЕ ЗАКАЗЫ</string>
