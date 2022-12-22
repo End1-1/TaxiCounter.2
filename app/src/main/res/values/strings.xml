@@ -36,6 +36,7 @@
     <string name="Password">Пароль</string>
     <string name="Submit">Начать</string>
     <string name="Accept">Принять</string>
+    <string name="PODACHA">Подача</string>
     <string name="ACTIVITY">АКТИВНОСТЬ</string>
     <string name="RATING">РЕЙТИНГ</string>
     <string name="TODAY">СЕГОДНЯ</string>
@@ -101,7 +102,7 @@
     <string name="TypeYourMessageHere">Напишите ваше сообщение</string>
     <string name="ChatWithPassanger">Переписка с пассажиром</string>
     <string name="ChatWithDispatcher">Переписка с диспетчером</string>
-    <string name="ImLate">Я Опаздываю</string>
+    <string name="ImLate">Опоздание </string>
     <string name="HISTORY_OF_ORDERS">ИСТОРИЯ ЗАКАЗОВ</string>
     <string name="PaymentMethod">Метод оплаты</string>
     <string name="Cost">Стоимость</string>

@@ -13,10 +13,40 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/llMissOrder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@+id/txtDriverFullName">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@drawable/gradient_line_hor_2"
+                android:orientation="horizontal"></LinearLayout>
+
+            <TextView
+                android:id="@+id/tvMiss"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_marginRight="18dp"
+                android:layout_marginBottom="16dp"
+                android:gravity="right"
+                android:text="@string/MISS"
+                android:textAllCaps="true" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llRateMoneyScore"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:orientation="horizontal"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/txtDriverFullName">
 
             <LinearLayout
@@ -167,8 +197,8 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/btnProfile"
-            android:layout_width="76dp"
-            android:layout_height="76dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
@@ -184,8 +214,8 @@
 
             <ImageView
                 android:id="@+id/imgProfile"
-                android:layout_width="76dp"
-                android:layout_height="76dp"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
@@ -230,7 +260,7 @@
         <LinearLayout
             android:id="@+id/llGoOnline"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="8dp"
@@ -283,7 +313,7 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginBottom="15dp"
-            android:background="@drawable/gradient_line_hor"
+            android:background="@drawable/menu_devider"
             android:orientation="horizontal" />
 
         <LinearLayout
@@ -296,7 +326,7 @@
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/home_passive"
+                app:srcCompat="@drawable/home"
                 tools:ignore="SpeakableTextPresentCheck" />
 
             <LinearLayout
@@ -308,7 +338,7 @@
                 <LinearLayout
                     android:layout_width="2dp"
                     android:layout_height="match_parent"
-                    android:background="@drawable/gradient_line_vert"
+                    android:background="@drawable/gradient_line_vert_2"
                     android:orientation="vertical" />
             </LinearLayout>
 
@@ -329,7 +359,7 @@
                 <LinearLayout
                     android:layout_width="2dp"
                     android:layout_height="match_parent"
-                    android:background="@drawable/gradient_line_vert"
+                    android:background="@drawable/gradient_line_vert_2"
                     android:orientation="vertical" />
             </LinearLayout>
 
@@ -350,7 +380,7 @@
                 <LinearLayout
                     android:layout_width="2dp"
                     android:layout_height="match_parent"
-                    android:background="@drawable/gradient_line_vert"
+                    android:background="@drawable/gradient_line_vert_2"
                     android:orientation="vertical" />
             </LinearLayout>
 
@@ -410,7 +440,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/Where"
                 android:textAllCaps="true"
                 app:layout_constraintStart_toStartOf="parent"
@@ -419,17 +449,17 @@
             <View
                 android:id="@+id/view14"
                 android:layout_width="0dp"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:layout_marginTop="4dp"
-                android:background="@color/colorGray"
+                android:background="@color/colorGrayLight2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
             <ImageView
                 android:id="@+id/imageView20"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -438,8 +468,8 @@
 
             <ImageView
                 android:id="@+id/imageView21"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -473,9 +503,9 @@
             <View
                 android:id="@+id/view15"
                 android:layout_width="0dp"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:layout_marginTop="4dp"
-                android:background="@color/colorGray"
+                android:background="@color/colorGrayLight2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -490,7 +520,7 @@
                 android:text="@string/To"
                 android:textAllCaps="true"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvAddressFrom" />
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressComment2" />
 
             <TextView
                 android:id="@+id/textView24"
@@ -506,18 +536,29 @@
             <View
                 android:id="@+id/view16"
                 android:layout_width="0dp"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:layout_marginTop="4dp"
-                android:background="@color/colorGray"
+                android:background="@color/colorGrayLight2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView24" />
 
+            <View
+                android:id="@+id/view17"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/colorGrayLight2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressFrom" />
+
             <ImageView
                 android:id="@+id/imageView22"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -541,8 +582,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="24dp"
                 android:text="@string/PaymentMethod"
+                android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/llOrderOptions" />
 
@@ -550,9 +592,10 @@
                 android:id="@+id/tvPaymentMethod"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
                 android:text="@string/Cash"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/llOrderOptions" />
@@ -564,6 +607,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/ArrivalTime"
+                android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
@@ -572,11 +616,22 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="24dp"
                 android:text="15:30"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvPaymentMethod" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/gradient_line_hor"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/btnAcceptGreen"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"></LinearLayout>
 
             <LinearLayout
                 android:id="@+id/llOrderOptions"
@@ -597,7 +652,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginTop="32dp"
-                    android:background="@color/colorAccent"
+                    android:background="@drawable/gradient_malina"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -627,7 +682,7 @@
                     android:layout_height="100dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="32dp"
-                    android:background="@color/colorTextOrange"
+                    android:background="@drawable/gradient_green"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -656,7 +711,7 @@
                     android:layout_height="100dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="32dp"
-                    android:background="@color/switchTrackActive"
+                    android:background="@drawable/gradient_blue"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -696,8 +751,799 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
+            <TextView
+                android:id="@+id/tvAddressComment2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Чудный коментарий"
+                android:textSize="@dimen/middleFont"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/imageView22"
+                app:layout_constraintTop_toBottomOf="@id/view17" />
+
+            <ImageView
+                android:id="@+id/imageView24"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view17"
+                app:srcCompat="@drawable/information" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llOnPlace"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/clUp"
+        android:layout_alignTop="@+id/clFirstPage"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/login_down"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView14_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/PODACHA"
+                android:textAllCaps="true"
+                android:textColor="@color/colorButtonBgYellow"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view13_2"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="64dp"
+                android:background="@color/colorButtonBgYellow"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView14_2" />
+
+            <TextView
+                android:id="@+id/textView17_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/Where"
+                android:textAllCaps="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view13_2" />
+
+            <View
+                android:id="@+id/view14_2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/colorGrayLight2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView17_2" />
+
+            <ImageView
+                android:id="@+id/imageView20_2"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view14_2"
+                app:srcCompat="@drawable/location" />
+
+            <ImageView
+                android:id="@+id/imageView21_2"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view15_2"
+                app:srcCompat="@drawable/location" />
+
+            <TextView
+                android:id="@+id/tvAddressFrom_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:text="Россия, Москва, Чебурашкенский переулок, дом 54б квартира 10"
+                android:textSize="@dimen/middleFont"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/imageView20_2"
+                app:layout_constraintTop_toBottomOf="@+id/view14_2" />
+
+            <TextView
+                android:id="@+id/tvAddressTo_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:text="Россия, Москва, Чебурашкенский переулок, дом 54б квартира 10"
+                android:textSize="@dimen/middleFont"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/imageView21_2"
+                app:layout_constraintTop_toBottomOf="@+id/view15_2" />
+
+            <View
+                android:id="@+id/view15_2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/colorGrayLight2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView22_2" />
+
+            <TextView
+                android:id="@+id/textView22_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/To"
+                android:textAllCaps="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressComment2_2" />
+
+            <TextView
+                android:id="@+id/textView24_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/comment"
+                android:textAllCaps="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressTo_2" />
+
+            <View
+                android:id="@+id/view16_2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/colorGrayLight2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView24_2" />
+
+            <View
+                android:id="@+id/view17_2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/colorGrayLight2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressFrom_2" />
+
+            <ImageView
+                android:id="@+id/imageView22_2"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view16_2"
+                app:srcCompat="@drawable/information" />
+
+            <TextView
+                android:id="@+id/tvAddressComment_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:text="Чудный коментарий"
+                android:textSize="@dimen/middleFont"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/imageView22_2"
+                app:layout_constraintTop_toBottomOf="@+id/view16_2" />
+
+            <TextView
+                android:id="@+id/textView12_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/PaymentMethod"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/llOrderOptions_2" />
+
+            <TextView
+                android:id="@+id/tvPaymentMethod_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:text="@string/Cash"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/llOrderOptions_2" />
+
+            <TextView
+                android:id="@+id/textView23_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/ArrivalTime"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView12_2" />
+
+            <TextView
+                android:id="@+id/tvArrivalTime_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:text="15:30"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvPaymentMethod_2" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/gradient_line_hor"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/btnGoToClient"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"></LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llOrderOptions_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressComment_2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout3_2"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="32dp"
+                    android:background="@drawable/gradient_malina"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        app:srcCompat="@drawable/chat_white" />
+
+                    <TextView
+                        android:id="@+id/tvCarClass_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/CHAT"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout5_2"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="32dp"
+                    android:background="@drawable/gradient_green"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        app:srcCompat="@drawable/notification" />
+
+                    <TextView
+                        android:id="@+id/tvDistance_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/ImLate"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="32dp"
+                    android:background="@drawable/gradient_blue"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        app:srcCompat="@drawable/fromto" />
+
+                    <TextView
+                        android:id="@+id/tvRideTime_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/Navigator"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnGoToClient"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/btn_color_move_green"
+                android:text="@string/InPlace"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvAddressComment2_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Чудный коментарий"
+                android:textSize="@dimen/middleFont"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/imageView24_2"
+                app:layout_constraintTop_toBottomOf="@id/view17_2" />
+
+            <ImageView
+                android:id="@+id/imageView24_2"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view17_2"
+                app:srcCompat="@drawable/information" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llBeforeStart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_above="@id/clUp"
+        android:layout_alignTop="@+id/clFirstPage"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/login_down">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView14_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/PODACHA"
+                android:textColor="@color/colorButtonBgYellow"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view13_3"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="64dp"
+                android:background="@color/colorButtonBgYellow"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView14_3" />
+
+            <TextView
+                android:id="@+id/textView17_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/Where"
+                android:textAllCaps="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view13_3" />
+
+            <View
+                android:id="@+id/view14_3"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/colorGrayLight2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView17_3" />
+
+            <ImageView
+                android:id="@+id/imageView20_3"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view14_3"
+                app:srcCompat="@drawable/location" />
+
+            <ImageView
+                android:id="@+id/imageView21_3"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view15_3"
+                app:srcCompat="@drawable/location" />
+
+            <TextView
+                android:id="@+id/tvAddressFrom_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:text="Россия, Москва, Чебурашкенский переулок, дом 54б квартира 10"
+                android:textSize="@dimen/middleFont"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/imageView20_3"
+                app:layout_constraintTop_toBottomOf="@+id/view14_3" />
+
+            <TextView
+                android:id="@+id/tvAddressTo_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:text="Россия, Москва, Чебурашкенский переулок, дом 54б квартира 10"
+                android:textSize="@dimen/middleFont"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/imageView21_3"
+                app:layout_constraintTop_toBottomOf="@+id/view15_3" />
+
+            <View
+                android:id="@+id/view15_3"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/colorGrayLight2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView22_3" />
+
+            <TextView
+                android:id="@+id/textView22_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/To"
+                android:textAllCaps="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressComment2_3" />
+
+            <TextView
+                android:id="@+id/textView24_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/comment"
+                android:textAllCaps="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressTo_3" />
+
+            <View
+                android:id="@+id/view16_3"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/colorGrayLight2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView24_3" />
+
+            <View
+                android:id="@+id/view17_3"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/colorGrayLight2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressFrom_3" />
+
+            <ImageView
+                android:id="@+id/imageView22_3"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view16_3"
+                app:srcCompat="@drawable/information" />
+
+            <TextView
+                android:id="@+id/tvAddressComment_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:text="Чудный коментарий"
+                android:textSize="@dimen/middleFont"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/imageView22_3"
+                app:layout_constraintTop_toBottomOf="@+id/view16_3" />
+
+            <TextView
+                android:id="@+id/textView12_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/PaymentMethod"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/llOrderOptions_3" />
+
+            <TextView
+                android:id="@+id/tvPaymentMethod_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:text="@string/Cash"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/llOrderOptions_3" />
+
+            <TextView
+                android:id="@+id/textView23_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/ArrivalTime"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView12_3" />
+
+            <TextView
+                android:id="@+id/tvArrivalTime_3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:text="15:30"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvPaymentMethod_3" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/gradient_line_hor"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/btnStartOrder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"></LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llOrderOptions_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressComment_3">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout3_3"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="32dp"
+                    android:background="@drawable/gradient_malina"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        app:srcCompat="@drawable/chat_white" />
+
+                    <TextView
+                        android:id="@+id/tvCarClass_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/CHAT"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout5_3"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="32dp"
+                    android:background="@drawable/gradient_green"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        app:srcCompat="@drawable/notification" />
+
+                    <TextView
+                        android:id="@+id/tvDistance_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/ImLate"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="32dp"
+                    android:background="@drawable/gradient_blue"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        app:srcCompat="@drawable/fromto" />
+
+                    <TextView
+                        android:id="@+id/tvRideTime_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/Navigator"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnStartOrder"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/btn_color_move_green"
+                android:text="@string/GO"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvAddressComment2_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Чудный коментарий"
+                android:textSize="@dimen/middleFont"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/imageView24_3"
+                app:layout_constraintTop_toBottomOf="@id/view17_3" />
+
+            <ImageView
+                android:id="@+id/imageView24_3"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view17_3"
+                app:srcCompat="@drawable/information" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
 </RelativeLayout>

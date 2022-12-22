@@ -4,9 +4,9 @@
 
     <gradient
         android:angle="90"
-        android:endColor="#ffffff"
+        android:endColor="@color/colorButtonBgYellow"
         android:centerColor="#000"
-        android:startColor="#ffffff"
+        android:startColor="@color/colorButtonBgYellow"
         android:type="linear" />
 
 </shape>

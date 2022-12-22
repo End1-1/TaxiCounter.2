@@ -35,6 +35,7 @@ public class ActivityCity extends BaseActivity {
     private ImageView btnProfile2;
     private LinearLayout llGoOnline;
     private CardView btnProfile;
+    private LinearLayout llRateMoneyScore;
 
     private LinearLayout llNewOrder;
     private TextView tvAddressFrom;
@@ -45,6 +46,8 @@ public class ActivityCity extends BaseActivity {
     private TextView tvRideTime;
     private TextView tvPaymentMethod;
     private TextView tvArrivalToClient;
+    private LinearLayout llMissOrder;
+    private TextView tvMissOrder;
 
     private Button btnAcceptGreen;
     private TimeAnimator mAnimator;
@@ -60,8 +63,11 @@ public class ActivityCity extends BaseActivity {
         btnProfile2 = findViewById(R.id.btnProfile2);
         btnProfile = findViewById(R.id.btnProfile);
         llGoOnline = findViewById(R.id.llGoOnline);
+        llRateMoneyScore = findViewById(R.id.llRateMoneyScore);
 
         llNewOrder = findViewById(R.id.llNewOrder);
+        llMissOrder = findViewById(R.id.llMissOrder);
+        tvMissOrder = findViewById(R.id.tvMiss);
         tvAddressFrom = findViewById(R.id.tvAddressFrom);
         tvAddressTo = findViewById(R.id.tvAddressTo);
         tvAddressComment = findViewById(R.id.tvAddressComment);
@@ -77,6 +83,7 @@ public class ActivityCity extends BaseActivity {
         btnProfile.setOnClickListener(this);
         llGoOnline.setOnClickListener(this);
         btnAcceptGreen.setOnClickListener(this);
+        tvMissOrder.setOnClickListener(this);
         authToSocket();
         if (getIntent().getStringExtra("neworder") != null) {
             startNewOrder(JsonParser.parseString(getIntent().getStringExtra("neworder")).getAsJsonObject());
@@ -204,8 +211,10 @@ public class ActivityCity extends BaseActivity {
         tvRideTime.setText(ord.get("duration").getAsString() + "" + getString(R.string.min));
         tvPaymentMethod.setText(ord.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
         tvArrivalToClient.setText(ord.get("delivery_time").getAsString());
+        llMissOrder.setVisibility(View.VISIBLE);
         llNewOrder.setVisibility(View.VISIBLE);
-        btnAcceptGreen.setText(getString(R.string.AcceptOrder) + " +" + ord.get("rating_accepted").getAsString());
+        llRateMoneyScore.setVisibility(View.GONE);
+        btnAcceptGreen.setText(getString(R.string.Accept) + " +" + ord.get("rating_accepted").getAsString());
         String acceptHash = ord.get("accept_hash").getAsString();
         int orderId = ord.get("order_id").getAsInt();
         playSound(R.raw.new_order);
