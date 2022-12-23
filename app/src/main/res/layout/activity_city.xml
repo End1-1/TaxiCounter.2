@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="16dp"
             android:orientation="vertical"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/txtDriverFullName">
 
             <LinearLayout
@@ -46,7 +46,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:orientation="horizontal"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintTop_toBottomOf="@+id/txtDriverFullName">
 
             <LinearLayout
@@ -467,13 +467,13 @@
                 app:srcCompat="@drawable/location" />
 
             <ImageView
-                android:id="@+id/imageView21"
+                android:id="@+id/imgAddressTo"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view15"
+                app:layout_constraintTop_toBottomOf="@+id/viewTo"
                 app:srcCompat="@drawable/location" />
 
             <TextView
@@ -497,11 +497,11 @@
                 android:text="Россия, Москва, Чебурашкенский переулок, дом 54б квартира 10"
                 android:textSize="@dimen/middleFont"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/imageView21"
-                app:layout_constraintTop_toBottomOf="@+id/view15" />
+                app:layout_constraintStart_toEndOf="@+id/imgAddressTo"
+                app:layout_constraintTop_toBottomOf="@+id/viewTo" />
 
             <View
-                android:id="@+id/view15"
+                android:id="@+id/viewTo"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginTop="4dp"
@@ -509,10 +509,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView22" />
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressToText" />
 
             <TextView
-                android:id="@+id/textView22"
+                android:id="@+id/tvAddressToText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -520,10 +520,10 @@
                 android:text="@string/To"
                 android:textAllCaps="true"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvAddressComment2" />
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressCommentFrom" />
 
             <TextView
-                android:id="@+id/textView24"
+                android:id="@+id/tvCommentToText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -534,15 +534,15 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvAddressTo" />
 
             <View
-                android:id="@+id/view16"
+                android:id="@+id/viewCommentTo"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="8dp"
                 android:background="@color/colorGrayLight2"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView24" />
+                app:layout_constraintTop_toBottomOf="@+id/tvCommentToText" />
 
             <View
                 android:id="@+id/view17"
@@ -556,17 +556,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvAddressFrom" />
 
             <ImageView
-                android:id="@+id/imageView22"
+                android:id="@+id/imgAddressCommentTo"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view16"
+                app:layout_constraintTop_toBottomOf="@+id/viewCommentTo"
                 app:srcCompat="@drawable/information" />
 
             <TextView
-                android:id="@+id/tvAddressComment"
+                android:id="@+id/tvAddressCommentTo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -574,8 +574,8 @@
                 android:text="Чудный коментарий"
                 android:textSize="@dimen/middleFont"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/imageView22"
-                app:layout_constraintTop_toBottomOf="@+id/view16" />
+                app:layout_constraintStart_toEndOf="@+id/imgAddressCommentTo"
+                app:layout_constraintTop_toBottomOf="@+id/viewCommentTo" />
 
             <TextView
                 android:id="@+id/textView12"
@@ -640,7 +640,7 @@
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvAddressComment">
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressCommentTo">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -752,7 +752,7 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
-                android:id="@+id/tvAddressComment2"
+                android:id="@+id/tvAddressCommentFrom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -760,11 +760,11 @@
                 android:text="Чудный коментарий"
                 android:textSize="@dimen/middleFont"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/imageView22"
+                app:layout_constraintStart_toEndOf="@+id/imgAddressCommentTo"
                 app:layout_constraintTop_toBottomOf="@id/view17" />
 
             <ImageView
-                android:id="@+id/imageView24"
+                android:id="@+id/imgAddressCommentFrom"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="8dp"
@@ -851,17 +851,17 @@
                 app:srcCompat="@drawable/location" />
 
             <ImageView
-                android:id="@+id/imageView21_2"
+                android:id="@+id/imgAddressTo2"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view15_2"
+                app:layout_constraintTop_toBottomOf="@+id/viewTo2"
                 app:srcCompat="@drawable/location" />
 
             <TextView
-                android:id="@+id/tvAddressFrom_2"
+                android:id="@+id/tvAddressFrom2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -873,7 +873,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/view14_2" />
 
             <TextView
-                android:id="@+id/tvAddressTo_2"
+                android:id="@+id/tvAddressTo2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -881,11 +881,11 @@
                 android:text="Россия, Москва, Чебурашкенский переулок, дом 54б квартира 10"
                 android:textSize="@dimen/middleFont"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/imageView21_2"
-                app:layout_constraintTop_toBottomOf="@+id/view15_2" />
+                app:layout_constraintStart_toEndOf="@+id/imgAddressTo2"
+                app:layout_constraintTop_toBottomOf="@+id/viewTo2" />
 
             <View
-                android:id="@+id/view15_2"
+                android:id="@+id/viewTo2"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginTop="4dp"
@@ -893,10 +893,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView22_2" />
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressToText2" />
 
             <TextView
-                android:id="@+id/textView22_2"
+                android:id="@+id/tvAddressToText2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -904,10 +904,10 @@
                 android:text="@string/To"
                 android:textAllCaps="true"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvAddressComment2_2" />
+                app:layout_constraintTop_toBottomOf="@+id/tvCommentFrom2" />
 
             <TextView
-                android:id="@+id/textView24_2"
+                android:id="@+id/tvCommentToText2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -915,10 +915,10 @@
                 android:text="@string/comment"
                 android:textAllCaps="true"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvAddressTo_2" />
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressTo2" />
 
             <View
-                android:id="@+id/view16_2"
+                android:id="@+id/viewCommentTo2"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginTop="4dp"
@@ -926,10 +926,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView24_2" />
+                app:layout_constraintTop_toBottomOf="@+id/tvCommentToText2" />
 
             <View
-                android:id="@+id/view17_2"
+                android:id="@+id/viewCommentFrom2"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginTop="8dp"
@@ -937,20 +937,20 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvAddressFrom_2" />
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressFrom2" />
 
             <ImageView
-                android:id="@+id/imageView22_2"
+                android:id="@+id/imgCommentTo2"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view16_2"
+                app:layout_constraintTop_toBottomOf="@+id/viewCommentTo2"
                 app:srcCompat="@drawable/information" />
 
             <TextView
-                android:id="@+id/tvAddressComment_2"
+                android:id="@+id/tvCommentTo2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -958,8 +958,8 @@
                 android:text="Чудный коментарий"
                 android:textSize="@dimen/middleFont"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/imageView22_2"
-                app:layout_constraintTop_toBottomOf="@+id/view16_2" />
+                app:layout_constraintStart_toEndOf="@+id/imgCommentTo2"
+                app:layout_constraintTop_toBottomOf="@+id/viewCommentTo2" />
 
             <TextView
                 android:id="@+id/textView12_2"
@@ -973,7 +973,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/llOrderOptions_2" />
 
             <TextView
-                android:id="@+id/tvPaymentMethod_2"
+                android:id="@+id/tvPaymentMethod2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -1005,7 +1005,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvPaymentMethod_2" />
+                app:layout_constraintTop_toBottomOf="@+id/tvPaymentMethod2" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -1024,7 +1024,7 @@
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvAddressComment_2">
+                app:layout_constraintTop_toBottomOf="@+id/tvCommentTo2">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1138,7 +1138,7 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
-                android:id="@+id/tvAddressComment2_2"
+                android:id="@+id/tvCommentFrom2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -1146,17 +1146,17 @@
                 android:text="Чудный коментарий"
                 android:textSize="@dimen/middleFont"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/imageView24_2"
-                app:layout_constraintTop_toBottomOf="@id/view17_2" />
+                app:layout_constraintStart_toEndOf="@+id/imgCommentFrom2"
+                app:layout_constraintTop_toBottomOf="@id/viewCommentFrom2" />
 
             <ImageView
-                android:id="@+id/imageView24_2"
+                android:id="@+id/imgCommentFrom2"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view17_2"
+                app:layout_constraintTop_toBottomOf="@id/viewCommentFrom2"
                 app:srcCompat="@drawable/information" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -1166,13 +1166,14 @@
         android:id="@+id/llBeforeStart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_above="@id/clUp"
         android:layout_alignTop="@+id/clFirstPage"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
-        android:background="@drawable/login_down">
+        android:background="@drawable/login_down"
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -1184,9 +1185,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/PODACHA"
+                android:textAllCaps="true"
                 android:textColor="@color/colorButtonBgYellow"
                 android:textStyle="bold"
-                android:textAllCaps="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
