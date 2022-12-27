@@ -14,9 +14,11 @@ import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.nyt.taxi.Model.GDriverStatus;
+import com.nyt.taxi.Order.TCRoute;
 import com.nyt.taxi.R;
 import com.nyt.taxi.Services.FileLogger;
 import com.nyt.taxi.Services.FirebaseHandler;
@@ -72,6 +74,7 @@ public class ActivityCity extends BaseActivity {
     private TextView tvCommentToText2;
     private ImageView imgCommentTo2;
     private View viewCommentTo2;
+    private Button btnGoToClient;
 
     private Button btnAcceptGreen;
     private TimeAnimator mAnimator;
@@ -79,6 +82,7 @@ public class ActivityCity extends BaseActivity {
     private ClipDrawable mClipDrawable;
     private int mCurrentOrderId = 0;
     private String mWebHash = "";
+    private int mRoadId;
     private boolean mQueryStateAllowed = true;
 
     @Override
@@ -128,6 +132,7 @@ public class ActivityCity extends BaseActivity {
         tvCommentToText2 = findViewById(R.id.tvCommentToText2);
         imgCommentTo2 = findViewById(R.id.imgCommentTo2);
         viewCommentTo2 = findViewById(R.id.viewCommentTo2);
+        btnGoToClient = findViewById(R.id.btnGoToClient);
 
         btnChat.setOnClickListener(this);
         btnProfile2.setOnClickListener(this);
@@ -135,6 +140,7 @@ public class ActivityCity extends BaseActivity {
         llGoOnline.setOnClickListener(this);
         btnAcceptGreen.setOnClickListener(this);
         tvMissOrder.setOnClickListener(this);
+        btnGoToClient.setOnClickListener(this);
         authToSocket();
         if (getIntent().getStringExtra("neworder") != null) {
             startNewOrder(JsonParser.parseString(getIntent().getStringExtra("neworder")).getAsJsonObject());
@@ -144,6 +150,7 @@ public class ActivityCity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        showNothings();
         queryState();
     }
 
@@ -225,6 +232,18 @@ public class ActivityCity extends BaseActivity {
                 }).request();
                 break;
             }
+            case R.id.btnGoToClient: {
+                mQueryStateAllowed = true;
+                String link = String.format("%s/api/driver/order_on_way/%d/%s/%d/%d", UConfig.mWebHost, mCurrentOrderId, mWebHash, mRoadId, 1);
+                WebQuery.create(link, WebQuery.HttpMethod.GET, WebResponse.mResponseWayToClient, new WebResponse() {
+                    @Override
+                    public void webResponse(int code, int webResponse, String s) {
+                        webResponseOK(webResponse, s);
+                        queryState();
+                    }
+                }).request();
+                break;
+            }
         }
     }
 
@@ -265,7 +284,23 @@ public class ActivityCity extends BaseActivity {
                         homePage();
                         break;
                     case DriverState.AcceptOrder:
+                        if (jdata.has("payload")) {
+                            if (jdata.getAsJsonObject("payload").has("routes")) {
+                                JsonArray jroutes = jdata.getAsJsonObject("payload").getAsJsonArray("routes");
+                                if (jroutes.size() == 0) {
+                                    mRoadId = 0;
+                                } else {
+                                    JsonObject jroad = jroutes.get(0).getAsJsonObject();
+                                    mRoadId = jroad.get("road_id").getAsInt();
+                                }
+                            }
+                        }
                         afterAcceptPage(jdata);
+                        break;
+                    case DriverState.DriverInPlace:
+                        if (jdata.has("payload")) {
+
+                        }
                         break;
 
                 }
@@ -418,17 +453,22 @@ public class ActivityCity extends BaseActivity {
         return info;
     }
 
-    private void homePage() {
+    private void showNothings() {
         llMissOrder.setVisibility(View.GONE);
-        llRateMoneyScore.setVisibility(View.VISIBLE);
+        llRateMoneyScore.setVisibility(View.GONE);
         llNewOrder.setVisibility(View.GONE);
         llOnPlace.setVisibility(View.GONE);
     }
 
+    private void homePage() {
+        showNothings();
+        llRateMoneyScore.setVisibility(View.VISIBLE);
+    }
+
     private void newOrderPage() {
+        showNothings();
         llMissOrder.setVisibility(View.VISIBLE);
         llNewOrder.setVisibility(View.VISIBLE);
-        llRateMoneyScore.setVisibility(View.GONE);
     }
 
     private void afterAcceptPage(JsonObject j) {
@@ -442,6 +482,35 @@ public class ActivityCity extends BaseActivity {
         j = j.getAsJsonObject("order");
 
         tvAddressFrom2.setText(j.get("address_from").getAsString());
+        int v;
+        if (j.has("full_address_from")) {
+            v = viewTo.VISIBLE;
+            tvCommentFrom2.setText(infoFullAddress(j.getAsJsonObject("full_address_from")));
+        } else {
+            v = View.GONE;
+        }
+        tvCommentToText2.setVisibility(v);
+        tvCommentFrom2.setVisibility(v);
+        imgCommentFrom2.setVisibility(v);
+        viewCommentFrom2.setVisibility(v);
+
+        v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
+        tvAddressTo2.setText(j.get("address_to").getAsString());
+        tvAddressTo2.setVisibility(v);
+        tvAddressToText2.setVisibility(v);
+        imgAddressTo2.setVisibility(v);
+        viewTo2.setVisibility(v);
+
+        v = View.GONE;
+        if (j.has("full_address_to")) {
+            String info = infoFullAddress(j.getAsJsonObject("full_address_to"));
+            v = info.isEmpty() ? View.GONE : View.VISIBLE;
+            tvCommentTo2.setText(info);
+        }
+        tvCommentToText2.setVisibility(v);
+        viewCommentTo2.setVisibility(v);
+        imgCommentTo2.setVisibility(v);
+        tvCommentTo2.setVisibility(v);
 
     }
 
