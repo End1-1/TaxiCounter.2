@@ -14,6 +14,7 @@ import androidx.core.content.FileProvider;
 
 import com.nyt.taxi.BuildConfig;
 import com.nyt.taxi.R;
+import com.nyt.taxi.Services.FileLogger;
 
 import java.io.File;
 
@@ -78,6 +79,7 @@ public class DownloadController {
             public void onReceive(Context context, Intent intent) {
                 context.unregisterReceiver(this);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    FileLogger.write("Trying to install new version");
                     Uri contentUri = FileProvider.getUriForFile(context,BuildConfig.APPLICATION_ID + PROVIDER_PATH, new  File(destination));
                     Intent install = new Intent(Intent.ACTION_VIEW);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

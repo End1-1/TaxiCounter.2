@@ -328,38 +328,7 @@ public class ActivityCity extends BaseActivity {
         mWebHash = ord.get("accept_hash").getAsString();
         mQueryStateAllowed = false;
 
-        JsonObject jinfo = ord.getAsJsonObject("full_address_from");
-        String info = "";
-        if (jinfo.has("frame")) {
-            if (!jinfo.get("frame").isJsonNull()) {
-                info += getString(R.string.frame) + ": " + jinfo.get("frame").getAsString() + ",";
-            }
-        }
-        if (jinfo.has("structure")) {
-            if (!jinfo.get("structure").isJsonNull()) {
-                info += getString(R.string.structure) + ": " + jinfo.get("structure").getAsString() + ",";
-            }
-        }
-        if (jinfo.has("house")) {
-            if (!jinfo.get("house").isJsonNull()) {
-                info += getString(R.string.house) + ": " + jinfo.get("house").getAsString() + ",";
-            }
-        }
-        if (jinfo.has("entrance")) {
-            if (!jinfo.get("entrance").isJsonNull()) {
-                info += getString(R.string.entrance) + ": " + jinfo.get("entrance").getAsString() + ",";
-            }
-        }
-        if (jinfo.has("comment")) {
-            if (!jinfo.get("comment").isJsonNull()) {
-                UPref.setString("fromcomment", jinfo.get("comment").getAsString());
-            }
-        }
-        if (info.length() > 0) {
-            if (info.charAt(info.length() - 1) == ',') {
-                info = info.substring(0, info.length() - 1);
-            }
-        }
+        String info = infoFullAddress(ord.getAsJsonObject("full_address_from"));
         tvAddressCommentFrom.setText(info);
 
         int v = tvAddressCommentFrom.getText().toString().isEmpty() ? View.GONE : View.VISIBLE;
@@ -414,10 +383,46 @@ public class ActivityCity extends BaseActivity {
         mAnimator.start();
     }
 
+    private String infoFullAddress(JsonObject jinfo) {
+        String info = "";
+        if (jinfo.has("frame")) {
+            if (!jinfo.get("frame").isJsonNull()) {
+                info += getString(R.string.frame) + ": " + jinfo.get("frame").getAsString() + ",";
+            }
+        }
+        if (jinfo.has("structure")) {
+            if (!jinfo.get("structure").isJsonNull()) {
+                info += getString(R.string.structure) + ": " + jinfo.get("structure").getAsString() + ",";
+            }
+        }
+        if (jinfo.has("house")) {
+            if (!jinfo.get("house").isJsonNull()) {
+                info += getString(R.string.house) + ": " + jinfo.get("house").getAsString() + ",";
+            }
+        }
+        if (jinfo.has("entrance")) {
+            if (!jinfo.get("entrance").isJsonNull()) {
+                info += getString(R.string.entrance) + ": " + jinfo.get("entrance").getAsString() + ",";
+            }
+        }
+        if (jinfo.has("comment")) {
+            if (!jinfo.get("comment").isJsonNull()) {
+                UPref.setString("fromcomment", jinfo.get("comment").getAsString());
+            }
+        }
+        if (info.length() > 0) {
+            if (info.charAt(info.length() - 1) == ',') {
+                info = info.substring(0, info.length() - 1);
+            }
+        }
+        return info;
+    }
+
     private void homePage() {
         llMissOrder.setVisibility(View.GONE);
         llRateMoneyScore.setVisibility(View.VISIBLE);
         llNewOrder.setVisibility(View.GONE);
+        llOnPlace.setVisibility(View.GONE);
     }
 
     private void newOrderPage() {
@@ -434,5 +439,14 @@ public class ActivityCity extends BaseActivity {
         j = j.getAsJsonObject("payload");
         mCurrentOrderId = j.get("order_id").getAsInt();
         mWebHash = j.get("hash").getAsString();
+        j = j.getAsJsonObject("order");
+
+        tvAddressFrom2.setText(j.get("address_from").getAsString());
+
+    }
+
+    @Override
+    protected void orderUpdated() {
+        queryState();
     }
 }

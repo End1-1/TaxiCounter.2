@@ -174,7 +174,9 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     protected BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getBooleanExtra("CallCenterWorkerDriverChat", false)) {
+            if (intent.getBooleanExtra("OrderUpdated", false)) {
+                orderUpdated();
+            } else if (intent.getBooleanExtra("CallCenterWorkerDriverChat", false)) {
 
             } else if (intent.getBooleanExtra("chatwithworker", false)) {
                 JsonObject jo = JsonParser.parseString(intent.getStringExtra("data")).getAsJsonObject();
@@ -412,5 +414,9 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     protected void chatWithWorker(String msg, String date, int msgId) {
         System.out.println(String.format("%s %s %d", msg, date, msgId));
+    }
+
+    protected void orderUpdated() {
+
     }
 }

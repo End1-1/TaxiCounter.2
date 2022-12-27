@@ -405,7 +405,7 @@
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
         android:background="@drawable/login_down"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -760,7 +760,7 @@
                 android:text="Чудный коментарий"
                 android:textSize="@dimen/middleFont"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/imgAddressCommentTo"
+                app:layout_constraintStart_toEndOf="@+id/imgAddressCommentFrom"
                 app:layout_constraintTop_toBottomOf="@id/view17" />
 
             <ImageView
@@ -1052,6 +1052,7 @@
                         android:gravity="center"
                         android:text="@string/CHAT"
                         android:textColor="@color/colorWhite"
+                        android:textSize="12dp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -1083,6 +1084,7 @@
                         android:text="@string/ImLate"
                         android:textAllCaps="true"
                         android:textColor="@color/colorWhite"
+                        android:textSize="12dp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -1113,6 +1115,7 @@
                         android:text="@string/Navigator"
                         android:textAllCaps="true"
                         android:textColor="@color/colorWhite"
+                        android:textSize="12dp"
                         android:textStyle="bold" />
                 </LinearLayout>
 

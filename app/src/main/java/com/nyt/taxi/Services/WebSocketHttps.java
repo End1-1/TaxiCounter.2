@@ -502,6 +502,10 @@ public class WebSocketHttps extends Service {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         //intent.addFlags(PendingIntent.FLAG_IMMUTABLE)
                         WebSocketHttps.this.startActivity(intent);
+                    } else if (s.contains("OrderUpdated")) {
+                        Intent msgIntent = new Intent("event_listener");
+                        msgIntent.putExtra("OrderUpdated", true);
+                        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(msgIntent);
                     }
                     WebSocketEventReceiver.sendMessage(getApplicationContext(), s);
                     Log.d("NEW EVENT", s);
