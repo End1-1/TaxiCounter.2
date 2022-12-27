@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -76,6 +77,21 @@ public class ActivityCity extends BaseActivity {
     private View viewCommentTo2;
     private Button btnGoToClient;
 
+    private LinearLayout llBeforeStart;
+    private TextView tvAddressFrom3;
+    private TextView tvCommentFrom3;
+    private ImageView imgCommentFrom3;
+    private View viewCommentFrom3;
+    private TextView tvTo3;
+    private TextView tvToText3;
+    private ImageView imgTo3;
+    private View viewTo3;
+    private TextView tvCommentTo3;
+    private TextView tvCommentToText3;
+    private ImageView imgCommentTo3;
+    private View viewCommentTo3;
+    private Button btnStartOrder;
+
     private Button btnAcceptGreen;
     private TimeAnimator mAnimator;
     private int mCurrentLevel = 0;
@@ -134,6 +150,21 @@ public class ActivityCity extends BaseActivity {
         viewCommentTo2 = findViewById(R.id.viewCommentTo2);
         btnGoToClient = findViewById(R.id.btnGoToClient);
 
+        llBeforeStart = findViewById(R.id.llBeforeStart);
+        tvAddressFrom3 = findViewById(R.id.tvAddressFrom3);
+        tvCommentFrom3 = findViewById(R.id.tvCommentFrom3);
+        imgCommentFrom3 = findViewById(R.id.imgCommentFrom3);
+        viewCommentFrom3 = findViewById(R.id.tvCommentFrom3);
+        tvTo3 = findViewById(R.id.tvTo3);
+        tvToText3 = findViewById(R.id.tvToText3);
+        imgTo3 = findViewById(R.id.imgTo3);
+        viewTo3 = findViewById(R.id.viewTo3);
+        tvCommentTo3 = findViewById(R.id.tvCommentTo3);
+        tvCommentToText3 = findViewById(R.id.tvCommentToText3);
+        imgCommentTo3 = findViewById(R.id.imgCommentTo3);
+        viewCommentTo3 = findViewById(R.id.viewCommentTo3);
+        btnStartOrder = findViewById(R.id.btnStartOrder);
+
         btnChat.setOnClickListener(this);
         btnProfile2.setOnClickListener(this);
         btnProfile.setOnClickListener(this);
@@ -141,7 +172,9 @@ public class ActivityCity extends BaseActivity {
         btnAcceptGreen.setOnClickListener(this);
         tvMissOrder.setOnClickListener(this);
         btnGoToClient.setOnClickListener(this);
+        btnStartOrder.setOnClickListener(this);
         authToSocket();
+        showNothings();
         if (getIntent().getStringExtra("neworder") != null) {
             startNewOrder(JsonParser.parseString(getIntent().getStringExtra("neworder")).getAsJsonObject());
         }
@@ -150,7 +183,6 @@ public class ActivityCity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        showNothings();
         queryState();
     }
 
@@ -233,9 +265,8 @@ public class ActivityCity extends BaseActivity {
                 break;
             }
             case R.id.btnGoToClient: {
-                mQueryStateAllowed = true;
-                String link = String.format("%s/api/driver/order_on_way/%d/%s/%d/%d", UConfig.mWebHost, mCurrentOrderId, mWebHash, mRoadId, 1);
-                WebQuery.create(link, WebQuery.HttpMethod.GET, WebResponse.mResponseWayToClient, new WebResponse() {
+                String link = String.format("%s/api/driver/order_in_place/%d/%s", UConfig.mWebHost, mCurrentOrderId, mWebHash);
+                WebQuery.create(link, WebQuery.HttpMethod.GET, WebResponse.mResponseInPlace, new WebResponse() {
                     @Override
                     public void webResponse(int code, int webResponse, String s) {
                         webResponseOK(webResponse, s);
@@ -244,6 +275,16 @@ public class ActivityCity extends BaseActivity {
                 }).request();
                 break;
             }
+            case R.id.btnStartOrder:
+                String link = String.format("%s/api/driver/order_on_start/%d/%s", UConfig.mWebHost, mCurrentOrderId, mWebHash);
+                WebQuery.create(link, WebQuery.HttpMethod.GET, WebResponse.mResponseStartOrder, new WebResponse() {
+                    @Override
+                    public void webResponse(int code, int webResponse, String s) {
+                        webResponseOK(webResponse, s);
+                        queryState();
+                    }
+                }).request();
+                break;
         }
     }
 
@@ -251,6 +292,7 @@ public class ActivityCity extends BaseActivity {
         if (!mQueryStateAllowed) {
             return;
         }
+        showNothings();
         createProgressDialog(R.string.Empty, R.string.Wait);
         WebQuery webQuery = new WebQuery(UConfig.mHostUrl + "/api/driver/real_state", WebQuery.HttpMethod.GET, WebResponse.mResponseDriverOn, new WebResponse() {
             @Override
@@ -284,6 +326,7 @@ public class ActivityCity extends BaseActivity {
                         homePage();
                         break;
                     case DriverState.AcceptOrder:
+                        mQueryStateAllowed = true;
                         if (jdata.has("payload")) {
                             if (jdata.getAsJsonObject("payload").has("routes")) {
                                 JsonArray jroutes = jdata.getAsJsonObject("payload").getAsJsonArray("routes");
@@ -295,12 +338,24 @@ public class ActivityCity extends BaseActivity {
                                 }
                             }
                         }
+                        jdata = jdata.getAsJsonObject("payload");
+                        mCurrentOrderId = jdata.get("order_id").getAsInt();
+                        mWebHash = jdata.get("hash").getAsString();
+                        String link = String.format("%s/api/driver/order_on_way/%d/%s/%d/%d", UConfig.mWebHost, mCurrentOrderId, mWebHash, mRoadId, 1);
+                        WebQuery.create(link, WebQuery.HttpMethod.GET, WebResponse.mResponseWayToClient, new WebResponse() {
+                            @Override
+                            public void webResponse(int code, int webResponse, String s) {
+                                webResponseOK(webResponse, s);
+                                queryState();
+                            }
+                        }).request();
+
+                        break;
+                    case DriverState.OnWay:
                         afterAcceptPage(jdata);
                         break;
-                    case DriverState.DriverInPlace:
-                        if (jdata.has("payload")) {
-
-                        }
+                    case DriverState.DriverInPlace: 
+                        beforeOrderStartPage(jdata);
                         break;
 
                 }
@@ -382,9 +437,6 @@ public class ActivityCity extends BaseActivity {
         tvCommentToText.setVisibility(v);
         viewCommentTo.setVisibility(v);
 
-        playSound(R.raw.new_order);
-        newOrderPage();
-
         LayerDrawable layerDrawable = (LayerDrawable) btnAcceptGreen.getBackground();
         mClipDrawable = (ClipDrawable) layerDrawable.findDrawableByLayerId(R.id.clip_drawable);
         mAnimator = new TimeAnimator();
@@ -416,6 +468,9 @@ public class ActivityCity extends BaseActivity {
         });
         mCurrentLevel = 0;
         mAnimator.start();
+
+        playSound(R.raw.new_order);
+        newOrderPage();
     }
 
     private String infoFullAddress(JsonObject jinfo) {
@@ -512,6 +567,47 @@ public class ActivityCity extends BaseActivity {
         imgCommentTo2.setVisibility(v);
         tvCommentTo2.setVisibility(v);
 
+    }
+    
+    private void beforeOrderStartPage(JsonObject j) {
+        j = j.getAsJsonObject("payload");  
+        mCurrentOrderId = j.get("order_id").getAsInt();
+        mWebHash = j.get("hash").getAsString();
+        showNothings();
+        llBeforeStart.setVisibility(View.VISIBLE);
+        llMissOrder.setVisibility(View.VISIBLE);
+
+        j = j.getAsJsonObject("order");
+        tvAddressFrom3.setText(j.get("address_from").getAsString());
+        int v;
+        if (j.has("full_address_from")) {
+            v = viewTo.VISIBLE;
+            tvCommentFrom3.setText(infoFullAddress(j.getAsJsonObject("full_address_from")));
+        } else {
+            v = View.GONE;
+        }
+        tvCommentToText3.setVisibility(v);
+        tvCommentFrom3.setVisibility(v);
+        imgCommentFrom3.setVisibility(v);
+        viewCommentFrom3.setVisibility(v);
+
+        v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
+        tvTo3.setText(j.get("address_to").getAsString());
+        tvTo3.setVisibility(v);
+        tvToText3.setVisibility(v);
+        imgTo3.setVisibility(v);
+        viewTo3.setVisibility(v);
+
+        v = View.GONE;
+        if (j.has("full_address_to")) {
+            String info = infoFullAddress(j.getAsJsonObject("full_address_to"));
+            v = info.isEmpty() ? View.GONE : View.VISIBLE;
+            tvCommentTo3.setText(info);
+        }
+        tvCommentToText3.setVisibility(v);
+        viewCommentTo3.setVisibility(v);
+        imgCommentTo3.setVisibility(v);
+        tvCommentTo3.setVisibility(v);
     }
 
     @Override
