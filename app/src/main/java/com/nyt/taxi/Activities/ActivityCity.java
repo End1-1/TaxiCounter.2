@@ -108,6 +108,7 @@ public class ActivityCity extends BaseActivity {
     private TextView tvKm;
     private TextView tvMin;
     private Button btnEndOrder;
+    private Button btnOrderDone;
 
     private Button btnAcceptGreen;
     private TimeAnimator mAnimator;
@@ -199,6 +200,7 @@ public class ActivityCity extends BaseActivity {
         tvKm = findViewById(R.id.tvKM);
         tvMin = findViewById(R.id.tvMin);
         btnEndOrder = findViewById(R.id.btnEndOrder);
+        btnOrderDone = findViewById(R.id.btnDone);
 
         btnChat.setOnClickListener(this);
         btnProfile2.setOnClickListener(this);
@@ -209,6 +211,7 @@ public class ActivityCity extends BaseActivity {
         btnGoToClient.setOnClickListener(this);
         btnStartOrder.setOnClickListener(this);
         btnEndOrder.setOnClickListener(this);
+        btnOrderDone.setOnClickListener(this);
         authToSocket();
         showNothings();
         if (getIntent().getStringExtra("neworder") != null) {
@@ -394,7 +397,8 @@ public class ActivityCity extends BaseActivity {
                         beforeOrderStartPage(jdata);
                         break;
                     case DriverState.DriverInRide:
-                        ridePage(jdata);
+                    case DriverState.Rate:
+                        ridePage(jdata, g.state);
                         break;
 
                 }
@@ -653,13 +657,15 @@ public class ActivityCity extends BaseActivity {
         tvCommentTo3.setVisibility(v);
     }
     
-    private void ridePage(JsonObject j) {
+    private void ridePage(JsonObject j, int state) {
         j = j.getAsJsonObject("payload");
         mCurrentOrderId = j.get("order_id").getAsInt();
         mWebHash = j.get("hash_end").getAsString();
         showNothings();
 
         llRide.setVisibility(View.VISIBLE);
+        llMissOrder.setVisibility(View.VISIBLE);
+        tvMissOrder.setText(getString(R.string.CANCELORDER));
 
         j = j.getAsJsonObject("order");
         tvAddressFrom4.setText(j.get("address_from").getAsString());
@@ -693,6 +699,9 @@ public class ActivityCity extends BaseActivity {
         viewCommentTo4.setVisibility(v);
         imgCommentTo4.setVisibility(v);
         tvCommentTo4.setVisibility(v);
+
+        btnEndOrder.setVisibility(state == DriverState.DriverInRide ? View.VISIBLE : View.GONE);
+        btnOrderDone.setVisibility(state == DriverState.Rate ? View.VISIBLE : View.GONE);
     }
 
     @Override

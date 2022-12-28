@@ -46,7 +46,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:orientation="horizontal"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/txtDriverFullName">
 
             <LinearLayout
@@ -1576,6 +1576,7 @@
                 android:textAllCaps="true"
                 android:textColor="@color/colorAccent"
                 android:textStyle="bold"
+                android:textSize="@dimen/bigFont"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -1763,18 +1764,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/ArrivalTime"
+                android:text="@string/Cost"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView12_4" />
 
             <TextView
-                android:id="@+id/tvArrivalTime_4"
+                android:id="@+id/tvRideCost4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
-                android:text="15:30"
+                android:text="0Rub"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -1786,7 +1787,7 @@
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/gradient_line_hor"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@+id/btnStartOrder"
+                app:layout_constraintBottom_toTopOf="@+id/llEndOrderButtons"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"></LinearLayout>
 
@@ -1843,17 +1844,20 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        app:srcCompat="@drawable/notification" />
+                    <TextView
+                        android:id="@+id/tvWaitTime4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/colorWhite"
+                        android:text="00:00" />
 
                     <TextView
                         android:id="@+id/tvDistance_4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/ImLate"
+                        android:text="@string/WAITTIME"
                         android:textAllCaps="true"
                         android:textColor="@color/colorWhite"
                         android:textStyle="bold" />
@@ -1897,19 +1901,39 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btnEndOrder"
+            <LinearLayout
+                android:id="@+id/llEndOrderButtons"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/btn_color_move_green"
-                android:text="@string/FINISH"
-                android:textSize="16sp"
+                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp">
+
+                <Button
+                    android:id="@+id/btnEndOrder"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_color_move_green"
+                    android:text="@string/FINISH"
+                    android:textSize="16sp"
+                     />
+
+                <Button
+                    android:id="@+id/btnAllDone"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_color_move_green"
+                    android:text="@string/Done"
+                    android:visibility="gone"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+
 
             <TextView
                 android:id="@+id/tvCommentFrom4"
