@@ -200,7 +200,7 @@ public class ActivityCity extends BaseActivity {
         tvKm = findViewById(R.id.tvKM);
         tvMin = findViewById(R.id.tvMin);
         btnEndOrder = findViewById(R.id.btnEndOrder);
-        btnOrderDone = findViewById(R.id.btnDone);
+        btnOrderDone = findViewById(R.id.btnAllDone);
 
         btnChat.setOnClickListener(this);
         btnProfile2.setOnClickListener(this);
