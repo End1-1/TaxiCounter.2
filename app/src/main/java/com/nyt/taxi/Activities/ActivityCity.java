@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,8 +17,8 @@ import androidx.cardview.widget.CardView;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.nyt.taxi.Kalman.Commons.Utils;
 import com.nyt.taxi.Model.GDriverStatus;
-import com.nyt.taxi.Order.TCRoute;
 import com.nyt.taxi.R;
 import com.nyt.taxi.Services.FileLogger;
 import com.nyt.taxi.Services.FirebaseHandler;
@@ -91,6 +90,24 @@ public class ActivityCity extends BaseActivity {
     private ImageView imgCommentTo3;
     private View viewCommentTo3;
     private Button btnStartOrder;
+
+    private LinearLayout llRide;
+    private TextView tvRideAmount;
+    private TextView tvAddressFrom4;
+    private TextView tvCommentFrom4;
+    private ImageView imgCommentFrom4;
+    private View viewCommentFrom4;
+    private TextView tvTo4;
+    private TextView tvToText4;
+    private ImageView imgTo4;
+    private View viewTo4;
+    private TextView tvCommentTo4;
+    private TextView tvCommentToText4;
+    private ImageView imgCommentTo4;
+    private View viewCommentTo4;
+    private TextView tvKm;
+    private TextView tvMin;
+    private Button btnEndOrder;
 
     private Button btnAcceptGreen;
     private TimeAnimator mAnimator;
@@ -165,6 +182,24 @@ public class ActivityCity extends BaseActivity {
         viewCommentTo3 = findViewById(R.id.viewCommentTo3);
         btnStartOrder = findViewById(R.id.btnStartOrder);
 
+        llRide = findViewById(R.id.llRide);
+        tvRideAmount = findViewById(R.id.tvRideAmount);
+        tvAddressFrom4 = findViewById(R.id.tvAddressFrom4);
+        tvCommentFrom4 = findViewById(R.id.tvCommentFrom4);
+        imgCommentFrom4 = findViewById(R.id.imgCommentFrom4);
+        viewCommentFrom4 = findViewById(R.id.viewCommentFrom4);
+        tvTo4 = findViewById(R.id.tvTo4);
+        tvToText4 = findViewById(R.id.tvToText4);
+        imgTo4 = findViewById(R.id.imgTo4);
+        viewTo4 = findViewById(R.id.viewTo4);
+        tvCommentTo4 = findViewById(R.id.tvCommentTo4);
+        tvCommentToText4 = findViewById(R.id.tvCommentToText4);
+        imgCommentTo4 = findViewById(R.id.imgCommentTo4);
+        viewCommentTo4 = findViewById(R.id.viewCommentTo4);
+        tvKm = findViewById(R.id.tvKM);
+        tvMin = findViewById(R.id.tvMin);
+        btnEndOrder = findViewById(R.id.btnEndOrder);
+
         btnChat.setOnClickListener(this);
         btnProfile2.setOnClickListener(this);
         btnProfile.setOnClickListener(this);
@@ -173,6 +208,7 @@ public class ActivityCity extends BaseActivity {
         tvMissOrder.setOnClickListener(this);
         btnGoToClient.setOnClickListener(this);
         btnStartOrder.setOnClickListener(this);
+        btnEndOrder.setOnClickListener(this);
         authToSocket();
         showNothings();
         if (getIntent().getStringExtra("neworder") != null) {
@@ -357,6 +393,9 @@ public class ActivityCity extends BaseActivity {
                     case DriverState.DriverInPlace: 
                         beforeOrderStartPage(jdata);
                         break;
+                    case DriverState.DriverInRide:
+                        ridePage(jdata);
+                        break;
 
                 }
             }
@@ -513,6 +552,10 @@ public class ActivityCity extends BaseActivity {
         llRateMoneyScore.setVisibility(View.GONE);
         llNewOrder.setVisibility(View.GONE);
         llOnPlace.setVisibility(View.GONE);
+        llRide.setVisibility(View.GONE);
+        tvKm.setText("0");
+        tvMin.setText("00:00");
+        tvRideAmount.setText("0" + getString(R.string.RubSymbol));
     }
 
     private void homePage() {
@@ -609,9 +652,68 @@ public class ActivityCity extends BaseActivity {
         imgCommentTo3.setVisibility(v);
         tvCommentTo3.setVisibility(v);
     }
+    
+    private void ridePage(JsonObject j) {
+        j = j.getAsJsonObject("payload");
+        mCurrentOrderId = j.get("order_id").getAsInt();
+        mWebHash = j.get("hash_end").getAsString();
+        showNothings();
+
+        llRide.setVisibility(View.VISIBLE);
+
+        j = j.getAsJsonObject("order");
+        tvAddressFrom4.setText(j.get("address_from").getAsString());
+        int v;
+        if (j.has("full_address_from")) {
+            v = viewTo.VISIBLE;
+            tvCommentFrom4.setText(infoFullAddress(j.getAsJsonObject("full_address_from")));
+        } else {
+            v = View.GONE;
+        }
+        tvCommentToText4.setVisibility(v);
+        tvCommentFrom4.setVisibility(v);
+        imgCommentFrom4.setVisibility(v);
+        viewCommentFrom4.setVisibility(v);
+
+        v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
+        tvTo4.setText(j.get("address_to").getAsString());
+        tvTo4.setVisibility(v);
+        tvToText4.setVisibility(v);
+        imgTo4.setVisibility(v);
+        viewTo4.setVisibility(v);
+
+        v = View.GONE;
+        tvCommentTo4.setText("");
+        if (j.has("full_address_to")) {
+            String info = infoFullAddress(j.getAsJsonObject("full_address_to"));
+            v = info.isEmpty() ? View.GONE : View.VISIBLE;
+            tvCommentTo4.setText(info);
+        }
+        tvCommentToText4.setVisibility(v);
+        viewCommentTo4.setVisibility(v);
+        imgCommentTo4.setVisibility(v);
+        tvCommentTo4.setVisibility(v);
+    }
 
     @Override
     protected void orderUpdated() {
         queryState();
+    }
+
+    @Override
+    public void event(String e) {
+        JsonObject jdata = JsonParser.parseString(e).getAsJsonObject();
+        if (e.contains("PassLivePrice")) {
+            jdata = JsonParser.parseString(jdata.get("data").getAsString()).getAsJsonObject();
+            tvRideAmount.setText(String.format("%.0f%s", jdata.get("price").getAsDouble(), getString(R.string.RubSymbol)));
+            tvKm.setText(UText.valueOf(jdata.get("distance").getAsDouble()));
+            int time = jdata.get("travel_time").getAsInt();
+            long hour = time / 60;
+            long min = time - (hour * 60);
+            tvMin.setText(String.format("%02d:%02d", hour, min));
+        } else if (e.contains("ClientOrderCancel")) {
+            queryState();
+            UDialog.alertDialog(this, R.string.Empty, R.string.OrderCanceled);
+        }
     }
 }
