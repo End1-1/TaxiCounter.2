@@ -1,8 +1,26 @@
 <animation-list xmlns:android="http://schemas.android.com/apk/res/android"
     android:oneshot="false">
-    <item android:drawable="@drawable/online_1" android:duration="100" />
-    <item android:drawable="@drawable/online_2" android:duration="100" />
-    <item android:drawable="@drawable/online_3" android:duration="100" />
-    <item android:drawable="@drawable/online_4" android:duration="100" />
-    <item android:drawable="@drawable/online_5" android:duration="100" />
+    <item android:drawable="@drawable/o01" android:duration="80" />
+    <item android:drawable="@drawable/o02" android:duration="80" />
+    <item android:drawable="@drawable/o03" android:duration="80" />
+    <item android:drawable="@drawable/o04" android:duration="80" />
+    <item android:drawable="@drawable/o05" android:duration="80" />
+    <item android:drawable="@drawable/o06" android:duration="80" />
+    <item android:drawable="@drawable/o07" android:duration="80" />
+    <item android:drawable="@drawable/o07" android:duration="80" />
+    <item android:drawable="@drawable/o09" android:duration="80" />
+    <item android:drawable="@drawable/o10" android:duration="80" />
+    <item android:drawable="@drawable/o11" android:duration="80" />
+    <item android:drawable="@drawable/o12" android:duration="80" />
+    <item android:drawable="@drawable/o13" android:duration="80" />
+    <item android:drawable="@drawable/o14" android:duration="80" />
+    <item android:drawable="@drawable/o15" android:duration="80" />
+    <item android:drawable="@drawable/o16" android:duration="80" />
+    <item android:drawable="@drawable/o17" android:duration="80" />
+    <item android:drawable="@drawable/o18" android:duration="80" />
+    <item android:drawable="@drawable/o19" android:duration="80" />
+    <item android:drawable="@drawable/o20" android:duration="80" />
+    <item android:drawable="@drawable/o21" android:duration="80" />
+    <item android:drawable="@drawable/o22" android:duration="80" />
+    <item android:drawable="@drawable/o23" android:duration="80" />
 </animation-list>

@@ -3,6 +3,7 @@ package com.nyt.taxi.Activities;
 import android.animation.TimeAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
@@ -109,6 +110,7 @@ public class ActivityCity extends BaseActivity {
     private TextView tvMin;
     private Button btnEndOrder;
 
+    private ImageView imgOnlineAnim;
     private Button btnAcceptGreen;
     private TimeAnimator mAnimator;
     private int mCurrentLevel = 0;
@@ -123,6 +125,7 @@ public class ActivityCity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city);
 
+        imgOnlineAnim = findViewById(R.id.imgOnlineAnim);
         btnChat = findViewById(R.id.btnChat);
         btnProfile2 = findViewById(R.id.btnProfile2);
         btnProfile = findViewById(R.id.btnProfile);
@@ -214,6 +217,9 @@ public class ActivityCity extends BaseActivity {
         if (getIntent().getStringExtra("neworder") != null) {
             startNewOrder(JsonParser.parseString(getIntent().getStringExtra("neworder")).getAsJsonObject());
         }
+
+        imgOnlineAnim.setBackgroundResource(R.drawable.online_anim);
+        ((AnimationDrawable) imgOnlineAnim.getBackground()).start();
     }
 
     @Override
@@ -580,13 +586,13 @@ public class ActivityCity extends BaseActivity {
         j = j.getAsJsonObject("order");
 
         tvAddressFrom2.setText(j.get("address_from").getAsString());
-        int v;
-        if (j.has("full_address_from")) {
-            v = viewTo.VISIBLE;
-            tvCommentFrom2.setText(infoFullAddress(j.getAsJsonObject("full_address_from")));
-        } else {
-            v = View.GONE;
-        }
+        int v = View.GONE;
+//        if (j.has("full_address_from")) {
+//            v = viewTo.VISIBLE;
+//            tvCommentFrom2.setText(infoFullAddress(j.getAsJsonObject("full_address_from")));
+//        } else {
+//            v = View.GONE;
+//        }
         tvCommentToText2.setVisibility(v);
         tvCommentFrom2.setVisibility(v);
         imgCommentFrom2.setVisibility(v);
@@ -601,9 +607,9 @@ public class ActivityCity extends BaseActivity {
 
         v = View.GONE;
         if (j.has("full_address_to")) {
-            String info = infoFullAddress(j.getAsJsonObject("full_address_to"));
-            v = info.isEmpty() ? View.GONE : View.VISIBLE;
-            tvCommentTo2.setText(info);
+//            String info = infoFullAddress(j.getAsJsonObject("full_address_to"));
+//            v = info.isEmpty() ? View.GONE : View.VISIBLE;
+//            tvCommentTo2.setText(info);
         }
         tvCommentToText2.setVisibility(v);
         viewCommentTo2.setVisibility(v);
