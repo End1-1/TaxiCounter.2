@@ -30,6 +30,7 @@ import com.nyt.taxi.Utils.UConfig;
 import com.nyt.taxi.Utils.UDialog;
 import com.nyt.taxi.Utils.UPref;
 import com.nyt.taxi.Utils.UText;
+import com.nyt.taxi.Web.WQFeedback;
 import com.nyt.taxi.Web.WebQuery;
 import com.nyt.taxi.Web.WebResponse;
 
@@ -330,6 +331,36 @@ public class ActivityCity extends BaseActivity {
                     }
                 }).request();
                 break;
+            case R.id.btnEndOrder:
+                UDialog.alertDialog(this, R.string.Empty, getString(R.string.FINISHRIDE), new DialogInterface() {
+                    @Override
+                    public void cancel() {
+
+                    }
+
+                    @Override
+                    public void dismiss() {
+                        String l = String.format("%s/api/driver/order_on_end/%d/%s", UConfig.mWebHost, mCurrentOrderId, mWebHash);
+                        WebQuery.create(l, WebQuery.HttpMethod.GET, WebResponse.mResponseEndOrder, new WebResponse() {
+                            @Override
+                            public void webResponse(int code, int webResponse, String s) {
+                                webResponseOK(webResponse, s);
+                                queryState();
+                            }
+                        }).request();
+                    }
+                });
+                break;
+            case R.id.btnAllDone:
+                WQFeedback feedback = new WQFeedback(UPref.getInt("completed_order_id"), 5, 1, "", "0", new WebResponse() {
+                    @Override
+                    public void webResponse(int code, int webResponse, String s) {
+                        webResponseOK(webResponse, s);
+                        queryState();
+                    }
+                });
+                feedback.request();
+                break;
         }
     }
 
@@ -350,6 +381,7 @@ public class ActivityCity extends BaseActivity {
                 UPref.setBoolean("is_ready", g.is_ready);
                 llGoOnline.setVisibility(g.is_ready ? View.GONE : View.VISIBLE);
                 if (g.is_ready) {
+                    imgOnlineAnim.setVisibility(View.VISIBLE);
                     WebQuery webQuery = new WebQuery(UConfig.mHostOrderReady, WebQuery.HttpMethod.POST, WebResponse.mResponseDriverOn, new WebResponse() {
                         @Override
                         public void webResponse(int code, int webResponse, String s) {
@@ -364,6 +396,8 @@ public class ActivityCity extends BaseActivity {
                             .setParameter("lat", UText.valueOf(UPref.getFloat("last_lat")))
                             .setParameter("lut", UText.valueOf(UPref.getFloat("last_lon")))
                             .request();
+                } else {
+                    imgOnlineAnim.setVisibility(View.GONE);
                 }
                 switch (g.state) {
                     case DriverState.Free:
@@ -580,6 +614,7 @@ public class ActivityCity extends BaseActivity {
     }
 
     private void afterAcceptPage(JsonObject j) {
+        showNothings();
         llNewOrder.setVisibility(View.GONE);
         llRateMoneyScore.setVisibility(View.GONE);
         llMissOrder.setVisibility(View.VISIBLE);
@@ -623,10 +658,10 @@ public class ActivityCity extends BaseActivity {
     }
     
     private void beforeOrderStartPage(JsonObject j) {
+        showNothings();
         j = j.getAsJsonObject("payload");  
         mCurrentOrderId = j.get("order_id").getAsInt();
         mWebHash = j.get("hash").getAsString();
-        showNothings();
         llBeforeStart.setVisibility(View.VISIBLE);
         llMissOrder.setVisibility(View.VISIBLE);
 
@@ -664,10 +699,10 @@ public class ActivityCity extends BaseActivity {
     }
     
     private void ridePage(JsonObject j, int state) {
+        showNothings();
         j = j.getAsJsonObject("payload");
         mCurrentOrderId = j.get("order_id").getAsInt();
         mWebHash = j.get("hash_end").getAsString();
-        showNothings();
 
         llRide.setVisibility(View.VISIBLE);
         llMissOrder.setVisibility(View.VISIBLE);
