@@ -803,7 +803,8 @@
         android:layout_marginBottom="0dp"
         android:background="@drawable/login_down"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible"
+        tools:visibility="gone">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -1047,11 +1048,12 @@
                     android:layout_weight="1" />
 
                 <LinearLayout
-                    android:id="@+id/linearLayout3_2"
+                    android:id="@+id/llChat2"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginTop="32dp"
                     android:background="@drawable/gradient_malina"
+                    android:clickable="true"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -1077,12 +1079,13 @@
                     android:layout_weight="1" />
 
                 <LinearLayout
-                    android:id="@+id/linearLayout5_2"
+                    android:id="@+id/llImLate2"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="32dp"
                     android:background="@drawable/gradient_green"
+                    android:clickable="true"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -1109,11 +1112,13 @@
                     android:layout_weight="1" />
 
                 <LinearLayout
+                    android:id="@+id/llNavigator2"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="32dp"
                     android:background="@drawable/gradient_blue"
+                    android:clickable="true"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -1435,7 +1440,7 @@
                     android:layout_weight="1" />
 
                 <LinearLayout
-                    android:id="@+id/linearLayout3_3"
+                    android:id="@+id/llChat3"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginTop="32dp"
@@ -1464,7 +1469,7 @@
                     android:layout_weight="1" />
 
                 <LinearLayout
-                    android:id="@+id/linearLayout5_3"
+                    android:id="@+id/llImLate3"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginStart="32dp"
@@ -1495,6 +1500,7 @@
                     android:layout_weight="1" />
 
                 <LinearLayout
+                    android:id="@+id/llNavigtor3"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginStart="32dp"
@@ -1576,7 +1582,7 @@
         android:layout_marginBottom="0dp"
         android:background="@drawable/login_down"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -1590,8 +1596,8 @@
                 android:text="1555RUB"
                 android:textAllCaps="true"
                 android:textColor="@color/colorAccent"
-                android:textStyle="bold"
                 android:textSize="@dimen/bigFont"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -1821,7 +1827,7 @@
                     android:layout_weight="1" />
 
                 <LinearLayout
-                    android:id="@+id/linearLayout3_4"
+                    android:id="@+id/llChat4"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginTop="32dp"
@@ -1864,8 +1870,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:textColor="@color/colorWhite"
-                        android:text="00:00" />
+                        android:text="00:00"
+                        android:textColor="@color/colorWhite" />
 
                     <TextView
                         android:id="@+id/tvDistance_4"
@@ -1884,7 +1890,7 @@
                     android:layout_weight="1" />
 
                 <LinearLayout
-                    android:id="@+id/llOpenNavigator"
+                    android:id="@+id/llNavigator4"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginStart="32dp"
@@ -1920,12 +1926,12 @@
                 android:id="@+id/llEndOrderButtons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
                 <Button
                     android:id="@+id/btnEndOrder"
@@ -1934,8 +1940,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/btn_color_move_green"
                     android:text="@string/FINISH"
-                    android:textSize="16sp"
-                     />
+                    android:textSize="16sp" />
 
                 <Button
                     android:id="@+id/btnAllDone"
@@ -1944,10 +1949,9 @@
                     android:layout_weight="1"
                     android:background="@drawable/btn_color_move_green"
                     android:text="@string/Done"
-                    android:visibility="gone"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:visibility="gone" />
             </LinearLayout>
-
 
 
             <TextView
@@ -1977,8 +1981,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
-                android:padding="10dp"
                 android:orientation="horizontal"
+                android:padding="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/view13_4">
@@ -1986,56 +1990,57 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_margin="2dp"
                     android:layout_weight="1"
                     android:background="@color/colorYellow"
-                    android:layout_margin="2dp"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/textView2"
-                        android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/km"
                         android:textAllCaps="true"
-                        android:textStyle="bold"
                         android:textSize="@dimen/smallFont"
-                        android:text="@string/km" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tvKM"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:textStyle="bold"
+                        android:text="23.5km"
                         android:textSize="@dimen/smallFont"
-                        android:text="23.5km" />
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_margin="2dp"
                     android:layout_weight="1"
                     android:background="@color/colorYellow"
-                    android:layout_margin="2dp"
                     android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/textView32"
-                        android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/min"
                         android:textAllCaps="true"
-                        android:textStyle="bold"
                         android:textSize="@dimen/smallFont"
-                        android:text="@string/min" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tvMin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:textStyle="bold"
+                        android:text="15:44"
                         android:textSize="@dimen/smallFont"
-                        android:text="15:44" />
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
 

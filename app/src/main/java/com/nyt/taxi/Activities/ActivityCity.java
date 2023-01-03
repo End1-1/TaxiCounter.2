@@ -3,9 +3,12 @@ package com.nyt.taxi.Activities;
 import android.animation.TimeAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.LayerDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,27 +23,41 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.nyt.taxi.Kalman.Commons.Utils;
 import com.nyt.taxi.Model.GDriverStatus;
+import com.nyt.taxi.Model.GInitialInfo;
+import com.nyt.taxi.Model.GOrderDayInfo;
 import com.nyt.taxi.R;
 import com.nyt.taxi.Services.FileLogger;
 import com.nyt.taxi.Services.FirebaseHandler;
+import com.nyt.taxi.Services.WebRequest;
 import com.nyt.taxi.Services.WebSocketHttps;
 import com.nyt.taxi.Utils.DownloadControllerVer;
 import com.nyt.taxi.Utils.DriverState;
 import com.nyt.taxi.Utils.UConfig;
 import com.nyt.taxi.Utils.UDialog;
+import com.nyt.taxi.Utils.UDialogLateOptions;
 import com.nyt.taxi.Utils.UPref;
 import com.nyt.taxi.Utils.UText;
+import com.nyt.taxi.Utils.YandexNavigator;
 import com.nyt.taxi.Web.WQFeedback;
 import com.nyt.taxi.Web.WebQuery;
 import com.nyt.taxi.Web.WebResponse;
+import com.yandex.mapkit.geometry.Point;
+
+import java.util.List;
 
 public class ActivityCity extends BaseActivity {
+
+    Point mStartPoint = null;
+    Point mFinishPoint = null;
 
     private ImageView btnChat;
     private ImageView btnProfile2;
     private LinearLayout llGoOnline;
     private CardView btnProfile;
     private LinearLayout llRateMoneyScore;
+    private TextView tvScore;
+    private TextView tvBalance;
+    private TextView tvRate;
 
     private LinearLayout llNewOrder;
     private LinearLayout llMissOrder;
@@ -77,6 +94,9 @@ public class ActivityCity extends BaseActivity {
     private ImageView imgCommentTo2;
     private View viewCommentTo2;
     private Button btnGoToClient;
+    private LinearLayout llChat2;
+    private LinearLayout llNavigator2;
+    private LinearLayout llImLate2;
 
     private LinearLayout llBeforeStart;
     private TextView tvAddressFrom3;
@@ -92,6 +112,9 @@ public class ActivityCity extends BaseActivity {
     private ImageView imgCommentTo3;
     private View viewCommentTo3;
     private Button btnStartOrder;
+    private LinearLayout llChat3;
+    private LinearLayout llImLate3;
+    private LinearLayout llNavigator3;
 
     private LinearLayout llRide;
     private TextView tvRideAmount;
@@ -111,6 +134,8 @@ public class ActivityCity extends BaseActivity {
     private TextView tvMin;
     private Button btnEndOrder;
     private Button btnOrderDone;
+    private LinearLayout llChat4;
+    private LinearLayout llNavigator4;
 
     private ImageView imgOnlineAnim;
     private Button btnAcceptGreen;
@@ -133,6 +158,9 @@ public class ActivityCity extends BaseActivity {
         btnProfile = findViewById(R.id.btnProfile);
         llGoOnline = findViewById(R.id.llGoOnline);
         llRateMoneyScore = findViewById(R.id.llRateMoneyScore);
+        tvScore = findViewById(R.id.txtScore);
+        tvBalance = findViewById(R.id.txtBalance);
+        tvRate = findViewById(R.id.txtRate);
 
         llNewOrder = findViewById(R.id.llNewOrder);
         llMissOrder = findViewById(R.id.llMissOrder);
@@ -171,6 +199,9 @@ public class ActivityCity extends BaseActivity {
         imgCommentTo2 = findViewById(R.id.imgCommentTo2);
         viewCommentTo2 = findViewById(R.id.viewCommentTo2);
         btnGoToClient = findViewById(R.id.btnGoToClient);
+        llChat2 = findViewById(R.id.llChat2);
+        llNavigator2 = findViewById(R.id.llNavigator2);
+        llImLate2 = findViewById(R.id.llImLate2);
 
         llBeforeStart = findViewById(R.id.llBeforeStart);
         tvAddressFrom3 = findViewById(R.id.tvAddressFrom3);
@@ -186,6 +217,9 @@ public class ActivityCity extends BaseActivity {
         imgCommentTo3 = findViewById(R.id.imgCommentTo3);
         viewCommentTo3 = findViewById(R.id.viewCommentTo3);
         btnStartOrder = findViewById(R.id.btnStartOrder);
+        llChat3 = findViewById(R.id.llChat3);
+        llImLate3 = findViewById(R.id.llImLate3);
+        llNavigator3 = findViewById(R.id.llNavigtor3);
 
         llRide = findViewById(R.id.llRide);
         tvRideAmount = findViewById(R.id.tvRideAmount);
@@ -205,6 +239,8 @@ public class ActivityCity extends BaseActivity {
         tvMin = findViewById(R.id.tvMin);
         btnEndOrder = findViewById(R.id.btnEndOrder);
         btnOrderDone = findViewById(R.id.btnAllDone);
+        llChat4 = findViewById(R.id.llChat4);
+        llNavigator4 = findViewById(R.id.llNavigator4);
 
         btnChat.setOnClickListener(this);
         btnProfile2.setOnClickListener(this);
@@ -216,6 +252,14 @@ public class ActivityCity extends BaseActivity {
         btnStartOrder.setOnClickListener(this);
         btnEndOrder.setOnClickListener(this);
         btnOrderDone.setOnClickListener(this);
+        llChat2.setOnClickListener(this);
+        llNavigator2.setOnClickListener(this);
+        llImLate2.setOnClickListener(this);
+        llChat3.setOnClickListener(this);
+        llNavigator3.setOnClickListener(this);
+        llChat4.setOnClickListener(this);
+        llNavigator4.setOnClickListener(this);
+        llImLate3.setOnClickListener(this);
         authToSocket();
         showNothings();
         if (getIntent().getStringExtra("neworder") != null) {
@@ -361,6 +405,42 @@ public class ActivityCity extends BaseActivity {
                 });
                 feedback.request();
                 break;
+            case R.id.llChat2:
+            case R.id.llChat3:
+            case R.id.llChat4:
+                Intent i = new Intent(this, ChatActivity.class);
+                startActivity(i);
+                break;
+            case R.id.llNavigator2:
+            case R.id.llNavigtor3:
+            case R.id.llNavigator4:
+                openYandexNavigator();
+                break;
+            case R.id.llImLate2:
+            case R.id.llImLate3:
+                new UDialogLateOptions(this, new UDialogLateOptions.LateOptionSelected() {
+                    @Override
+                    public void onClick(int min) {
+                        createProgressDialog();
+                        WebRequest.create("/api/driver/order_late", WebRequest.HttpMethod.POST, new WebRequest.HttpResponse() {
+                                    @Override
+                                    public void httpRespone(int httpReponseCode, String data) {
+                                        webResponseOK(httpReponseCode, data);
+                                        if (httpReponseCode == -1) {
+                                            UDialog.alertError(ActivityCity.this, R.string.MissingInternet);
+                                        } else if (httpReponseCode > 299) {
+                                            UDialog.alertError(ActivityCity.this, data);
+                                        } else {
+
+                                        }
+                                    }
+                                })
+                                .setParameter("minute", Integer.toString(min))
+                                .request();
+
+                    }
+                }).show();
+                break;
         }
     }
 
@@ -445,6 +525,27 @@ public class ActivityCity extends BaseActivity {
             }
         });
         webQuery.request();
+        WebQuery.create(UConfig.mHostUrl + "/api/driver/day_orders_info", WebQuery.HttpMethod.GET, WebResponse.mResponseInitialInfo, new WebResponse() {
+            @Override
+            public void webResponse(int code, int webResponse, String s) {
+                if (webResponse < 300) {
+                    GOrderDayInfo orderDayInfo = GOrderDayInfo.parse(s, GOrderDayInfo.class);
+                    tvRate.setText(UText.valueOf(orderDayInfo.assessment));
+                    tvScore.setText(String.valueOf(orderDayInfo.rating));
+                    tvBalance.setText(UText.valueOf(orderDayInfo.days_cost));
+                }
+            }
+        }).request();
+        WebQuery.create(UConfig.mHostUrl + "/api/driver/initial_info", WebQuery.HttpMethod.GET, WebResponse.mResponseInitialInfo, new WebResponse() {
+            @Override
+            public void webResponse(int code, int webResponse, String s) {
+                if (webResponse < 300) {
+                    GInitialInfo info = GInitialInfo.parse(s, GInitialInfo.class);
+                    //bind.tvDistance.setText(String.format("%.1f", info.distance));
+                    //tvBalance.setText(String.format("%.0f", info.balance));
+                }
+            }
+        }).request();
 //        WebRequest.create("/api/driver/commons", WebRequest.HttpMethod.GET, mCommonOrderData).request();
 //        WebRequest.create("/api/driver/commons_armor", WebRequest.HttpMethod.GET, mArmorOrderData).request();
 //        checkNotifications();
@@ -596,6 +697,7 @@ public class ActivityCity extends BaseActivity {
         llRateMoneyScore.setVisibility(View.GONE);
         llNewOrder.setVisibility(View.GONE);
         llOnPlace.setVisibility(View.GONE);
+        llBeforeStart.setVisibility(View.GONE);
         llRide.setVisibility(View.GONE);
         tvKm.setText("0");
         tvMin.setText("00:00");
@@ -620,6 +722,7 @@ public class ActivityCity extends BaseActivity {
         llMissOrder.setVisibility(View.VISIBLE);
         llOnPlace.setVisibility(View.VISIBLE);
         j = j.getAsJsonObject("payload");
+        setStartAndFinishPoints(j);
         mCurrentOrderId = j.get("order_id").getAsInt();
         mWebHash = j.get("hash").getAsString();
         j = j.getAsJsonObject("order");
@@ -659,7 +762,8 @@ public class ActivityCity extends BaseActivity {
     
     private void beforeOrderStartPage(JsonObject j) {
         showNothings();
-        j = j.getAsJsonObject("payload");  
+        j = j.getAsJsonObject("payload");
+        setStartAndFinishPoints(j);
         mCurrentOrderId = j.get("order_id").getAsInt();
         mWebHash = j.get("hash").getAsString();
         llBeforeStart.setVisibility(View.VISIBLE);
@@ -701,6 +805,7 @@ public class ActivityCity extends BaseActivity {
     private void ridePage(JsonObject j, int state) {
         showNothings();
         j = j.getAsJsonObject("payload");
+        setStartAndFinishPoints(j);
         mCurrentOrderId = j.get("order_id").getAsInt();
         mWebHash = j.get("hash_end").getAsString();
 
@@ -743,6 +848,47 @@ public class ActivityCity extends BaseActivity {
 
         btnEndOrder.setVisibility(state == DriverState.DriverInRide ? View.VISIBLE : View.GONE);
         btnOrderDone.setVisibility(state == DriverState.Rate ? View.VISIBLE : View.GONE);
+    }
+
+    private void setStartAndFinishPoints(JsonObject j) {
+        mStartPoint = null;
+        mFinishPoint = null;
+        if (!j.has("routes")) {
+            return;
+        }
+        JsonArray ja = j.getAsJsonArray("routes");
+        if (ja.size() == 0) {
+            return;
+        }
+        JsonObject jr = ja.get(0).getAsJsonObject();
+        JsonArray jp = jr.getAsJsonArray("points");
+        if (jp.size() == 0) {
+            return;
+        }
+        mStartPoint = new Point(jp.get(0).getAsJsonObject().get("lat").getAsDouble(), jp.get(0).getAsJsonObject().get("lut").getAsDouble());
+        int last = jp.size() - 1;
+        mFinishPoint = new Point(jp.get(last).getAsJsonObject().get("lat").getAsDouble(), jp.get(last).getAsJsonObject().get("lut").getAsDouble());
+    }
+
+    private void openYandexNavigator() {
+        if (mFinishPoint == null || mStartPoint == null) {
+            UDialog.alertError(this, R.string.FinishPointMustBeSet);
+            return;
+        }
+        Uri uri = Uri.parse("yandexnavi://");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.setPackage("ru.yandex.yandexnavi");
+
+        PackageManager packageManager = getPackageManager();
+        List<ResolveInfo> activities = packageManager.queryIntentActivities(intent, 0);
+        boolean isIntentSafe = activities.size() > 0;
+        if (isIntentSafe) {
+            YandexNavigator.buildRoute(this, mStartPoint.getLatitude(), mStartPoint.getLongitude(), mFinishPoint.getLatitude(), mFinishPoint.getLongitude());
+        } else {
+            intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("market://details?id=ru.yandex.yandexnavi"));
+            startActivity(intent);
+        }
     }
 
     @Override
