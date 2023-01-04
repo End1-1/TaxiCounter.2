@@ -15,7 +15,11 @@
                 android:shape="rectangle">
                 <corners
                     android:radius="5dp"/>
-                <solid android:color="@color/colorGreenLight" />
+                <gradient
+                    android:angle="45"
+                    android:endColor="@color/colorButtonBgGreen"
+                    android:startColor="#009688"
+                    android:type="linear" />
             </shape>
         </clip>
     </item>

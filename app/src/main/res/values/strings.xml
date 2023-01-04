@@ -83,7 +83,7 @@
     <string name="StartDate">Начало заказа</string>
     <string name="Where">Подача</string>
     <string name="EndDate">Окончание заказа</string>
-    <string name="From">От</string>
+    <string name="From">Откуда</string>
     <string name="To">Куда</string>
     <string name="Slip">Слип</string>
     <string name="SlipNumber">Номер слипа</string>

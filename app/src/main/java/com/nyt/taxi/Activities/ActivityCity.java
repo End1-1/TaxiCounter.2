@@ -14,9 +14,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -43,12 +45,18 @@ import com.nyt.taxi.Web.WebQuery;
 import com.nyt.taxi.Web.WebResponse;
 import com.yandex.mapkit.geometry.Point;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ActivityCity extends BaseActivity {
 
     Point mStartPoint = null;
     Point mFinishPoint = null;
+    int mRouteTime = 0;
 
     private ImageView btnChat;
     private ImageView btnProfile2;
@@ -58,6 +66,8 @@ public class ActivityCity extends BaseActivity {
     private TextView tvScore;
     private TextView tvBalance;
     private TextView tvRate;
+    private LinearLayout llDownMenu;
+    private ConstraintLayout clFirstPage;
 
     private LinearLayout llNewOrder;
     private LinearLayout llMissOrder;
@@ -79,6 +89,7 @@ public class ActivityCity extends BaseActivity {
     private TextView tvAddressToComment;
     private ImageView imgAddressToComment;
     private View viewCommentTo;
+    private TextView tvTimeLeft;
 
     private LinearLayout llOnPlace;
     private TextView tvAddressFrom2;
@@ -115,6 +126,7 @@ public class ActivityCity extends BaseActivity {
     private LinearLayout llChat3;
     private LinearLayout llImLate3;
     private LinearLayout llNavigator3;
+    private TextView tvWaitTime3;
 
     private LinearLayout llRide;
     private TextView tvRideAmount;
@@ -161,6 +173,8 @@ public class ActivityCity extends BaseActivity {
         tvScore = findViewById(R.id.txtScore);
         tvBalance = findViewById(R.id.txtBalance);
         tvRate = findViewById(R.id.txtRate);
+        llDownMenu = findViewById(R.id.llDownMenu);
+        clFirstPage = findViewById(R.id.clFirstPage);
 
         llNewOrder = findViewById(R.id.llNewOrder);
         llMissOrder = findViewById(R.id.llMissOrder);
@@ -184,6 +198,7 @@ public class ActivityCity extends BaseActivity {
         imgCommentFrom = findViewById(R.id.imgAddressCommentFrom);
         tvAddressToComment = findViewById(R.id.tvAddressCommentTo);
         imgAddressToComment = findViewById(R.id.imgAddressCommentTo);
+        tvTimeLeft = findViewById(R.id.tvTimeLeft);
 
         llOnPlace = findViewById(R.id.llOnPlace);
         tvAddressFrom2 = findViewById(R.id.tvAddressFrom2);
@@ -220,6 +235,7 @@ public class ActivityCity extends BaseActivity {
         llChat3 = findViewById(R.id.llChat3);
         llImLate3 = findViewById(R.id.llImLate3);
         llNavigator3 = findViewById(R.id.llNavigtor3);
+        tvWaitTime3 = findViewById(R.id.tvWaitTime3);
 
         llRide = findViewById(R.id.llRide);
         tvRideAmount = findViewById(R.id.tvRideAmount);
@@ -299,6 +315,7 @@ public class ActivityCity extends BaseActivity {
                             return;
                         }
                         llGoOnline.setVisibility(View.GONE);
+                        imgOnlineAnim.setVisibility(View.VISIBLE);
                     }
                 });
                 webQuery.setParameter("ready", Integer.toString(1))
@@ -355,6 +372,7 @@ public class ActivityCity extends BaseActivity {
                 break;
             }
             case R.id.btnGoToClient: {
+                UPref.setLong("inplacedate", (long) new Date().getTime());
                 String link = String.format("%s/api/driver/order_in_place/%d/%s", UConfig.mWebHost, mCurrentOrderId, mWebHash);
                 WebQuery.create(link, WebQuery.HttpMethod.GET, WebResponse.mResponseInPlace, new WebResponse() {
                     @Override
@@ -485,6 +503,7 @@ public class ActivityCity extends BaseActivity {
                         homePage();
                         break;
                     case DriverState.AcceptOrder:
+                        tvMissOrder.setText(getString(R.string.MISS));
                         mQueryStateAllowed = true;
                         if (jdata.has("payload")) {
                             if (jdata.getAsJsonObject("payload").has("routes")) {
@@ -511,13 +530,18 @@ public class ActivityCity extends BaseActivity {
 
                         break;
                     case DriverState.OnWay:
+                        tvMissOrder.setText(getString(R.string.CANCELORDER));
                         afterAcceptPage(jdata);
                         break;
-                    case DriverState.DriverInPlace: 
+                    case DriverState.DriverInPlace:
+                        t = new Timer();
+                        t.schedule(tt , 1000, 1000);
+                        tvMissOrder.setText(getString(R.string.CANCELORDER));
                         beforeOrderStartPage(jdata);
                         break;
                     case DriverState.DriverInRide:
                     case DriverState.Rate:
+                        tvMissOrder.setText(getString(R.string.CANCELORDER));
                         ridePage(jdata, g.state);
                         break;
 
@@ -601,6 +625,7 @@ public class ActivityCity extends BaseActivity {
         mCurrentOrderId = ord.get("order_id").getAsInt();
         mWebHash = ord.get("accept_hash").getAsString();
         mQueryStateAllowed = false;
+        tvTimeLeft.setText("29");
 
         String info = infoFullAddress(ord.getAsJsonObject("full_address_from"));
         tvAddressCommentFrom.setText(info);
@@ -645,8 +670,8 @@ public class ActivityCity extends BaseActivity {
                     if (sec == 0) {
                         sec = 1;
                     }
-                    int div = 3; //mIsPreorder ? 3 : 3;
-                    mCurrentLevel = (int) (10000 - (sec / div));
+                    mCurrentLevel = (int) (10000 - (sec / 3));
+                    tvTimeLeft.setText(String.valueOf(30 - (sec / 1000)));
                 }
             }
         });
@@ -681,7 +706,7 @@ public class ActivityCity extends BaseActivity {
         }
         if (jinfo.has("comment")) {
             if (!jinfo.get("comment").isJsonNull()) {
-                UPref.setString("fromcomment", jinfo.get("comment").getAsString());
+                info += getString(R.string.comment) + ": " + jinfo.get("comment").getAsString();
             }
         }
         if (info.length() > 0) {
@@ -693,6 +718,7 @@ public class ActivityCity extends BaseActivity {
     }
 
     private void showNothings() {
+        llDownMenu.setVisibility(View.GONE);
         llMissOrder.setVisibility(View.GONE);
         llRateMoneyScore.setVisibility(View.GONE);
         llNewOrder.setVisibility(View.GONE);
@@ -702,11 +728,17 @@ public class ActivityCity extends BaseActivity {
         tvKm.setText("0");
         tvMin.setText("00:00");
         tvRideAmount.setText("0" + getString(R.string.RubSymbol));
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) clFirstPage.getLayoutParams();
+        params.addRule(RelativeLayout.ABOVE, R.id.llDownMenu);
     }
 
     private void homePage() {
         showNothings();
+        UPref.setLong("inplacedate", (long) new Date().getTime());
         llRateMoneyScore.setVisibility(View.VISIBLE);
+        llDownMenu.setVisibility(View.VISIBLE);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) clFirstPage.getLayoutParams();
+        params.addRule(RelativeLayout.ABOVE, R.id.llDownMenu);
     }
 
     private void newOrderPage() {
@@ -727,14 +759,16 @@ public class ActivityCity extends BaseActivity {
         mWebHash = j.get("hash").getAsString();
         j = j.getAsJsonObject("order");
 
+        int hour = mRouteTime / 60;
+        int min = mRouteTime % 60;
         tvAddressFrom2.setText(j.get("address_from").getAsString());
         int v = View.GONE;
-//        if (j.has("full_address_from")) {
-//            v = viewTo.VISIBLE;
-//            tvCommentFrom2.setText(infoFullAddress(j.getAsJsonObject("full_address_from")));
-//        } else {
-//            v = View.GONE;
-//        }
+        if (j.has("full_address_from")) {
+            v = viewTo.VISIBLE;
+            tvCommentFrom2.setText(infoFullAddress(j.getAsJsonObject("full_address_from")));
+        } else {
+            v = View.GONE;
+        }
         tvCommentToText2.setVisibility(v);
         tvCommentFrom2.setVisibility(v);
         imgCommentFrom2.setVisibility(v);
@@ -749,9 +783,9 @@ public class ActivityCity extends BaseActivity {
 
         v = View.GONE;
         if (j.has("full_address_to")) {
-//            String info = infoFullAddress(j.getAsJsonObject("full_address_to"));
-//            v = info.isEmpty() ? View.GONE : View.VISIBLE;
-//            tvCommentTo2.setText(info);
+            String info = infoFullAddress(j.getAsJsonObject("full_address_to"));
+            v = info.isEmpty() ? View.GONE : View.VISIBLE;
+            tvCommentTo2.setText(info);
         }
         tvCommentToText2.setVisibility(v);
         viewCommentTo2.setVisibility(v);
@@ -861,6 +895,7 @@ public class ActivityCity extends BaseActivity {
             return;
         }
         JsonObject jr = ja.get(0).getAsJsonObject();
+        mRouteTime = jr.get("duration").getAsInt();
         JsonArray jp = jr.getAsJsonArray("points");
         if (jp.size() == 0) {
             return;
@@ -908,8 +943,28 @@ public class ActivityCity extends BaseActivity {
             long min = time - (hour * 60);
             tvMin.setText(String.format("%02d:%02d", hour, min));
         } else if (e.contains("ClientOrderCancel")) {
+            playSound(0);
             queryState();
             UDialog.alertDialog(this, R.string.Empty, R.string.OrderCanceled);
         }
     }
+
+    private Timer t;
+    private TimerTask tt = new TimerTask() {
+        @Override
+        public void run() {
+            ActivityCity.this.runOnUiThread(() -> {
+                long starttime = UPref.getLong("inplacedate");
+                long diff = new Date().getTime() - starttime;
+                Date d = new Date(diff);
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+                String s = sdf.format(d);
+                if (s.startsWith("00:")) {
+                    s = s.substring(3, 8);
+                }
+                tvWaitTime3.setText(s);
+            });
+        }
+    };
 }
