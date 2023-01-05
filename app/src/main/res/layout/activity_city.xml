@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/viewCommentFrom2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorButtonBgYellow"
@@ -54,8 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1.25"
-                android:gravity="center_horizontal">
-            </LinearLayout>
+                android:gravity="center_horizontal"></LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -180,8 +180,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1.25"
-                android:gravity="center_horizontal">
-            </LinearLayout>
+                android:gravity="center_horizontal"></LinearLayout>
         </LinearLayout>
 
         <ImageView
@@ -357,8 +356,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center_horizontal">
-            </LinearLayout>
+                android:gravity="center_horizontal"></LinearLayout>
 
             <ImageView
                 android:id="@+id/btnHome"
@@ -522,6 +520,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewTo"
                 app:srcCompat="@drawable/location" />
+
+            <TextView
+                android:id="@+id/tvCommentFromText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/comment"
+                android:textAllCaps="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view17" />
 
             <TextView
                 android:id="@+id/tvAddressFrom"
@@ -819,7 +828,7 @@
                 android:text="Чудный коментарий"
                 android:textSize="@dimen/middleFont"
                 app:layout_constraintStart_toEndOf="@+id/imgAddressCommentFrom"
-                app:layout_constraintTop_toBottomOf="@id/view17" />
+                app:layout_constraintTop_toBottomOf="@id/tvCommentFromText" />
 
             <ImageView
                 android:id="@+id/imgAddressCommentFrom"
@@ -828,15 +837,26 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view17"
+                app:layout_constraintTop_toBottomOf="@id/tvCommentFromText"
                 app:srcCompat="@drawable/information" />
+
+            <TextView
+                android:id="@+id/tvCommentToText5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="256dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/comment"
+                android:textAllCaps="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressTo" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/llOnPlace"
+        android:id="@+id/llBeforeStart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/clUp"
@@ -844,6 +864,378 @@
         android:layout_alignParentBottom="true"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
+        android:background="@drawable/login_down"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView14_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/PODACHA"
+                android:textAllCaps="true"
+                android:textColor="@color/colorButtonBgYellow"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view13_3"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="64dp"
+                android:background="@color/colorButtonBgYellow"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView14_3" />
+
+            <TextView
+                android:id="@+id/textView17_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/Where"
+                android:textAllCaps="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view13_3" />
+
+            <View
+                android:id="@+id/view14_3"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/colorGrayLight2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView17_3" />
+
+            <TextView
+                android:id="@+id/tvCommentFromText3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/comment"
+                android:textAllCaps="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressFrom3" />
+
+            <ImageView
+                android:id="@+id/imageView20_3"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view14_3"
+                app:srcCompat="@drawable/location" />
+
+            <ImageView
+                android:id="@+id/imgTo3"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewTo3"
+                app:srcCompat="@drawable/location" />
+
+            <TextView
+                android:id="@+id/tvAddressFrom3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:text="Россия, Москва, Чебурашкенский переулок, дом 54б квартира 10"
+                android:textSize="@dimen/middleFont"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/imageView20_3"
+                app:layout_constraintTop_toBottomOf="@+id/view14_3" />
+
+            <TextView
+                android:id="@+id/tvTo3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:text="Россия, Москва, Чебурашкенский переулок, дом 54б квартира 10"
+                android:textSize="@dimen/middleFont"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/imgTo3"
+                app:layout_constraintTop_toBottomOf="@+id/viewTo3" />
+
+            <View
+                android:id="@+id/viewTo3"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/colorGrayLight2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvToText3" />
+
+            <TextView
+                android:id="@+id/tvToText3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/To"
+                android:textAllCaps="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCommentFrom3" />
+
+            <TextView
+                android:id="@+id/tvCommentToText3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/comment"
+                android:textAllCaps="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTo3" />
+
+            <View
+                android:id="@+id/viewCommentTo3"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/colorGrayLight2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCommentToText3" />
+
+            <View
+                android:id="@+id/viewCommentFrom3"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/colorGrayLight2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCommentFromText3" />
+
+            <ImageView
+                android:id="@+id/imgCommentTo3"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewCommentTo3"
+                app:srcCompat="@drawable/information" />
+
+            <TextView
+                android:id="@+id/tvCommentTo3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:text="Чудный коментарий"
+                android:textSize="@dimen/middleFont"
+                app:layout_constraintStart_toEndOf="@+id/imgCommentTo3"
+                app:layout_constraintTop_toBottomOf="@+id/viewCommentTo3" />
+
+            <TextView
+                android:id="@+id/textView12_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/PaymentMethod"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/llOrderOptions_3" />
+
+            <TextView
+                android:id="@+id/tvPaymentMethod_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:text="@string/Cash"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/llOrderOptions_3" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/gradient_line_hor"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/btnStartOrder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"></LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llOrderOptions_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCommentTo3">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.9" />
+
+                <LinearLayout
+                    android:id="@+id/llChat3"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="32dp"
+                    android:background="@drawable/gradient_malina"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        app:srcCompat="@drawable/chat_white" />
+
+                    <TextView
+                        android:id="@+id/tvCarClass_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/CHAT"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.9" />
+
+                <LinearLayout
+                    android:id="@+id/llImLate3"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="32dp"
+                    android:background="@drawable/gradient_green"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvWaitTime3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="00:00"
+                        android:textColor="@color/colorWhite" />
+
+                    <TextView
+                        android:id="@+id/tvDistance_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/WAITTIME"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.9" />
+
+                <LinearLayout
+                    android:id="@+id/llNavigtor3"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="32dp"
+                    android:background="@drawable/gradient_blue"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        app:srcCompat="@drawable/fromto" />
+
+                    <TextView
+                        android:id="@+id/tvRideTime_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/Navigator"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.9" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnStartOrder"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/gradient_green"
+                android:text="@string/GO"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvCommentFrom3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Чудный коментарий"
+                android:textSize="@dimen/middleFont"
+                app:layout_constraintStart_toEndOf="@+id/imgCommentFrom3"
+                app:layout_constraintTop_toBottomOf="@+id/tvCommentFromText3" />
+
+            <ImageView
+                android:id="@+id/imgCommentFrom3"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCommentFromText3"
+                app:srcCompat="@drawable/information" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llOnPlace"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_alignTop="@+id/clFirstPage"
+        android:layout_alignParentBottom="true"
         android:background="@drawable/login_down"
         android:orientation="vertical"
         android:visibility="gone">
@@ -898,6 +1290,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView17_2" />
 
+            <TextView
+                android:id="@+id/tvCommentFromText2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/comment"
+                android:textAllCaps="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressFrom2" />
+
+            <View
+                android:id="@+id/viewTo5"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/colorGrayLight2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCommentFromText2" />
+
             <ImageView
                 android:id="@+id/imageView20_2"
                 android:layout_width="24dp"
@@ -917,6 +1331,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewTo2"
                 app:srcCompat="@drawable/location" />
+
+            <TextView
+                android:id="@+id/tvCommentToText2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/comment"
+                android:textAllCaps="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressTo2" />
 
             <TextView
                 android:id="@+id/tvAddressFrom2"
@@ -964,17 +1389,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvCommentFrom2" />
 
-            <TextView
-                android:id="@+id/tvCommentToText2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/comment"
-                android:textAllCaps="true"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvAddressTo2" />
-
             <View
                 android:id="@+id/viewCommentTo2"
                 android:layout_width="0dp"
@@ -985,17 +1399,6 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvCommentToText2" />
-
-            <View
-                android:id="@+id/viewCommentFrom2"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                android:background="@color/colorGrayLight2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvAddressFrom2" />
 
             <ImageView
                 android:id="@+id/imgCommentTo2"
@@ -1185,7 +1588,7 @@
                 android:text="Чудный коментарий"
                 android:textSize="@dimen/middleFont"
                 app:layout_constraintStart_toEndOf="@+id/imgCommentFrom2"
-                app:layout_constraintTop_toBottomOf="@id/viewCommentFrom2" />
+                app:layout_constraintTop_toBottomOf="@+id/viewTo5" />
 
             <ImageView
                 android:id="@+id/imgCommentFrom2"
@@ -1194,369 +1597,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/viewCommentFrom2"
-                app:srcCompat="@drawable/information" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/llBeforeStart"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/clUp"
-        android:layout_alignTop="@+id/clFirstPage"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp"
-        android:background="@drawable/login_down"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/textView14_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/PODACHA"
-                android:textAllCaps="true"
-                android:textColor="@color/colorButtonBgYellow"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <View
-                android:id="@+id/view13_3"
-                android:layout_width="0dp"
-                android:layout_height="2dp"
-                android:layout_marginStart="64dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="64dp"
-                android:background="@color/colorButtonBgYellow"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textView14_3" />
-
-            <TextView
-                android:id="@+id/textView17_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/Where"
-                android:textAllCaps="true"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view13_3" />
-
-            <View
-                android:id="@+id/view14_3"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="4dp"
-                android:background="@color/colorGrayLight2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView17_3" />
-
-            <ImageView
-                android:id="@+id/imageView20_3"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view14_3"
-                app:srcCompat="@drawable/location" />
-
-            <ImageView
-                android:id="@+id/imgTo3"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewTo3"
-                app:srcCompat="@drawable/location" />
-
-            <TextView
-                android:id="@+id/tvAddressFrom3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                android:text="Россия, Москва, Чебурашкенский переулок, дом 54б квартира 10"
-                android:textSize="@dimen/middleFont"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/imageView20_3"
-                app:layout_constraintTop_toBottomOf="@+id/view14_3" />
-
-            <TextView
-                android:id="@+id/tvTo3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                android:text="Россия, Москва, Чебурашкенский переулок, дом 54б квартира 10"
-                android:textSize="@dimen/middleFont"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/imgTo3"
-                app:layout_constraintTop_toBottomOf="@+id/viewTo3" />
-
-            <View
-                android:id="@+id/viewTo3"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="4dp"
-                android:background="@color/colorGrayLight2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvToText3" />
-
-            <TextView
-                android:id="@+id/tvToText3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/To"
-                android:textAllCaps="true"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCommentFrom3" />
-
-            <TextView
-                android:id="@+id/tvCommentToText3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/comment"
-                android:textAllCaps="true"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvTo3" />
-
-            <View
-                android:id="@+id/viewCommentTo3"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="4dp"
-                android:background="@color/colorGrayLight2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCommentToText3" />
-
-            <View
-                android:id="@+id/viewCommentFrom3"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                android:background="@color/colorGrayLight2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvAddressFrom3" />
-
-            <ImageView
-                android:id="@+id/imgCommentTo3"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewCommentTo3"
-                app:srcCompat="@drawable/information" />
-
-            <TextView
-                android:id="@+id/tvCommentTo3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                android:text="Чудный коментарий"
-                android:textSize="@dimen/middleFont"
-                app:layout_constraintStart_toEndOf="@+id/imgCommentTo3"
-                app:layout_constraintTop_toBottomOf="@+id/viewCommentTo3" />
-
-            <TextView
-                android:id="@+id/textView12_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:text="@string/PaymentMethod"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/llOrderOptions_3" />
-
-            <TextView
-                android:id="@+id/tvPaymentMethod_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="24dp"
-                android:text="@string/Cash"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/llOrderOptions_3" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/gradient_line_hor"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@+id/btnStartOrder"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"></LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llOrderOptions_3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCommentTo3">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.9" />
-
-                <LinearLayout
-                    android:id="@+id/llChat3"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginTop="32dp"
-                    android:background="@drawable/gradient_malina"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        app:srcCompat="@drawable/chat_white" />
-
-                    <TextView
-                        android:id="@+id/tvCarClass_3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/CHAT"
-                        android:textColor="@color/colorWhite"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.9" />
-
-                <LinearLayout
-                    android:id="@+id/llImLate3"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginTop="32dp"
-                    android:background="@drawable/gradient_green"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tvWaitTime3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="00:00"
-                        android:textColor="@color/colorWhite" />
-
-                    <TextView
-                        android:id="@+id/tvDistance_3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/WAITTIME"
-                        android:textAllCaps="true"
-                        android:textColor="@color/colorWhite"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.9" />
-
-                <LinearLayout
-                    android:id="@+id/llNavigtor3"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginTop="32dp"
-                    android:background="@drawable/gradient_blue"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        app:srcCompat="@drawable/fromto" />
-
-                    <TextView
-                        android:id="@+id/tvRideTime_3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/Navigator"
-                        android:textAllCaps="true"
-                        android:textColor="@color/colorWhite"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.9" />
-
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/btnStartOrder"
-                android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/gradient_green"
-                android:text="@string/GO"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/tvCommentFrom3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="Чудный коментарий"
-                android:textSize="@dimen/middleFont"
-                app:layout_constraintStart_toEndOf="@+id/imgCommentFrom3"
-                app:layout_constraintTop_toBottomOf="@id/viewCommentFrom3" />
-
-            <ImageView
-                android:id="@+id/imgCommentFrom3"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/viewCommentFrom3"
+                app:layout_constraintTop_toBottomOf="@+id/viewTo5"
                 app:srcCompat="@drawable/information" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -1635,6 +1676,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view14_4"
                 app:srcCompat="@drawable/location" />
+
+            <TextView
+                android:id="@+id/tvCommentFromText4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/comment"
+                android:textAllCaps="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvAddressFrom4" />
 
             <ImageView
                 android:id="@+id/imgTo4"
@@ -1718,12 +1770,12 @@
                 android:id="@+id/viewCommentFrom4"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:background="@color/colorGrayLight2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvAddressFrom4" />
+                app:layout_constraintTop_toBottomOf="@+id/tvCommentFromText4" />
 
             <ImageView
                 android:id="@+id/imgCommentTo4"
@@ -1926,7 +1978,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="54dp"
                     android:layout_weight="1"
-                    android:background="@drawable/btn_color_move_green"
+                    android:background="@drawable/gradient_green"
                     android:text="@string/FINISH"
                     android:textSize="16sp" />
 
@@ -1935,12 +1987,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="54dp"
                     android:layout_weight="1"
-                    android:background="@drawable/btn_color_move_green"
+                    android:background="@drawable/gradient_green"
                     android:text="@string/Done"
                     android:textSize="16sp"
                     android:visibility="gone" />
             </LinearLayout>
-
 
             <TextView
                 android:id="@+id/tvCommentFrom4"
@@ -1951,7 +2002,7 @@
                 android:text="Чудный коментарий"
                 android:textSize="@dimen/middleFont"
                 app:layout_constraintStart_toEndOf="@+id/imgCommentFrom4"
-                app:layout_constraintTop_toBottomOf="@id/viewCommentFrom4" />
+                app:layout_constraintTop_toBottomOf="@+id/viewCommentFrom4" />
 
             <ImageView
                 android:id="@+id/imgCommentFrom4"

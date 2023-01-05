@@ -66,13 +66,18 @@ public class Today extends BaseActivity implements WorkMenuInterface {
             finish();
             return;
         }
-        bind.imgProfile.setImageBitmap(ProfileActivity.getProfileImage());
-        bind.tvDriverName.setText(UPref.getString("driver_fullname"));
-        bind.tvCity.setText(UPref.getString("driver_city"));
         WebInitialInfo webInitialInfo = new WebInitialInfo(mWebResponse);
         webInitialInfo.request();
         WQDayOrdersInfo dayOrdersInfo = new WQDayOrdersInfo(mWebResponse);
         dayOrdersInfo.request();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bind.imgProfile.setImageBitmap(ProfileActivity.getProfileImage());
+        bind.tvDriverName.setText(UPref.getString("driver_fullname"));
+        bind.tvCity.setText(UPref.getString("driver_city"));
     }
 
     @Override

@@ -23,12 +23,10 @@ import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.nyt.taxi.Kalman.Commons.Utils;
 import com.nyt.taxi.Model.GDriverStatus;
 import com.nyt.taxi.Model.GInitialInfo;
 import com.nyt.taxi.Model.GOrderDayInfo;
@@ -82,6 +80,7 @@ public class ActivityCity extends BaseActivity {
     private LinearLayout llMissOrder;
     private TextView tvAddressFrom;
     private TextView tvAddressTo;
+    private TextView tvCommentFromText;
     private View viewTo;
     private TextView tvAddressCommentFrom;
     private ImageView imgAddressCommentFrom;
@@ -103,6 +102,7 @@ public class ActivityCity extends BaseActivity {
     private LinearLayout llOnPlace;
     private TextView tvAddressFrom2;
     private TextView tvCommentFrom2;
+    private TextView tvCommentFromText2;
     private ImageView imgCommentFrom2;
     private View viewCommentFrom2;
     private TextView tvAddressTo2;
@@ -123,6 +123,7 @@ public class ActivityCity extends BaseActivity {
     private TextView tvCommentFrom3;
     private ImageView imgCommentFrom3;
     private View viewCommentFrom3;
+    private TextView tvCommentFromText3;
     private TextView tvTo3;
     private TextView tvToText3;
     private ImageView imgTo3;
@@ -141,6 +142,7 @@ public class ActivityCity extends BaseActivity {
     private TextView tvRideAmount;
     private TextView tvAddressFrom4;
     private TextView tvCommentFrom4;
+    private TextView tvCommentFromText4;
     private ImageView imgCommentFrom4;
     private View viewCommentFrom4;
     private TextView tvTo4;
@@ -191,6 +193,7 @@ public class ActivityCity extends BaseActivity {
         llMissOrder = findViewById(R.id.llMissOrder);
         tvMissOrder = findViewById(R.id.tvMiss);
         tvAddressFrom = findViewById(R.id.tvAddressFrom);
+        tvCommentFromText = findViewById(R.id.tvCommentFromText);
         tvAddressTo = findViewById(R.id.tvAddressTo);
         viewTo = findViewById(R.id.viewTo);
         tvAddressCommentFrom = findViewById(R.id.tvAddressCommentFrom);
@@ -214,6 +217,7 @@ public class ActivityCity extends BaseActivity {
         llOnPlace = findViewById(R.id.llOnPlace);
         tvAddressFrom2 = findViewById(R.id.tvAddressFrom2);
         tvCommentFrom2 = findViewById(R.id.tvCommentFrom2);
+        tvCommentFromText2 = findViewById(R.id.tvCommentFromText2);
         imgCommentFrom2 = findViewById(R.id.imgCommentFrom2);
         viewCommentFrom2 = findViewById(R.id.viewCommentFrom2);
         tvAddressTo2 = findViewById(R.id.tvAddressTo2);
@@ -234,6 +238,7 @@ public class ActivityCity extends BaseActivity {
         tvCommentFrom3 = findViewById(R.id.tvCommentFrom3);
         imgCommentFrom3 = findViewById(R.id.imgCommentFrom3);
         viewCommentFrom3 = findViewById(R.id.tvCommentFrom3);
+        tvCommentFromText3 = findViewById(R.id.tvCommentFromText3);
         tvTo3 = findViewById(R.id.tvTo3);
         tvToText3 = findViewById(R.id.tvToText3);
         imgTo3 = findViewById(R.id.imgTo3);
@@ -251,6 +256,7 @@ public class ActivityCity extends BaseActivity {
         llRide = findViewById(R.id.llRide);
         tvRideAmount = findViewById(R.id.tvRideAmount);
         tvAddressFrom4 = findViewById(R.id.tvAddressFrom4);
+        tvCommentFromText4 = findViewById(R.id.tvCommentFromText4);
         tvCommentFrom4 = findViewById(R.id.tvCommentFrom4);
         imgCommentFrom4 = findViewById(R.id.imgCommentFrom4);
         viewCommentFrom4 = findViewById(R.id.viewCommentFrom4);
@@ -300,6 +306,7 @@ public class ActivityCity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        imgProfile.setImageBitmap(ProfileActivity.getProfileImage());
         queryState();
     }
 
@@ -478,6 +485,10 @@ public class ActivityCity extends BaseActivity {
             return;
         }
         showNothings();
+        if (t != null) {
+            t.cancel();
+            t = null;
+        }
         createProgressDialog(R.string.Empty, R.string.Wait);
         WebQuery webQuery = new WebQuery(UConfig.mHostUrl + "/api/driver/real_state", WebQuery.HttpMethod.GET, WebResponse.mResponseDriverOn, new WebResponse() {
             @Override
@@ -546,7 +557,7 @@ public class ActivityCity extends BaseActivity {
                         break;
                     case DriverState.DriverInPlace:
                         t = new Timer();
-                        t.schedule(tt , 1000, 1000);
+                        t.schedule(new TT() , 1000, 1000);
                         tvMissOrder.setText(getString(R.string.CANCELORDER));
                         beforeOrderStartPage(jdata);
                         break;
@@ -628,25 +639,26 @@ public class ActivityCity extends BaseActivity {
 
     private void startNewOrder(JsonObject ord) {
         tvAddressFrom.setText(ord.get("address_from").getAsString());
-        tvAddressTo.setText("");
+        tvAddressTo.setText(ord.get("address_to").getAsString());
         tvAddressToComment.setText("");
         tvCarClass.setText(ord.get("car_class").getAsString());
         tvDistance.setText(ord.get("distance").getAsString() + " " + getString(R.string.km));
         tvRideTime.setText(ord.get("duration").getAsString() + "" + getString(R.string.min));
         tvPaymentMethod.setText(ord.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
-        tvArrivalToClient.setText(ord.get("delivery_time").getAsString());
+        tvArrivalToClient.setText(ord.get("order_start_time").getAsString());
         btnAcceptGreen.setText(getString(R.string.Accept) + " +" + ord.get("rating_accepted").getAsString());
         mCurrentOrderId = ord.get("order_id").getAsInt();
         mWebHash = ord.get("accept_hash").getAsString();
+
         mQueryStateAllowed = false;
         tvTimeLeft.setText("29");
 
         String info = infoFullAddress(ord.getAsJsonObject("full_address_from"));
         tvAddressCommentFrom.setText(Html.fromHtml(info, Html.FROM_HTML_MODE_COMPACT));
-
         int v = tvAddressCommentFrom.getText().toString().isEmpty() ? View.GONE : View.VISIBLE;
         tvAddressCommentFrom.setVisibility(v);
         imgAddressCommentFrom.setVisibility(v);
+        tvCommentFromText.setVisibility(v);
 
         v = tvAddressTo.getText().toString().isEmpty() ? View.GONE : View.VISIBLE;
         tvAddressTo.setVisibility(v);
@@ -654,6 +666,7 @@ public class ActivityCity extends BaseActivity {
         viewTo.setVisibility(v);
         tvAddressToText.setVisibility(v);
 
+        tvAddressToComment.setText(infoFullAddress(ord.getAsJsonObject("full_address_to")));
         v = tvAddressToComment.getText().toString().isEmpty() ? View.GONE : View.VISIBLE;
         tvAddressToComment.setVisibility(v);
         imgAddressToComment.setVisibility(v);
@@ -700,27 +713,27 @@ public class ActivityCity extends BaseActivity {
         String info = "";
         if (jinfo.has("frame")) {
             if (!jinfo.get("frame").isJsonNull()) {
-                info += (info.isEmpty() ? "" : ", ") + "<b>" + getString(R.string.frame) + ":</b> " + jinfo.get("frame").getAsString();
+                info += (info.isEmpty() ? "" : ", ") + getString(R.string.frame) + ": <b>" + jinfo.get("frame").getAsString() + "</b>";
             }
         }
         if (jinfo.has("structure")) {
             if (!jinfo.get("structure").isJsonNull()) {
-                info += (info.isEmpty() ? "" : ", ") + "<b>" + getString(R.string.structure) + ":</b> " + jinfo.get("structure").getAsString();
+                info += (info.isEmpty() ? "" : ", ") + getString(R.string.structure) + ": <b>" + jinfo.get("structure").getAsString() + "</b>";
             }
         }
         if (jinfo.has("house")) {
             if (!jinfo.get("house").isJsonNull()) {
-                info += (info.isEmpty() ? "" : ", ") + "<b>" + getString(R.string.house) + ":</b> " + jinfo.get("house").getAsString();
+                info += (info.isEmpty() ? "" : ", ") + getString(R.string.house) + ": <b>" + jinfo.get("house").getAsString() + "</b>";
             }
         }
         if (jinfo.has("entrance")) {
             if (!jinfo.get("entrance").isJsonNull()) {
-                info += (info.isEmpty() ? "" : ", ") + "<b>" + getString(R.string.entrance) + ":</b> " + jinfo.get("entrance").getAsString();
+                info += (info.isEmpty() ? "" : ", ") + getString(R.string.entrance) + ": <b>" + jinfo.get("entrance").getAsString() + "</b>";
             }
         }
         if (jinfo.has("comment")) {
             if (!jinfo.get("comment").isJsonNull()) {
-                info += (info.isEmpty() ? "" : ", ") + "<b>" + getString(R.string.comment) + ":</b> " + jinfo.get("comment").getAsString();
+                info += (info.isEmpty() ? "" : ", ") + getString(R.string.comment) + ": <b>" + jinfo.get("comment").getAsString() + "</b>";
             }
         }
         return info;
@@ -773,12 +786,13 @@ public class ActivityCity extends BaseActivity {
         tvAddressFrom2.setText(j.get("address_from").getAsString());
         int v = View.GONE;
         if (j.has("full_address_from")) {
-            v = viewTo.VISIBLE;
-            tvCommentFrom2.setText(Html.fromHtml(infoFullAddress(j.getAsJsonObject("full_address_from")), Html.FROM_HTML_MODE_COMPACT));
+            String info = infoFullAddress(j.getAsJsonObject("full_address_from"));
+            v = info.isEmpty() ? View.GONE : View.VISIBLE;
+            tvCommentFrom2.setText(Html.fromHtml(info, Html.FROM_HTML_MODE_COMPACT));
         } else {
             v = View.GONE;
         }
-        tvCommentToText2.setVisibility(v);
+        tvCommentFromText2.setVisibility(v);
         tvCommentFrom2.setVisibility(v);
         imgCommentFrom2.setVisibility(v);
         viewCommentFrom2.setVisibility(v);
@@ -821,7 +835,7 @@ public class ActivityCity extends BaseActivity {
         } else {
             v = View.GONE;
         }
-        tvCommentToText3.setVisibility(v);
+        tvCommentFromText3.setVisibility(v);
         tvCommentFrom3.setVisibility(v);
         imgCommentFrom3.setVisibility(v);
         viewCommentFrom3.setVisibility(v);
@@ -865,7 +879,7 @@ public class ActivityCity extends BaseActivity {
         } else {
             v = View.GONE;
         }
-        tvCommentToText4.setVisibility(v);
+        tvCommentFromText4.setVisibility(v);
         tvCommentFrom4.setVisibility(v);
         imgCommentFrom4.setVisibility(v);
         viewCommentFrom4.setVisibility(v);
@@ -965,7 +979,7 @@ public class ActivityCity extends BaseActivity {
             @Override
             public void httpResponse(int httpReponseCode, byte [] data) {
                 if (httpReponseCode > 299 || httpReponseCode < 1) {
-                    //UDialog.alertError(ActivityCity.this, getString(R.string.Error));
+                    UDialog.alertError(ActivityCity.this, getString(R.string.Error));
                     return;
                 }
                 UPref.setBoolean("update_photo", false);
@@ -981,8 +995,8 @@ public class ActivityCity extends BaseActivity {
         }).request();
     }
 
-    private Timer t;
-    private TimerTask tt = new TimerTask() {
+    private Timer t = null;
+    private class TT extends TimerTask {
         @Override
         public void run() {
             ActivityCity.this.runOnUiThread(() -> {
