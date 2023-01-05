@@ -5,11 +5,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,6 +23,7 @@ import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -45,6 +50,9 @@ import com.nyt.taxi.Web.WebQuery;
 import com.nyt.taxi.Web.WebResponse;
 import com.yandex.mapkit.geometry.Point;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -58,6 +66,7 @@ public class ActivityCity extends BaseActivity {
     Point mFinishPoint = null;
     int mRouteTime = 0;
 
+    private ImageView imgProfile;
     private ImageView btnChat;
     private ImageView btnProfile2;
     private LinearLayout llGoOnline;
@@ -164,6 +173,8 @@ public class ActivityCity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city);
 
+        imgProfile = findViewById(R.id.imgProfile);
+        imgProfile.setImageBitmap(ProfileActivity.getProfileImage());
         imgOnlineAnim = findViewById(R.id.imgOnlineAnim);
         btnChat = findViewById(R.id.btnChat);
         btnProfile2 = findViewById(R.id.btnProfile2);
@@ -570,6 +581,9 @@ public class ActivityCity extends BaseActivity {
                 }
             }
         }).request();
+        if (UPref.getBoolean("update_photo")) {
+            updatePhoto();
+        }
 //        WebRequest.create("/api/driver/commons", WebRequest.HttpMethod.GET, mCommonOrderData).request();
 //        WebRequest.create("/api/driver/commons_armor", WebRequest.HttpMethod.GET, mArmorOrderData).request();
 //        checkNotifications();
@@ -628,7 +642,7 @@ public class ActivityCity extends BaseActivity {
         tvTimeLeft.setText("29");
 
         String info = infoFullAddress(ord.getAsJsonObject("full_address_from"));
-        tvAddressCommentFrom.setText(info);
+        tvAddressCommentFrom.setText(Html.fromHtml(info, Html.FROM_HTML_MODE_COMPACT));
 
         int v = tvAddressCommentFrom.getText().toString().isEmpty() ? View.GONE : View.VISIBLE;
         tvAddressCommentFrom.setVisibility(v);
@@ -686,32 +700,27 @@ public class ActivityCity extends BaseActivity {
         String info = "";
         if (jinfo.has("frame")) {
             if (!jinfo.get("frame").isJsonNull()) {
-                info += getString(R.string.frame) + ": " + jinfo.get("frame").getAsString() + ",";
+                info += (info.isEmpty() ? "" : ", ") + "<b>" + getString(R.string.frame) + ":</b> " + jinfo.get("frame").getAsString();
             }
         }
         if (jinfo.has("structure")) {
             if (!jinfo.get("structure").isJsonNull()) {
-                info += getString(R.string.structure) + ": " + jinfo.get("structure").getAsString() + ",";
+                info += (info.isEmpty() ? "" : ", ") + "<b>" + getString(R.string.structure) + ":</b> " + jinfo.get("structure").getAsString();
             }
         }
         if (jinfo.has("house")) {
             if (!jinfo.get("house").isJsonNull()) {
-                info += getString(R.string.house) + ": " + jinfo.get("house").getAsString() + ",";
+                info += (info.isEmpty() ? "" : ", ") + "<b>" + getString(R.string.house) + ":</b> " + jinfo.get("house").getAsString();
             }
         }
         if (jinfo.has("entrance")) {
             if (!jinfo.get("entrance").isJsonNull()) {
-                info += getString(R.string.entrance) + ": " + jinfo.get("entrance").getAsString() + ",";
+                info += (info.isEmpty() ? "" : ", ") + "<b>" + getString(R.string.entrance) + ":</b> " + jinfo.get("entrance").getAsString();
             }
         }
         if (jinfo.has("comment")) {
             if (!jinfo.get("comment").isJsonNull()) {
-                info += getString(R.string.comment) + ": " + jinfo.get("comment").getAsString();
-            }
-        }
-        if (info.length() > 0) {
-            if (info.charAt(info.length() - 1) == ',') {
-                info = info.substring(0, info.length() - 1);
+                info += (info.isEmpty() ? "" : ", ") + "<b>" + getString(R.string.comment) + ":</b> " + jinfo.get("comment").getAsString();
             }
         }
         return info;
@@ -765,7 +774,7 @@ public class ActivityCity extends BaseActivity {
         int v = View.GONE;
         if (j.has("full_address_from")) {
             v = viewTo.VISIBLE;
-            tvCommentFrom2.setText(infoFullAddress(j.getAsJsonObject("full_address_from")));
+            tvCommentFrom2.setText(Html.fromHtml(infoFullAddress(j.getAsJsonObject("full_address_from")), Html.FROM_HTML_MODE_COMPACT));
         } else {
             v = View.GONE;
         }
@@ -785,7 +794,7 @@ public class ActivityCity extends BaseActivity {
         if (j.has("full_address_to")) {
             String info = infoFullAddress(j.getAsJsonObject("full_address_to"));
             v = info.isEmpty() ? View.GONE : View.VISIBLE;
-            tvCommentTo2.setText(info);
+            tvCommentTo2.setText(Html.fromHtml(info, Html.FROM_HTML_MODE_COMPACT));
         }
         tvCommentToText2.setVisibility(v);
         viewCommentTo2.setVisibility(v);
@@ -808,7 +817,7 @@ public class ActivityCity extends BaseActivity {
         int v;
         if (j.has("full_address_from")) {
             v = viewTo.VISIBLE;
-            tvCommentFrom3.setText(infoFullAddress(j.getAsJsonObject("full_address_from")));
+            tvCommentFrom3.setText(Html.fromHtml(infoFullAddress(j.getAsJsonObject("full_address_from")), Html.FROM_HTML_MODE_COMPACT));
         } else {
             v = View.GONE;
         }
@@ -828,7 +837,7 @@ public class ActivityCity extends BaseActivity {
         if (j.has("full_address_to")) {
             String info = infoFullAddress(j.getAsJsonObject("full_address_to"));
             v = info.isEmpty() ? View.GONE : View.VISIBLE;
-            tvCommentTo3.setText(info);
+            tvCommentTo3.setText(Html.fromHtml(info, Html.FROM_HTML_MODE_COMPACT));
         }
         tvCommentToText3.setVisibility(v);
         viewCommentTo3.setVisibility(v);
@@ -852,7 +861,7 @@ public class ActivityCity extends BaseActivity {
         int v;
         if (j.has("full_address_from")) {
             v = viewTo.VISIBLE;
-            tvCommentFrom4.setText(infoFullAddress(j.getAsJsonObject("full_address_from")));
+            tvCommentFrom4.setText(Html.fromHtml(infoFullAddress(j.getAsJsonObject("full_address_from")), Html.FROM_HTML_MODE_COMPACT));
         } else {
             v = View.GONE;
         }
@@ -873,7 +882,7 @@ public class ActivityCity extends BaseActivity {
         if (j.has("full_address_to")) {
             String info = infoFullAddress(j.getAsJsonObject("full_address_to"));
             v = info.isEmpty() ? View.GONE : View.VISIBLE;
-            tvCommentTo4.setText(info);
+            tvCommentTo4.setText(Html.fromHtml(info, Html.FROM_HTML_MODE_COMPACT));
         }
         tvCommentToText4.setVisibility(v);
         viewCommentTo4.setVisibility(v);
@@ -946,7 +955,30 @@ public class ActivityCity extends BaseActivity {
             playSound(0);
             queryState();
             UDialog.alertDialog(this, R.string.Empty, R.string.OrderCanceled);
+        } else if (e.contains("refresh_profile_image")) {
+            imgProfile.setImageBitmap(ProfileActivity.getProfileImage());
         }
+    }
+
+    private void updatePhoto() {
+        WebRequest.create(UPref.getString("photo_link"), WebRequest.HttpMethod.GET, new WebRequest.HttpResponseByte() {
+            @Override
+            public void httpResponse(int httpReponseCode, byte [] data) {
+                if (httpReponseCode > 299 || httpReponseCode < 1) {
+                    //UDialog.alertError(ActivityCity.this, getString(R.string.Error));
+                    return;
+                }
+                UPref.setBoolean("update_photo", false);
+                Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                try (FileOutputStream out = new FileOutputStream(storageDir.getAbsolutePath() + "/drvface.png")) {
+                    bmp.compress(Bitmap.CompressFormat.PNG, 100, out);
+                    imgProfile.setImageBitmap(ProfileActivity.getProfileImage());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).request();
     }
 
     private Timer t;

@@ -252,7 +252,10 @@ public class MainActivity extends BaseActivity implements
                             }).setBody(deviceInfo.toString()).request();
                             FileLogger.write(deviceInfo.toString());
 
-                            com.nyt.taxi.Services.WebRequest.create(jdriver.getJSONObject("driver_info").get("photo").toString(), WebRequest.HttpMethod.GET, mPhotoReply).request();
+                            com.nyt.taxi.Services.WebRequest.create(jdriver.getJSONObject("driver_info")
+                                    .get("photo").toString(), WebRequest.HttpMethod.GET, mPhotoReply).request();
+                            UPref.setBoolean("update_photo", true);
+                            UPref.setString("photo_link", jdriver.getJSONObject("driver_info").get("photo").toString());
                             JSONObject jkeys = jo.getJSONObject("keys");
                             UConfig.mGeocoderApiKey = jkeys.getString("y_geocode");
                             Intent  intent = new Intent(MainActivity.this, ActivityCity.class);
