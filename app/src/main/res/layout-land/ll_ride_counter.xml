@@ -28,7 +28,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <com.nyt.taxi.Order.TimeLineView
+            <com.nyt.taxi2.Order.TimeLineView
                 android:id="@+id/timeline"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"

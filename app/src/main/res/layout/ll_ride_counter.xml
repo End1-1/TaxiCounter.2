@@ -26,7 +26,7 @@
             android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@id/llAction">
 
-            <com.nyt.taxi.Order.TimeLineView
+            <com.nyt.taxi2.Order.TimeLineView
                 android:id="@+id/timeline"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"

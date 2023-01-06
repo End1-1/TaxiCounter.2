@@ -37,13 +37,7 @@
         android:name="android.hardware.camera.autofocus"
         android:required="false" />
 
-    <queries>
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-        </intent>
 
-        <package android:name="ru.yandex.yandexnavi" />
-    </queries>
 
     <application
         android:name=".Activities.TaxiApp"

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 7.3.1" type="baseline" client="gradle" dependencies="false" name="AGP (7.3.1)" variant="fatal" version="7.3.1">
+
+    <issue
+        id="UnknownId"
+        message="The id &quot;`mapview`&quot; is not defined anywhere."
+        errorLine1="        android:layout_alignBottom=&quot;@+id/mapview&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/activity_workspace.xml"
+            line="424"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="NotSibling"
+        message="`@+id/llEndOrderButtons` is not a sibling in the same `ConstraintLayout`"
+        errorLine1="                        app:layout_constraintBottom_toTopOf=&quot;@+id/llEndOrderButtons&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_city.xml"
+            line="1890"
+            column="25"/>
+    </issue>
+
+</issues>

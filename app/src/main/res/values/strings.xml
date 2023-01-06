@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">YellowDriver</string>
+    <string name="app_name">!YellowDriver</string>
     <string name="WelcomeToCounter">Добро пожаловать в Счетчик</string>
     <string name="BeforeStartYouNeedAuth">Для начала работы вам необходимо авторизироваться</string>
     <string name="Login">ВХОД</string>
@@ -26,6 +26,7 @@
     <string name="NavigatorNightMode">Навигатор, ночной режим</string>
     <string name="GO">Поехали!</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="QueryState">Запрос состояния</string>
     <string name="TrackTime">Время в пути</string>
     <string name="Amount">Сумма</string>
     <string name="Wait">Ожидание</string>

@@ -96,6 +96,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
                         android:gravity="center"
+                        android:scaleType="fitCenter"
                         android:src="@drawable/roza" />
 
                 </androidx.cardview.widget.CardView>
