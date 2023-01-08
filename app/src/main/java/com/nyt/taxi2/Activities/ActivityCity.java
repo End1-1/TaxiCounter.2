@@ -2,6 +2,7 @@ package com.nyt.taxi2.Activities;
 
 import android.animation.TimeAnimator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
@@ -25,20 +27,29 @@ import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.installations.FirebaseInstallations;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.nyt.taxi2.Model.GCarClasses;
 import com.nyt.taxi2.Model.GDriverStatus;
 import com.nyt.taxi2.Model.GInitialInfo;
+import com.nyt.taxi2.Model.GObject;
 import com.nyt.taxi2.Model.GOrderDayInfo;
 import com.nyt.taxi2.R;
 import com.nyt.taxi2.Services.FileLogger;
 import com.nyt.taxi2.Services.FirebaseHandler;
+import com.nyt.taxi2.Services.TodayMenu;
 import com.nyt.taxi2.Services.WebRequest;
 import com.nyt.taxi2.Services.WebSocketHttps;
+import com.nyt.taxi2.Utils.CarOptionsAdapter;
 import com.nyt.taxi2.Utils.DownloadControllerVer;
 import com.nyt.taxi2.Utils.DriverState;
+import com.nyt.taxi2.Utils.ProfileMenuAdapter;
 import com.nyt.taxi2.Utils.UConfig;
 import com.nyt.taxi2.Utils.UDialog;
 import com.nyt.taxi2.Utils.UDialogLateOptions;
@@ -46,7 +57,10 @@ import com.nyt.taxi2.Utils.UPref;
 import com.nyt.taxi2.Utils.UText;
 import com.nyt.taxi2.Utils.YandexNavigator;
 import com.nyt.taxi2.Web.WQAssessment;
+import com.nyt.taxi2.Web.WQDayOrdersInfo;
 import com.nyt.taxi2.Web.WQFeedback;
+import com.nyt.taxi2.Web.WebInitialInfo;
+import com.nyt.taxi2.Web.WebLogout;
 import com.nyt.taxi2.Web.WebQuery;
 import com.nyt.taxi2.Web.WebResponse;
 
@@ -173,6 +187,14 @@ public class ActivityCity extends BaseActivity {
     private int mRoadId;
     private boolean mQueryStateAllowed = true;
 
+    private LinearLayout llProfile;
+    private Button btnCloseApp;
+    private Button btnGoOffline;
+    private RecyclerView rvProfileMenu;
+    private RecyclerView rvCarOptions;
+    private TextView tvDistanceProfile;
+    private TextView tvBalanceProfile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -280,6 +302,14 @@ public class ActivityCity extends BaseActivity {
         llChat4 = findViewById(R.id.llChat4);
         llNavigator4 = findViewById(R.id.llNavigator4);
 
+        llProfile = findViewById(R.id.llProfile);
+        btnCloseApp = findViewById(R.id.btnCloseApp);
+        btnGoOffline = findViewById(R.id.btnGoOffline);
+        rvProfileMenu = findViewById(R.id.rvProfileMenu);
+        rvCarOptions = findViewById(R.id.rvCarOption);
+        tvDistanceProfile = findViewById(R.id.tvDistanceProfile);
+        tvBalanceProfile = findViewById(R.id.tvBalanceProfile);
+
         btnChat.setOnClickListener(this);
         btnProfile2.setOnClickListener(this);
         btnProfile.setOnClickListener(this);
@@ -298,6 +328,8 @@ public class ActivityCity extends BaseActivity {
         llChat4.setOnClickListener(this);
         llNavigator4.setOnClickListener(this);
         llImLate3.setOnClickListener(this);
+        btnCloseApp.setOnClickListener(this);
+        btnGoOffline.setOnClickListener(this);
         authToSocket();
         showNothings();
         if (getIntent().getStringExtra("neworder") != null) {
@@ -318,17 +350,78 @@ public class ActivityCity extends BaseActivity {
     @Override
     public void handleClick(int id) {
         switch (id) {
+            case R.id.btnGoOffline:
+                UDialog.alertDialogWithButtonTitles(this, R.string.Empty, getString(R.string.QuestionGoOffline),
+                        getString(R.string.YES), getString(R.string.NO),
+                        new DialogInterface() {
+                            @Override
+                            public void cancel() {
+
+                            }
+
+                            @Override
+                            public void dismiss() {
+                                createProgressDialog(R.string.Empty, R.string.Wait);
+                                WebRequest.create("/api/driver/order_ready", WebRequest.HttpMethod.POST, new WebRequest.HttpResponse() {
+                                            @Override
+                                            public void httpRespone(int httpReponseCode, String data) {
+                                                if (!webResponseOK(httpReponseCode, data)) {
+                                                    return;
+                                                }
+                                                queryState();
+                                            }
+                                        })
+                                        .setParameter("ready", Integer.toString(0))
+                                        .setParameter("lat", UText.valueOf(UPref.lastPoint().lat))
+                                        .setParameter("lut", UText.valueOf(UPref.lastPoint().lut))
+                                        .request();
+                            }
+                        });
+                break;
+            case R.id.btnCloseApp:
+                UDialog.alertDialogWithButtonTitles(this, R.string.Empty,
+                        getString(R.string.CloseAppQuestion),
+                        getString(R.string.YES),
+                        getString(R.string.NO), new DialogInterface(){
+
+                            @Override
+                            public void cancel() {
+
+                            }
+
+                            @Override
+                            public void dismiss() {
+                                WebLogout wl = new WebLogout(new WebResponse() {
+                                    @Override
+                                    public void webResponse(int code, int webResponse, String s) {
+                                        Intent i3  = new Intent(ActivityCity.this, WebSocketHttps.class);
+                                        i3.putExtra("cmd", 1);
+                                        startService(i3);
+
+                                        UPref.setBearerKey("");
+                                        UPref.setBoolean("finish", true);
+                                        finish();
+                                    }
+                                });
+                                wl.request();
+                            }
+                        });
+                break;
             case R.id.btnChat: {
                 Intent intent = new Intent(this, ActivityChatAdmin.class);
                 startActivity(intent);
                 break;
             }
             case R.id.btnProfile2:
-            case R.id.btnProfile: {
-                Intent intent = new Intent(this, Today.class);
-                startActivity(intent);
+                showProfilePage();
                 break;
-            }
+            case R.id.btnProfile:
+                if (llProfile.getVisibility() == View.GONE) {
+                    showProfilePage();
+                } else {
+                    queryState();
+                }
+                break;
             case R.id.llGoOnline: {
                 createProgressDialog(R.string.Empty, R.string.Wait);
                 WebQuery webQuery = new WebQuery(UConfig.mHostOrderReady, WebQuery.HttpMethod.POST, WebResponse.mResponseDriverOn, new WebResponse() {
@@ -789,6 +882,7 @@ public class ActivityCity extends BaseActivity {
         llOnPlace.setVisibility(View.GONE);
         llBeforeStart.setVisibility(View.GONE);
         llRide.setVisibility(View.GONE);
+        llProfile.setVisibility(View.GONE);
         tvKm.setText("0");
         tvMin.setText("00:00");
         tvRideAmount.setText("0" + getString(R.string.RubSymbol));
@@ -873,7 +967,8 @@ public class ActivityCity extends BaseActivity {
         tvAddressFrom3.setText(j.get("address_from").getAsString());
         int v;
         if (j.has("full_address_from")) {
-            v = viewTo.VISIBLE;
+            String info = infoFullAddress(j.getAsJsonObject("full_address_from"));
+            v = info.isEmpty() ? View.GONE : View.VISIBLE;
             tvCommentFrom3.setText(Html.fromHtml(infoFullAddress(j.getAsJsonObject("full_address_from")), Html.FROM_HTML_MODE_COMPACT));
         } else {
             v = View.GONE;
@@ -917,7 +1012,8 @@ public class ActivityCity extends BaseActivity {
         tvAddressFrom4.setText(j.get("address_from").getAsString());
         int v;
         if (j.has("full_address_from")) {
-            v = viewTo.VISIBLE;
+            String info = infoFullAddress(j.getAsJsonObject("full_address_from"));
+            v = info.isEmpty() ? View.GONE : View.VISIBLE;
             tvCommentFrom4.setText(Html.fromHtml(infoFullAddress(j.getAsJsonObject("full_address_from")), Html.FROM_HTML_MODE_COMPACT));
         } else {
             v = View.GONE;
@@ -945,6 +1041,37 @@ public class ActivityCity extends BaseActivity {
         viewCommentTo4.setVisibility(v);
         imgCommentTo4.setVisibility(v);
         tvCommentTo4.setVisibility(v);
+    }
+
+    private void showProfilePage() {
+        showNothings();
+        createProgressDialog();
+        new WebInitialInfo(new WebResponse() {
+            @Override
+            public void webResponse(int code, int webResponse, String s) {
+                if (webResponse > 299) {
+                    mQueryStateAllowed = true;
+                    UDialog.alertError(ActivityCity.this, s);
+                    return;
+                }
+                GInitialInfo info = GInitialInfo.parse(s, GInitialInfo.class);
+                tvDistanceProfile.setText(String.format("%.1f", info.distance));
+                tvBalanceProfile.setText(String.format("%.0f", info.balance));
+
+                ProfileMenuAdapter pma = new ProfileMenuAdapter(ActivityCity.this);
+                rvProfileMenu.setLayoutManager(new LinearLayoutManager(ActivityCity.this));
+                rvProfileMenu.setAdapter(pma);
+                rvProfileMenu.setNestedScrollingEnabled(false);
+
+                CarOptionsAdapter coa = new CarOptionsAdapter(ActivityCity.this);
+                rvCarOptions.setLayoutManager(new LinearLayoutManager(ActivityCity.this));
+                rvCarOptions.setAdapter(coa);
+                rvCarOptions.setNestedScrollingEnabled(false);
+                llProfile.setVisibility(View.VISIBLE);
+                llRateMoneyScore.setVisibility(View.VISIBLE);
+            }
+        }).request();
+
     }
 
     private void setStartAndFinishPoints(JsonObject j) {
@@ -1018,11 +1145,11 @@ public class ActivityCity extends BaseActivity {
         WebRequest.create(UPref.getString("photo_link"), WebRequest.HttpMethod.GET, new WebRequest.HttpResponseByte() {
             @Override
             public void httpResponse(int httpReponseCode, byte [] data) {
+                UPref.setBoolean("update_photo", false);
                 if (httpReponseCode > 299 || httpReponseCode < 1) {
-                    UDialog.alertError(ActivityCity.this, getString(R.string.Error));
+                    UDialog.alertError(ActivityCity.this, getString(R.string.ErrorGetDriverPhoto));
                     return;
                 }
-                UPref.setBoolean("update_photo", false);
                 Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
                 File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
                 try (FileOutputStream out = new FileOutputStream(storageDir.getAbsolutePath() + "/drvface.png")) {

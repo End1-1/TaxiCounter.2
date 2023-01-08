@@ -146,6 +146,11 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         if (UPref.getBoolean("finish")) {
             UPref.setBoolean("finish", false);
             finish();

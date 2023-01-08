@@ -52,6 +52,7 @@
     <string name="OrdersOnRoute">ЗАКАЗЫ ПО ПУТИ</string>
     <string name="ParkWasNotSelected">ТАКСОПАРК НЕ ВЫБРАН</string>
     <string name="Error">Ошибка</string>
+    <string name="ErrorGetDriverPhoto">Невозможно скачать фото водителя с сервера</string>
     <string name="CITY">ГОРОД</string>
     <string name="ACCEPT">ПРИНЯТЬ</string>
     <string name="CHAT">ЧАТ</string>

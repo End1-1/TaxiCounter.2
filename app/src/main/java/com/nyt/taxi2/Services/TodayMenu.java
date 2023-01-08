@@ -173,21 +173,6 @@ public class TodayMenu implements View.OnClickListener {
                                     }
                                 });
                                 wl.request();
-
-                        /*
-
-
-                        Intent i1  = new Intent(this, KalmanLocationService.class);
-                        i1.putExtra("cmd", 1);
-                        startService(i1);
-
-                        Intent i2  = new Intent(this, LocationListenerService.class);
-                        i2.putExtra("cmd", 1);
-                        startService(i2);
-
-                         */
-
-
                             }
                         });
                 break;
@@ -227,7 +212,8 @@ public class TodayMenu implements View.OnClickListener {
         }
     }
 
-    public void click(int action) { switch (action) {
+    public void click(int action) {
+        switch (action) {
         case mclProfile:
             mWorkspace.hideTodayMenu();
             if (UPref.getBoolean("display_landscape")) {

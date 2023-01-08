@@ -187,6 +187,8 @@ public class WebSocketHttps extends Service {
         stopForeground(true);
         stopSelf();
         unregisterReceiver(mScreenReceiver);
+        NotificationManager nMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        nMgr.cancelAll();
         if (mDieAppAfterStop) {
             System.exit(-1);
         }
