@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,16 +31,14 @@ public class CarOptionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         TextView tvName;
         TextView tvPrice;
-        ImageView ivCheck;
-        View vCheck;
+        Switch sw;
 
         public VH(@NonNull View v) {
             super(v);
             tvName = v.findViewById(R.id.tvName);
             tvPrice = v.findViewById(R.id.tvPrice);
-            ivCheck = v.findViewById(R.id.imgCheck);
-            vCheck = v.findViewById(R.id.vCheck);
-            v.setOnClickListener(this);
+            sw = v.findViewById(R.id.sw);
+            sw.setOnClickListener(this);
         }
 
         @Override
@@ -61,23 +60,7 @@ public class CarOptionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             GCarClasses.CarOption f = mCarClasses.options.get(i);
             tvName.setText(f.option);
             tvPrice.setText(String.format("%.0f", f.price));
-            if (f.selected) {
-                ivCheck.setBackground(mContext.getDrawable(R.drawable.ok_active));
-                itemView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        int width = itemView.getWidth() - 15;
-                        ResizeWithAnimation anim = new ResizeWithAnimation(vCheck, width);
-                        anim.setDuration(400);
-                        vCheck.startAnimation(anim);
-                    }
-                });
-            } else {
-                ivCheck.setBackground(mContext.getDrawable(R.drawable.ok_inactive));
-                ResizeWithAnimation anim = new ResizeWithAnimation(vCheck, 140);
-                anim.setDuration(400);
-                vCheck.startAnimation(anim);
-            }
+            sw.setChecked(f.selected);
         }
     }
 

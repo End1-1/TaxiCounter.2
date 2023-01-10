@@ -82,6 +82,7 @@ public class ActivityCity extends BaseActivity {
 
     private ImageView imgProfile;
     private TextView tvDriverFullName;
+    private ImageView btnHome;
     private ImageView btnChat;
     private ImageView btnProfile2;
     private LinearLayout llGoOnline;
@@ -204,6 +205,7 @@ public class ActivityCity extends BaseActivity {
         tvDriverFullName.setText(UPref.getString("driver_fullname"));
         imgProfile = findViewById(R.id.imgProfile);
         imgProfile.setImageBitmap(ProfileActivity.getProfileImage());
+        btnHome = findViewById(R.id.btnHome);
         imgOnlineAnim = findViewById(R.id.imgOnlineAnim);
         btnChat = findViewById(R.id.btnChat);
         btnProfile2 = findViewById(R.id.btnProfile2);
@@ -312,6 +314,7 @@ public class ActivityCity extends BaseActivity {
 
         btnChat.setOnClickListener(this);
         btnProfile2.setOnClickListener(this);
+        btnHome.setOnClickListener(this);
         btnProfile.setOnClickListener(this);
         llGoOnline.setOnClickListener(this);
         btnAcceptGreen.setOnClickListener(this);
@@ -406,6 +409,9 @@ public class ActivityCity extends BaseActivity {
                                 wl.request();
                             }
                         });
+                break;
+            case R.id.btnHome:
+                queryState();
                 break;
             case R.id.btnChat: {
                 Intent intent = new Intent(this, ActivityChatAdmin.class);
@@ -510,6 +516,7 @@ public class ActivityCity extends BaseActivity {
                 }).request();
                 break;
             case R.id.btnEndOrder:
+                btnEndOrder.setEnabled(false);
                 UDialog.alertDialog(this, R.string.Empty, getString(R.string.FINISHRIDE), new DialogInterface() {
                     @Override
                     public void cancel() {
@@ -634,6 +641,7 @@ public class ActivityCity extends BaseActivity {
                 GDriverStatus g = GDriverStatus.parse(jdata, GDriverStatus.class);
                 UPref.setBoolean("is_ready", g.is_ready);
                 llGoOnline.setVisibility(g.is_ready ? View.GONE : View.VISIBLE);
+                btnGoOffline.setVisibility(g.is_ready ? View.VISIBLE : View.GONE);
                 if (g.is_ready) {
                     imgOnlineAnim.setVisibility(View.VISIBLE);
                     WebQuery webQuery = new WebQuery(UConfig.mHostOrderReady, WebQuery.HttpMethod.POST, WebResponse.mResponseDriverOn, new WebResponse() {
@@ -1069,6 +1077,7 @@ public class ActivityCity extends BaseActivity {
                 rvCarOptions.setNestedScrollingEnabled(false);
                 llProfile.setVisibility(View.VISIBLE);
                 llRateMoneyScore.setVisibility(View.VISIBLE);
+                llDownMenu.setVisibility(View.VISIBLE);
             }
         }).request();
 

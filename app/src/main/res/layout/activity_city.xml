@@ -208,6 +208,7 @@
             -->
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout5"
             android:layout_width="80dp"
             android:layout_height="80dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -1884,11 +1885,11 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="2dp"
-                        android:layout_marginBottom="8dp"
                         android:background="@drawable/gradient_line_hor"
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"></LinearLayout>
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/llOrderOptions_4"
@@ -2133,14 +2134,29 @@
         android:id="@+id/llProfile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/clUp"
+        android:layout_above="@+id/llDownMenu"
         android:layout_alignTop="@id/clQueryState"
-        android:layout_alignParentBottom="true"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
         android:background="@drawable/login_down"
         android:orientation="vertical"
         android:visibility="visible">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/Profile"
+            android:textSize="@dimen/smallFont" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sepviewheight"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/colorGrayLight2" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -2151,240 +2167,240 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="5dp">
+                        android:orientation="vertical"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp">
 
-                        <TextView
-                            android:id="@+id/tvBalanceProfile"
-                            android:layout_width="wrap_content"
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:text="120"
-                            app:layout_constraintEnd_toStartOf="@id/tvRubSym"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            android:padding="5dp">
 
-                        <TextView
-                            android:id="@+id/tvRubSym"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:text="@string/RubSymbol"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            <TextView
+                                android:id="@+id/tvBalanceProfile"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:text="120"
+                                app:layout_constraintEnd_toStartOf="@id/tvRubSym"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/textViedw16"
-                            android:layout_width="wrap_content"
+                            <TextView
+                                android:id="@+id/tvRubSym"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:text="@string/RubSymbol"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/textViedw16"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginBottom="10dp"
+                                android:text="@string/Balance"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/sepviewheight"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/colorGrayLight2" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="10dp"
-                            android:text="@string/Balance"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                            android:padding="5dp">
+
+                            <TextView
+                                android:id="@+id/tvDistanceProfile"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:text="0"
+                                app:layout_constraintEnd_toStartOf="@+id/tvKmCaption"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tvKmCaption"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:text="KM"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/textView16"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="8dp"
+                                android:text="@string/Mileage"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <View
+                            android:id="@+id/view"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/sepviewheight"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/colorGrayLight2" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:id="@+id/tvOrders"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:text="120"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/textVied6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginBottom="10dp"
+                                android:text="@string/OrdersCount"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/view4"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/sepviewheight"
+                        android:layout_margin="8dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/colorFioletBlack" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="@string/CarOptions"
+                        android:textSize="@dimen/bigFont"
+                        android:textStyle="bold" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvCarOption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/sepviewheight"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@color/colorGrayLight2" />
+                        android:layout_margin="8dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/colorFioletBlack" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvProfileMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="5dp">
-
-                        <TextView
-                            android:id="@+id/tvDistanceProfile"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:text="0"
-                            app:layout_constraintEnd_toStartOf="@+id/tvKmCaption"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/tvKmCaption"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:text="KM"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/textView16"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
-                            android:text="@string/Mileage"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:layout_marginLeft="@dimen/marginStandardLeftRight"
+                        android:layout_marginRight="@dimen/marginStandardLeftRight" />
 
                     <View
-                        android:id="@+id/view"
+                        android:id="@+id/view5"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/sepviewheight"
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="10dp"
-                        android:background="@color/colorGrayLight2" />
+                        android:background="@color/colorFioletBlack" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <View
+                        android:id="@+id/vew"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="5dp">
+                        android:layout_height="@dimen/sepviewheight"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="10dp" />
 
-                        <TextView
-                            android:id="@+id/tvOrders"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:text="120"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                    <Button
+                        android:id="@+id/btnNotification"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Notifications" />
 
-                        <TextView
-                            android:id="@+id/textVied6"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="10dp"
-                            android:text="@string/OrdersCount"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <View
+                        android:id="@+id/vw"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/sepviewheight"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="10dp" />
+
+                    <Button
+                        android:id="@+id/btnGoOffline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorFioletBlack"
+                        android:text="@string/GoOffline"
+                        android:textColor="@color/colorWhite" />
+
+                    <View
+                        android:id="@+id/vew6"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/sepviewheight"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="10dp" />
+
+                    <Button
+                        android:id="@+id/btnCloseApp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorRed"
+                        android:text="@string/CloseApp"
+                        android:textColor="#000000" />
+
+                    <View
+                        android:id="@+id/view6"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/sepviewheight"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="10dp" />
 
                 </LinearLayout>
 
-                <View
-                    android:id="@+id/view4"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/sepviewheight"
-                    android:layout_margin="8dp"
-                    android:layout_marginTop="2dp"
-                    android:background="@color/colorFioletBlack" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="@string/CarOptions"
-                    android:textSize="@dimen/bigFont"
-                    android:textStyle="bold" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvCarOption"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/sepviewheight"
-                    android:layout_margin="8dp"
-                    android:layout_marginTop="2dp"
-                    android:background="@color/colorFioletBlack" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvProfileMenu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/marginStandardLeftRight"
-                    android:layout_marginRight="@dimen/marginStandardLeftRight" />
-
-                <View
-                    android:id="@+id/view5"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/sepviewheight"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/colorFioletBlack" />
-
-                <View
-                    android:id="@+id/vew"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/sepviewheight"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="10dp" />
-
-                <Button
-                    android:id="@+id/btnNotification"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/Notifications" />
-
-                <View
-                    android:id="@+id/vw"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/sepviewheight"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="10dp" />
-
-                <Button
-                    android:id="@+id/btnGoOffline"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorFioletBlack"
-                    android:text="@string/GoOffline"
-                    android:textColor="@color/colorWhite" />
-
-                <View
-                    android:id="@+id/vew6"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/sepviewheight"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="10dp" />
-
-                <Button
-                    android:id="@+id/btnCloseApp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorRed"
-                    android:text="@string/CloseApp"
-                    android:textColor="@color/colorWhite" />
-
-                <View
-                    android:id="@+id/view6"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/sepviewheight"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="10dp" />
-
-            </LinearLayout>
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
     </LinearLayout>
 
