@@ -2,7 +2,6 @@ package com.nyt.taxi2.Activities;
 
 import android.animation.TimeAnimator;
 import android.animation.ValueAnimator;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,7 +15,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.Html;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
@@ -30,20 +28,15 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.installations.FirebaseInstallations;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.nyt.taxi2.Model.GCarClasses;
 import com.nyt.taxi2.Model.GDriverStatus;
 import com.nyt.taxi2.Model.GInitialInfo;
-import com.nyt.taxi2.Model.GObject;
 import com.nyt.taxi2.Model.GOrderDayInfo;
 import com.nyt.taxi2.R;
 import com.nyt.taxi2.Services.FileLogger;
 import com.nyt.taxi2.Services.FirebaseHandler;
-import com.nyt.taxi2.Services.TodayMenu;
 import com.nyt.taxi2.Services.WebRequest;
 import com.nyt.taxi2.Services.WebSocketHttps;
 import com.nyt.taxi2.Utils.CarOptionsAdapter;
@@ -57,7 +50,6 @@ import com.nyt.taxi2.Utils.UPref;
 import com.nyt.taxi2.Utils.UText;
 import com.nyt.taxi2.Utils.YandexNavigator;
 import com.nyt.taxi2.Web.WQAssessment;
-import com.nyt.taxi2.Web.WQDayOrdersInfo;
 import com.nyt.taxi2.Web.WQFeedback;
 import com.nyt.taxi2.Web.WebInitialInfo;
 import com.nyt.taxi2.Web.WebLogout;
@@ -196,6 +188,11 @@ public class ActivityCity extends BaseActivity {
     private TextView tvDistanceProfile;
     private TextView tvBalanceProfile;
 
+    private LinearLayout llChat;
+    private TextView tvChatDispatcher;
+    private TextView tvChatInfo;
+    private TextView tvChatPassanger;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -312,6 +309,11 @@ public class ActivityCity extends BaseActivity {
         tvDistanceProfile = findViewById(R.id.tvDistanceProfile);
         tvBalanceProfile = findViewById(R.id.tvBalanceProfile);
 
+        llChat = findViewById(R.id.llChat);
+        tvChatDispatcher = findViewById(R.id.tvChatDispatcher);
+        tvChatInfo = findViewById(R.id.tvChatInfo);
+        tvChatPassanger = findViewById(R.id.tvChatPassanger);
+
         btnChat.setOnClickListener(this);
         btnProfile2.setOnClickListener(this);
         btnHome.setOnClickListener(this);
@@ -333,6 +335,9 @@ public class ActivityCity extends BaseActivity {
         llImLate3.setOnClickListener(this);
         btnCloseApp.setOnClickListener(this);
         btnGoOffline.setOnClickListener(this);
+        tvChatDispatcher.setOnClickListener(this);
+        tvChatInfo.setOnClickListener(this);
+        tvChatPassanger.setOnClickListener(this);
         authToSocket();
         showNothings();
         if (getIntent().getStringExtra("neworder") != null) {
@@ -353,6 +358,21 @@ public class ActivityCity extends BaseActivity {
     @Override
     public void handleClick(int id) {
         switch (id) {
+            case R.id.tvChatDispatcher:
+                tvChatDispatcher.setBackground(getDrawable(R.drawable.chatbottomyellow));
+                tvChatInfo.setBackground(null);
+                tvChatPassanger.setBackground(null);
+                break;
+            case R.id.tvChatInfo:
+                tvChatDispatcher.setBackground(null);
+                tvChatInfo.setBackground(getDrawable(R.drawable.chatbottomyellow));
+                tvChatPassanger.setBackground(null);
+                break;
+            case R.id.tvChatPassanger:
+                tvChatDispatcher.setBackground(null);
+                tvChatInfo.setBackground(null);
+                tvChatPassanger.setBackground(getDrawable(R.drawable.chatbottomyellow));
+                break;
             case R.id.btnGoOffline:
                 UDialog.alertDialogWithButtonTitles(this, R.string.Empty, getString(R.string.QuestionGoOffline),
                         getString(R.string.YES), getString(R.string.NO),
@@ -414,8 +434,9 @@ public class ActivityCity extends BaseActivity {
                 queryState();
                 break;
             case R.id.btnChat: {
-                Intent intent = new Intent(this, ActivityChatAdmin.class);
-                startActivity(intent);
+//                Intent intent = new Intent(this, ActivityChatAdmin.class);
+//                startActivity(intent);
+                showChatPage();
                 break;
             }
             case R.id.btnProfile2:
@@ -704,9 +725,11 @@ public class ActivityCity extends BaseActivity {
                         beforeOrderStartPage(jdata);
                         break;
                     case DriverState.DriverInRide:
+                        tvMissOrder.setText(getString(R.string.CANCELORDER));
+                        ridePage(jdata);
                     case DriverState.Rate:
                         tvMissOrder.setText(getString(R.string.CANCELORDER));
-                        ridePage(jdata, g.state);
+                        lastPage(jdata);
                         break;
 
                 }
@@ -891,6 +914,7 @@ public class ActivityCity extends BaseActivity {
         llBeforeStart.setVisibility(View.GONE);
         llRide.setVisibility(View.GONE);
         llProfile.setVisibility(View.GONE);
+        llChat.setVisibility(View.GONE);
         tvKm.setText("0");
         tvMin.setText("00:00");
         tvRideAmount.setText("0" + getString(R.string.RubSymbol));
@@ -1005,7 +1029,7 @@ public class ActivityCity extends BaseActivity {
         tvCommentTo3.setVisibility(v);
     }
     
-    private void ridePage(JsonObject j, int state) {
+    private void ridePage(JsonObject j) {
         showNothings();
         j = j.getAsJsonObject("payload");
         setStartAndFinishPoints(j);
@@ -1049,6 +1073,58 @@ public class ActivityCity extends BaseActivity {
         viewCommentTo4.setVisibility(v);
         imgCommentTo4.setVisibility(v);
         tvCommentTo4.setVisibility(v);
+        btnEndOrder.setVisibility(View.VISIBLE);
+        btnOrderDone.setVisibility(View.GONE);
+    }
+
+    private void lastPage(JsonObject j) {
+        showNothings();
+        j = j.getAsJsonObject("payload");
+        setStartAndFinishPoints(j);
+
+        mWebHash = j.get("hash_end").getAsString();
+
+        llRide.setVisibility(View.VISIBLE);
+        llMissOrder.setVisibility(View.VISIBLE);
+        tvMissOrder.setText(getString(R.string.CANCELORDER));
+
+        j = j.getAsJsonObject("order");
+        mCurrentOrderId = j.get("completed_order_id").getAsInt();
+        tvAddressFrom4.setText(j.get("address_from").getAsString());
+        int v;
+        if (j.has("full_address_from")) {
+            String info = infoFullAddress(j.getAsJsonObject("full_address_from"));
+            v = info.isEmpty() ? View.GONE : View.VISIBLE;
+            tvCommentFrom4.setText(Html.fromHtml(infoFullAddress(j.getAsJsonObject("full_address_from")), Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            v = View.GONE;
+        }
+        tvCommentFromText4.setVisibility(v);
+        tvCommentFrom4.setVisibility(v);
+        imgCommentFrom4.setVisibility(v);
+        viewCommentFrom4.setVisibility(v);
+
+        v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
+        tvTo4.setText(j.get("address_to").getAsString());
+        tvTo4.setVisibility(v);
+        tvToText4.setVisibility(v);
+        imgTo4.setVisibility(v);
+        viewTo4.setVisibility(v);
+
+        v = View.GONE;
+        tvCommentTo4.setText("");
+        if (j.has("full_address_to")) {
+            String info = infoFullAddress(j.getAsJsonObject("full_address_to"));
+            v = info.isEmpty() ? View.GONE : View.VISIBLE;
+            tvCommentTo4.setText(Html.fromHtml(info, Html.FROM_HTML_MODE_COMPACT));
+        }
+        tvCommentToText4.setVisibility(v);
+        viewCommentTo4.setVisibility(v);
+        imgCommentTo4.setVisibility(v);
+        tvCommentTo4.setVisibility(v);
+
+        btnEndOrder.setVisibility(View.GONE);
+        btnOrderDone.setVisibility(View.VISIBLE);
     }
 
     private void showProfilePage() {
@@ -1057,6 +1133,7 @@ public class ActivityCity extends BaseActivity {
         new WebInitialInfo(new WebResponse() {
             @Override
             public void webResponse(int code, int webResponse, String s) {
+                hideProgressDialog();
                 if (webResponse > 299) {
                     mQueryStateAllowed = true;
                     UDialog.alertError(ActivityCity.this, s);
@@ -1081,6 +1158,12 @@ public class ActivityCity extends BaseActivity {
             }
         }).request();
 
+    }
+
+    private void showChatPage() {
+        showNothings();
+        llChat.setVisibility(View.VISIBLE);
+        llDownMenu.setVisibility(View.VISIBLE);
     }
 
     private void setStartAndFinishPoints(JsonObject j) {

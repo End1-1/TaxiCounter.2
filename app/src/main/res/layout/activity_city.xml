@@ -287,16 +287,7 @@
         android:layout_marginBottom="0dp"
         android:background="@drawable/citybg">
 
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/QueryState"
-            android:textSize="@dimen/middleFont"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -308,7 +299,39 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="0dp"
         android:background="@drawable/citybg"
-        android:visibility="gone">
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/firstpagebuttonbg_preorder">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/firstpagebutton_preorder"
+                />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/firstpagebutton_preorder"
+                />
+
+        </LinearLayout>
 
 
         <LinearLayout
@@ -358,19 +381,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp"
-        android:background="@color/colorWhite"
+        android:background="@drawable/downmenubg"
         android:orientation="vertical"
         android:paddingLeft="15dp"
         android:paddingTop="20dp"
         android:paddingRight="15dp"
         android:paddingBottom="20dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/menu_devider"
-            android:orientation="horizontal" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -2140,7 +2156,7 @@
         android:layout_marginBottom="0dp"
         android:background="@drawable/login_down"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <TextView
             android:layout_width="match_parent"
@@ -2199,6 +2215,7 @@
                                 android:layout_marginTop="8dp"
                                 android:layout_marginEnd="8dp"
                                 android:text="120"
+                                android:textSize="@dimen/smallFont"
                                 app:layout_constraintEnd_toStartOf="@id/tvRubSym"
                                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -2209,6 +2226,7 @@
                                 android:layout_marginTop="8dp"
                                 android:layout_marginEnd="8dp"
                                 android:text="@string/RubSymbol"
+                                android:textSize="@dimen/smallFont"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -2220,6 +2238,7 @@
                                 android:layout_marginTop="8dp"
                                 android:layout_marginBottom="10dp"
                                 android:text="@string/Balance"
+                                android:textSize="@dimen/smallFont"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -2243,6 +2262,7 @@
                                 android:layout_marginTop="8dp"
                                 android:layout_marginEnd="8dp"
                                 android:text="0"
+                                android:textSize="@dimen/smallFont"
                                 app:layout_constraintEnd_toStartOf="@+id/tvKmCaption"
                                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -2253,6 +2273,7 @@
                                 android:layout_marginTop="8dp"
                                 android:layout_marginEnd="8dp"
                                 android:text="KM"
+                                android:textSize="@dimen/smallFont"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -2263,6 +2284,7 @@
                                 android:layout_marginStart="8dp"
                                 android:layout_marginTop="8dp"
                                 android:text="@string/Mileage"
+                                android:textSize="@dimen/smallFont"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -2287,6 +2309,7 @@
                                 android:layout_marginTop="8dp"
                                 android:layout_marginEnd="8dp"
                                 android:text="120"
+                                android:textSize="@dimen/smallFont"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -2298,6 +2321,7 @@
                                 android:layout_marginTop="8dp"
                                 android:layout_marginBottom="10dp"
                                 android:text="@string/OrdersCount"
+                                android:textSize="@dimen/smallFont"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -2317,13 +2341,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:text="@string/CarOptions"
-                        android:textSize="@dimen/bigFont"
+                        android:textSize="@dimen/middleFont"
                         android:textStyle="bold" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvCarOption"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:background="#f7f8fa" />
 
                     <View
                         android:layout_width="match_parent"
@@ -2401,6 +2426,74 @@
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llChat"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/llDownMenu"
+        android:layout_alignTop="@id/clQueryState"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/login_down"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvChatDispatcher"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/chatbottomyellow"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/dispatcher"
+                android:textSize="@dimen/smallFont" />
+
+            <TextView
+                android:id="@+id/tvChatInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/Info"
+                android:textSize="@dimen/smallFont" />
+
+            <TextView
+                android:id="@+id/tvChatPassanger"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/passanger"
+                android:textSize="@dimen/smallFont" />
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/llEndOrderButtons"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></androidx.constraintlayout.widget.ConstraintLayout>
+
         </ScrollView>
     </LinearLayout>
 
