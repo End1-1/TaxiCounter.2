@@ -9,7 +9,7 @@
              android:topRightRadius="40dp"
              android:bottomLeftRadius="40dp"
              />
-      <solid android:color="#E4F8FF" />
+      <solid android:color="#fff" />
     </shape>
    </item>
  </layer-list> 

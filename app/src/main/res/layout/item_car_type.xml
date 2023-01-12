@@ -18,8 +18,7 @@
         android:gravity="center_vertical"
         android:maxLines="1"
         android:text="COMFORT"
-        android:textColor="@color/colorFiolet"
-        android:textSize="@dimen/bigFont"
+        android:textSize="@dimen/middleFont"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,11 +36,11 @@
 
     <Switch
         android:id="@+id/sw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvPrice" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

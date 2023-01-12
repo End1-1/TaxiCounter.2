@@ -310,6 +310,7 @@
             android:background="@drawable/firstpagebuttonbg_preorder">
 
             <Button
+                android:id="@+id/btnAcceptedOrders"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
@@ -317,10 +318,12 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
+                android:text="@string/accepted"
                 android:background="@drawable/firstpagebutton_preorder"
                 />
 
             <Button
+                android:id="@+id/btnListOfPreorders"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -328,7 +331,8 @@
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/firstpagebutton_preorder"
+                android:text="@string/list"
+                android:background="@drawable/firstpagebutton_preorder_inactive"
                 />
 
         </LinearLayout>
@@ -381,17 +385,22 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp"
-        android:background="@drawable/downmenubg"
-        android:orientation="vertical"
-        android:paddingLeft="15dp"
-        android:paddingTop="20dp"
-        android:paddingRight="15dp"
-        android:paddingBottom="20dp">
+
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@drawable/downmenubg" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingLeft="15dp"
+            android:paddingTop="20dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -399,13 +408,21 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"></LinearLayout>
 
-            <ImageView
-                android:id="@+id/btnHome"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/home"
-                tools:ignore="SpeakableTextPresentCheck" />
+            <LinearLayout
+                android:id="@+id/llbtnhome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_home_menu_bg"
+                android:padding="12dp">
+
+                <ImageView
+                    android:id="@+id/btnHome"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/home_passive"
+                    tools:ignore="SpeakableTextPresentCheck" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -416,17 +433,23 @@
                 <LinearLayout
                     android:layout_width="2dp"
                     android:layout_height="match_parent"
-                    android:background="@drawable/gradient_line_vert_2"
                     android:orientation="vertical" />
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/btnProfile2"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/profile_passive"
-                tools:ignore="SpeakableTextPresentCheck" />
+            <LinearLayout
+                android:id="@+id/llbtnprofile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12dp">
+
+                <ImageView
+                    android:id="@+id/btnProfile2"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/profile_passive"
+                    tools:ignore="SpeakableTextPresentCheck" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -437,17 +460,23 @@
                 <LinearLayout
                     android:layout_width="2dp"
                     android:layout_height="match_parent"
-                    android:background="@drawable/gradient_line_vert_2"
                     android:orientation="vertical" />
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/imageButton3"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/histroy_passive"
-                tools:ignore="SpeakableTextPresentCheck" />
+            <LinearLayout
+                android:id="@+id/llbtnhistory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12dp">
+
+                <ImageView
+                    android:id="@+id/imgHistory"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/histroy_passive"
+                    tools:ignore="SpeakableTextPresentCheck" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -458,16 +487,22 @@
                 <LinearLayout
                     android:layout_width="2dp"
                     android:layout_height="match_parent"
-                    android:background="@drawable/gradient_line_vert_2"
                     android:orientation="vertical" />
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/btnChat"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/chat_passive" />
+            <LinearLayout
+                android:id="@+id/llbtnchat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12dp">
+
+                <ImageView
+                    android:id="@+id/btnChat"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/chat_passive" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -2156,15 +2191,16 @@
         android:layout_marginBottom="0dp"
         android:background="@drawable/login_down"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="@string/Profile"
-            android:textSize="@dimen/smallFont" />
+            android:text="@string/settings"
+            android:textAllCaps="true"
+            android:textSize="@dimen/middleFont" />
 
         <View
             android:layout_width="match_parent"
@@ -2236,9 +2272,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
                                 android:layout_marginTop="8dp"
-                                android:layout_marginBottom="10dp"
                                 android:text="@string/Balance"
-                                android:textSize="@dimen/smallFont"
+                                android:textSize="@dimen/middleFont"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -2284,7 +2319,7 @@
                                 android:layout_marginStart="8dp"
                                 android:layout_marginTop="8dp"
                                 android:text="@string/Mileage"
-                                android:textSize="@dimen/smallFont"
+                                android:textSize="@dimen/middleFont"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -2319,9 +2354,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
                                 android:layout_marginTop="8dp"
-                                android:layout_marginBottom="10dp"
                                 android:text="@string/OrdersCount"
-                                android:textSize="@dimen/smallFont"
+                                android:textSize="@dimen/middleFont"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -2371,19 +2405,6 @@
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="10dp"
                         android:background="@color/colorFioletBlack" />
-
-                    <View
-                        android:id="@+id/vew"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/sepviewheight"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="10dp" />
-
-                    <Button
-                        android:id="@+id/btnNotification"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/Notifications" />
 
                     <View
                         android:id="@+id/vw"

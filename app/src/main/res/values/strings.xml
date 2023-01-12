@@ -116,6 +116,9 @@
     <string name="Metro">Метро</string>
     <string name="Railways">Вокзалы</string>
     <string name="Airports">Аэропорты</string>
+    <string name="accepted">принятые</string>
+    <string name="list">список</string>
+    <string name="settings">настройки</string>
     <string name="WhereToGo">Куда едем</string>
     <string name="RejectOrder">Отменить заказ</string>
     <string name="Notifications">Уведомления</string>
@@ -179,6 +182,8 @@
     <string name="you_take_order">Вы взяли срочный заказ</string>
     <string name="ClearChat">Очистить</string>
     <string name="GoodsMorning">Доброе утро</string>
+    <string name="GoodEvening">Добрый вечер</string>
+    <string name="GoodDay">Добрый день</string>
     <string name="BALANCE">ОБОРОТ</string>
     <string name="RATE">ОЦЕНКА</string>
 

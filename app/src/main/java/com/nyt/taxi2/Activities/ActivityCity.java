@@ -60,6 +60,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -72,10 +73,13 @@ public class ActivityCity extends BaseActivity {
     GDriverStatus.Point mFinishPoint = null;
     int mRouteTime = 0;
 
+    private ImageView imgSun;
+    private TextView tvSun;
     private ImageView imgProfile;
     private TextView tvDriverFullName;
     private ImageView btnHome;
     private ImageView btnChat;
+    private ImageView btnHistory;
     private ImageView btnProfile2;
     private LinearLayout llGoOnline;
     private CardView btnProfile;
@@ -85,6 +89,12 @@ public class ActivityCity extends BaseActivity {
     private TextView tvRate;
     private LinearLayout llDownMenu;
     private ConstraintLayout clFirstPage;
+    private Button btnAcceptedOrders;
+    private Button btnListOfPreorders;
+    private LinearLayout llbtnHome;
+    private LinearLayout llbtnProfile;
+    private LinearLayout llbtnHistory;
+    private LinearLayout llbtnChat;
 
     private LinearLayout llNewOrder;
     private LinearLayout llMissOrder;
@@ -198,6 +208,8 @@ public class ActivityCity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city);
 
+        imgSun = findViewById(R.id.imgSun);
+        tvSun = findViewById(R.id.txtGoodsMorning);
         tvDriverFullName = findViewById(R.id.txtDriverFullName);
         tvDriverFullName.setText(UPref.getString("driver_fullname"));
         imgProfile = findViewById(R.id.imgProfile);
@@ -205,6 +217,7 @@ public class ActivityCity extends BaseActivity {
         btnHome = findViewById(R.id.btnHome);
         imgOnlineAnim = findViewById(R.id.imgOnlineAnim);
         btnChat = findViewById(R.id.btnChat);
+        btnHistory = findViewById(R.id.imgHistory);
         btnProfile2 = findViewById(R.id.btnProfile2);
         btnProfile = findViewById(R.id.btnProfile);
         llGoOnline = findViewById(R.id.llGoOnline);
@@ -214,6 +227,12 @@ public class ActivityCity extends BaseActivity {
         tvRate = findViewById(R.id.txtRate);
         llDownMenu = findViewById(R.id.llDownMenu);
         clFirstPage = findViewById(R.id.clFirstPage);
+        btnAcceptedOrders = findViewById(R.id.btnAcceptedOrders);
+        btnListOfPreorders = findViewById(R.id.btnListOfPreorders);
+        llbtnHome = findViewById(R.id.llbtnhome);
+        llbtnProfile = findViewById(R.id.llbtnprofile);
+        llbtnHistory = findViewById(R.id.llbtnhistory);
+        llbtnChat = findViewById(R.id.llbtnchat);
 
         llNewOrder = findViewById(R.id.llNewOrder);
         llMissOrder = findViewById(R.id.llMissOrder);
@@ -338,6 +357,9 @@ public class ActivityCity extends BaseActivity {
         tvChatDispatcher.setOnClickListener(this);
         tvChatInfo.setOnClickListener(this);
         tvChatPassanger.setOnClickListener(this);
+        btnAcceptedOrders.setOnClickListener(this);
+        btnListOfPreorders.setOnClickListener(this);
+        btnHistory.setOnClickListener(this);
         authToSocket();
         showNothings();
         if (getIntent().getStringExtra("neworder") != null) {
@@ -346,6 +368,7 @@ public class ActivityCity extends BaseActivity {
 
         imgOnlineAnim.setBackgroundResource(R.drawable.online_anim);
         ((AnimationDrawable) imgOnlineAnim.getBackground()).start();
+        new Timer().schedule(ttIconOfDay, 10000);
     }
 
     @Override
@@ -358,6 +381,18 @@ public class ActivityCity extends BaseActivity {
     @Override
     public void handleClick(int id) {
         switch (id) {
+            case R.id.btnAcceptedOrders:
+                btnListOfPreorders.setBackground(getDrawable(R.drawable.firstpagebutton_preorder_inactive));
+                btnAcceptedOrders.setBackground(getDrawable(R.drawable.firstpagebutton_preorder));
+                btnListOfPreorders.setTextColor(getColor(R.color.colorGray));
+                btnAcceptedOrders.setTextColor(getColor(R.color.colorBlack));
+                break;
+            case R.id.btnListOfPreorders:
+                btnListOfPreorders.setBackground(getDrawable(R.drawable.firstpagebutton_preorder));
+                btnAcceptedOrders.setBackground(getDrawable(R.drawable.firstpagebutton_preorder_inactive));
+                btnListOfPreorders.setTextColor(getColor(R.color.colorBlack));
+                btnAcceptedOrders.setTextColor(getColor(R.color.colorGray));
+                break;
             case R.id.tvChatDispatcher:
                 tvChatDispatcher.setBackground(getDrawable(R.drawable.chatbottomyellow));
                 tvChatInfo.setBackground(null);
@@ -431,23 +466,35 @@ public class ActivityCity extends BaseActivity {
                         });
                 break;
             case R.id.btnHome:
+                hideDownMenuBackgrounds();
+                llbtnHome.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
                 queryState();
                 break;
             case R.id.btnChat: {
+                hideDownMenuBackgrounds();
+                llbtnChat.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
 //                Intent intent = new Intent(this, ActivityChatAdmin.class);
 //                startActivity(intent);
                 showChatPage();
                 break;
             }
             case R.id.btnProfile2:
+                hideDownMenuBackgrounds();
+                llbtnProfile.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
                 showProfilePage();
                 break;
             case R.id.btnProfile:
+                hideDownMenuBackgrounds();
+                llbtnProfile.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
                 if (llProfile.getVisibility() == View.GONE) {
                     showProfilePage();
                 } else {
                     queryState();
                 }
+                break;
+            case R.id.btnHistory:
+                hideDownMenuBackgrounds();
+                llbtnHistory.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
                 break;
             case R.id.llGoOnline: {
                 createProgressDialog(R.string.Empty, R.string.Wait);
@@ -1233,6 +1280,13 @@ public class ActivityCity extends BaseActivity {
         }
     }
 
+    private void hideDownMenuBackgrounds() {
+        llbtnHome.setBackground(null);
+        llbtnProfile.setBackground(null);
+        llbtnHistory.setBackground(null);
+        llbtnChat.setBackground(null);
+    }
+
     private void updatePhoto() {
         WebRequest.create(UPref.getString("photo_link"), WebRequest.HttpMethod.GET, new WebRequest.HttpResponseByte() {
             @Override
@@ -1270,6 +1324,30 @@ public class ActivityCity extends BaseActivity {
                 }
                 tvWaitTime3.setText(s);
             });
+        }
+    };
+
+    TimerTask ttIconOfDay = new TimerTask() {
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable() {
+              @Override
+              public void run() {
+                  Calendar cal = Calendar.getInstance();
+                  int hour = cal.get(Calendar.HOUR_OF_DAY);
+                  imgSun.setImageDrawable(null);
+                  if (hour >=6 && hour < 12) {
+                      tvSun.setText(getString(R.string.GoodsMorning));
+                      imgSun.setBackgroundResource(R.drawable.sunrise);
+                  } else if (hour >= 12 && hour < 19) {
+                      imgSun.setBackgroundResource(R.drawable.sun);
+                      tvSun.setText(getString(R.string.GoodDay));
+                  } else {
+                      imgSun.setBackgroundResource(R.drawable.moon);
+                      tvSun.setText(getString(R.string.GoodEvening));
+                  }
+              }
+          });
         }
     };
 }
