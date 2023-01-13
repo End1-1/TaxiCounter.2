@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.nyt.taxi2.Activities.ActivityCity;
 import com.nyt.taxi2.Activities.ProfileActivity;
 import com.nyt.taxi2.Activities.Workspace;
 import com.nyt.taxi2.R;
@@ -72,8 +73,7 @@ public class ProfileMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         public void onClick(View v) {
             switch (mAction) {
                 case mclProfile:
-                    Intent intent = new Intent(mContext, ProfileActivity.class);
-                    mContext.startActivity(intent);
+                    ((ActivityCity) mContext).showDriverInfo();
                     break;
             }
         }

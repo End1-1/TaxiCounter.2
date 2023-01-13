@@ -6,7 +6,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
@@ -17,7 +16,6 @@ import android.widget.LinearLayout;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.nyt.taxi2.Activities.ProfileActivity;
 import com.nyt.taxi2.Activities.TaxiApp;
 import com.nyt.taxi2.Activities.Workspace;
 import com.nyt.taxi2.R;
@@ -25,10 +23,8 @@ import com.nyt.taxi2.Utils.UDialog;
 import com.nyt.taxi2.Utils.UPref;
 import com.nyt.taxi2.Web.WebQuery;
 import com.nyt.taxi2.Web.WebResponse;
-import com.nyt.taxi2.databinding.ActivityProfileBinding;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -48,9 +44,9 @@ public class ProfileMenu implements View.OnClickListener{
 
     public ProfileMenu(Workspace w) {
         mWorkspace = w;
-        imageView = w.findViewById(R.id.imageView);
+        imageView = w.findViewById(R.id.imgDiverProfilePhoto);
         imageView.setOnClickListener(this);
-        btnSave = w.findViewById(R.id.btnSave);
+        btnSave = w.findViewById(R.id.btnSaveDriverInfo);
         btnSave.setOnClickListener(this);
         imageView.setImageBitmap(getProfileImage());
         backprofile = w.findViewById(R.id.backprofile);
@@ -70,7 +66,7 @@ public class ProfileMenu implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnSave:
+            case R.id.btnSaveDriverInfo:
                 WebQuery webQuery = new WebQuery(mHostUrl + "/api/driver/profile/update", WebQuery.HttpMethod.POST,
                         WebResponse.mResponseDriverProfileUpdate, mWebResponse);
                 webQuery//.setParameter("driver_id", Integer.toString(UPref.getInt("driver_id")))
@@ -83,7 +79,7 @@ public class ProfileMenu implements View.OnClickListener{
                 UPref.setString("driver_fullname", edDriverSurname.getText().toString() + " " + edDriverName.getText().toString());
                 UPref.setString("driver_city", edPatronik.getText().toString());
                 break;
-            case R.id.imageView:
+            case R.id.imgDiverProfilePhoto:
                 dispatchTakePictureIntent();
                 break;
             case R.id.backprofile:

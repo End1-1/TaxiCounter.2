@@ -1,7 +1,12 @@
 package com.nyt.taxi2.Activities;
 
+import static com.nyt.taxi2.Utils.UConfig.mHostUrl;
+
+import android.Manifest;
 import android.animation.TimeAnimator;
 import android.animation.ValueAnimator;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,17 +19,22 @@ import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.Html;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -68,6 +78,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ActivityCity extends BaseActivity {
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_CAMERA = 2;
 
     GDriverStatus.Point mStartPoint = null;
     GDriverStatus.Point mFinishPoint = null;
@@ -203,6 +216,16 @@ public class ActivityCity extends BaseActivity {
     private TextView tvChatInfo;
     private TextView tvChatPassanger;
 
+    private LinearLayout llDriverInfo;
+    private EditText edDriverNick;
+    private EditText edDriverName;
+    private EditText edDriverSurname;
+    private EditText edDriverPatronik;
+    private EditText edDriverPhone;
+    private EditText edDriverEmail;
+    private ImageView imgDriverProfilePhoto;
+    private Button btnSaveDriverInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -210,6 +233,8 @@ public class ActivityCity extends BaseActivity {
 
         imgSun = findViewById(R.id.imgSun);
         tvSun = findViewById(R.id.txtGoodsMorning);
+        imgSun.setBackgroundResource(0);
+        tvSun.setText("");
         tvDriverFullName = findViewById(R.id.txtDriverFullName);
         tvDriverFullName.setText(UPref.getString("driver_fullname"));
         imgProfile = findViewById(R.id.imgProfile);
@@ -333,6 +358,16 @@ public class ActivityCity extends BaseActivity {
         tvChatInfo = findViewById(R.id.tvChatInfo);
         tvChatPassanger = findViewById(R.id.tvChatPassanger);
 
+        llDriverInfo = findViewById(R.id.llDriverInfo);
+        edDriverName = findViewById(R.id.edDriverName);
+        edDriverNick = findViewById(R.id.edDriverNick);
+        edDriverSurname = findViewById(R.id.edDriverSurname);
+        edDriverPatronik = findViewById(R.id.edPatronik);
+        edDriverPhone = findViewById(R.id.edPhoneNumber);
+        edDriverEmail = findViewById(R.id.edEmail);
+        imgDriverProfilePhoto = findViewById(R.id.imgDiverProfilePhoto);
+        btnSaveDriverInfo = findViewById(R.id.btnSaveDriverInfo);
+
         btnChat.setOnClickListener(this);
         btnProfile2.setOnClickListener(this);
         btnHome.setOnClickListener(this);
@@ -360,6 +395,8 @@ public class ActivityCity extends BaseActivity {
         btnAcceptedOrders.setOnClickListener(this);
         btnListOfPreorders.setOnClickListener(this);
         btnHistory.setOnClickListener(this);
+        btnSaveDriverInfo.setOnClickListener(this);
+        imgDriverProfilePhoto.setOnClickListener(this);
         authToSocket();
         showNothings();
         if (getIntent().getStringExtra("neworder") != null) {
@@ -381,6 +418,32 @@ public class ActivityCity extends BaseActivity {
     @Override
     public void handleClick(int id) {
         switch (id) {
+            case R.id.imgDiverProfilePhoto:
+                if (checkCameraPermission(this)) {
+                    dispatchTakePictureIntent();
+                }
+                break;
+            case R.id.btnSaveDriverInfo: {
+                createProgressDialog();
+                WebQuery.create(mHostUrl + "/api/driver/profile/update", WebQuery.HttpMethod.POST,
+                        WebResponse.mResponseDriverProfileUpdate, new WebResponse() {
+                    @Override
+                    public void webResponse(int code, int webResponse, String s) {
+                        if (webResponseOK(webResponse, s)) {
+                            UDialog.alertOK(ActivityCity.this, R.string.saved);
+                        }
+                    }
+                })
+                        .setParameter("phone", edDriverPhone.getText().toString())
+                        .setParameter("patronymic", edDriverPatronik.getText().toString())
+                        .setParameter("email", edDriverEmail.getText().toString())
+                        .setParameter("name", edDriverName.getText().toString())
+                        .setParameter("surname", edDriverSurname.getText().toString())
+                        .request();
+                UPref.setString("driver_fullname", edDriverSurname.getText().toString() + " " + edDriverName.getText().toString());
+                UPref.setString("driver_city", edDriverPatronik.getText().toString());
+                break;
+            }
             case R.id.btnAcceptedOrders:
                 btnListOfPreorders.setBackground(getDrawable(R.drawable.firstpagebutton_preorder_inactive));
                 btnAcceptedOrders.setBackground(getDrawable(R.drawable.firstpagebutton_preorder));
@@ -492,7 +555,7 @@ public class ActivityCity extends BaseActivity {
                     queryState();
                 }
                 break;
-            case R.id.btnHistory:
+            case R.id.imgHistory:
                 hideDownMenuBackgrounds();
                 llbtnHistory.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
                 break;
@@ -962,6 +1025,7 @@ public class ActivityCity extends BaseActivity {
         llRide.setVisibility(View.GONE);
         llProfile.setVisibility(View.GONE);
         llChat.setVisibility(View.GONE);
+        llDriverInfo.setVisibility(View.GONE);
         tvKm.setText("0");
         tvMin.setText("00:00");
         tvRideAmount.setText("0" + getString(R.string.RubSymbol));
@@ -1213,6 +1277,48 @@ public class ActivityCity extends BaseActivity {
         llDownMenu.setVisibility(View.VISIBLE);
     }
 
+    public void showDriverInfo() {
+        showNothings();
+        createProgressDialog();
+        WebRequest.create("/api/driver/driver_info", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
+            @Override
+            public void httpRespone(int httpReponseCode, String data) {
+                if (httpReponseCode > 299) {
+                    hideProgressDialog();
+                    queryState();
+                    UDialog.alertError(ActivityCity.this, data);
+                    return;
+                }
+                JsonObject jo = JsonParser.parseString(data).getAsJsonObject();
+                edDriverNick.setText(jo.get("driver_nickname").getAsString());
+                edDriverName.setText(jo.getAsJsonObject("driver_info").get("name").getAsString());
+                edDriverPatronik.setText(jo.getAsJsonObject("driver_info").get("patronymic").getAsString());
+                edDriverSurname.setText(jo.getAsJsonObject("driver_info").get("surname").getAsString());
+                edDriverPhone.setText(jo.get("driver_phone").getAsString());
+                edDriverEmail.setText(jo.getAsJsonObject("driver_info").get("email").getAsString());
+
+                WebRequest.create(jo.getAsJsonObject("driver_info").get("photo").getAsString(), WebRequest.HttpMethod.GET, new WebRequest.HttpResponseByte() {
+                    @Override
+                    public void httpResponse(int httpResponseCode, byte[] data) {
+                        if (httpResponseCode > 299) {
+                            hideProgressDialog();
+                            queryState();
+                            UDialog.alertError(ActivityCity.this, getString(R.string.ErrorGetDriverPhoto));
+                            return;
+                        }
+                        if (data != null) {
+                            Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                            imgDriverProfilePhoto.setImageBitmap(bmp);
+                        }
+                        llDriverInfo.setVisibility(View.VISIBLE);
+                        llDownMenu.setVisibility(View.VISIBLE);
+                    }
+                }).request();
+            }
+        }).request();
+
+    }
+
     private void setStartAndFinishPoints(JsonObject j) {
         mStartPoint = null;
         mFinishPoint = null;
@@ -1306,6 +1412,49 @@ public class ActivityCity extends BaseActivity {
                 }
             }
         }).request();
+    }
+
+    private boolean checkCameraPermission(Context context) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ) {
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.CAMERA}, REQUEST_CAMERA);
+            return false;
+        }
+        return true;
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        try {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        } catch (ActivityNotFoundException e) {
+            // display error state to the user
+        }
+    }
+
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_CAMERA:
+                if (grantResults.length == 0) {
+                    UDialog.alertError(this, R.string.YouNeedCameraPermission).setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+
+                        }
+                    });
+                }
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    onClick(findViewById(R.id.imgDiverProfilePhoto));
+                } else {
+                    UDialog.alertError(this, R.string.YouNeedCameraPermission).setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+
+                        }
+                    });
+                }
+        }
     }
 
     private Timer t = null;

@@ -3,7 +3,6 @@ package com.nyt.taxi2.Activities;
 import static com.nyt.taxi2.Utils.UConfig.mHostUrl;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -48,9 +47,9 @@ public class ProfileActivity extends BaseActivity  {
         super.onCreate(savedInstanceState);
         bind = ActivityProfileBinding.inflate(getLayoutInflater());
         setContentView(bind.getRoot());
-        bind.imageView.setOnClickListener(this);
-        findViewById(R.id.btnSave).setOnClickListener(this);
-        bind.imageView.setImageBitmap(getProfileImage());
+        bind.imgDiverProfilePhoto.setOnClickListener(this);
+        findViewById(R.id.btnSaveDriverInfo).setOnClickListener(this);
+        bind.imgDiverProfilePhoto.setImageBitmap(getProfileImage());
         bind.back.setOnClickListener(this);
         com.nyt.taxi2.Services.WebRequest.create("/api/driver/driver_info", WebRequest.HttpMethod.GET, mDriverInfo).request();
     }
@@ -73,7 +72,7 @@ public class ProfileActivity extends BaseActivity  {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.btnSave:
+            case R.id.btnSaveDriverInfo:
                 WebQuery webQuery = new WebQuery(mHostUrl + "/api/driver/profile/update", WebQuery.HttpMethod.POST,
                         WebResponse.mResponseDriverProfileUpdate, mWebResponse);
                 webQuery//.setParameter("driver_id", Integer.toString(UPref.getInt("driver_id")))
@@ -86,7 +85,7 @@ public class ProfileActivity extends BaseActivity  {
                 UPref.setString("driver_fullname", bind.edDriverSurname.getText().toString() + " " + bind.edDriverName.getText().toString());
                 UPref.setString("driver_city", bind.edPatronik.getText().toString());
                 break;
-            case R.id.imageView:
+            case R.id.imgDiverProfilePhoto:
                 if (checkCameraPermission(this)) {
                     dispatchTakePictureIntent();
                 }
@@ -144,7 +143,7 @@ public class ProfileActivity extends BaseActivity  {
                 return;
             }
             Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-            bind.imageView.setImageBitmap(bmp);
+            bind.imgDiverProfilePhoto.setImageBitmap(bmp);
         }
     };
 
@@ -161,7 +160,7 @@ public class ProfileActivity extends BaseActivity  {
                     });
                 }
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    onClick(findViewById(R.id.imageView));
+                    onClick(findViewById(R.id.imgDiverProfilePhoto));
                 } else {
                     UDialog.alertError(this, R.string.YouNeedCameraPermission).setOnDismissListener(new DialogInterface.OnDismissListener() {
                         @Override
@@ -183,7 +182,7 @@ public class ProfileActivity extends BaseActivity  {
             int height = imageBitmap.getHeight();
             int crop = (height - width);
             imageBitmap = Bitmap.createBitmap(imageBitmap, 0, 0, width, width);
-            bind.imageView.setImageBitmap(imageBitmap);
+            bind.imgDiverProfilePhoto.setImageBitmap(imageBitmap);
 
             File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             try (FileOutputStream out = new FileOutputStream(storageDir.getAbsolutePath() + "/drvface.png")) {

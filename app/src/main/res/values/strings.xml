@@ -158,6 +158,7 @@
     <string name="privacypolicy">Политика конфидециальности \n Privacy policy</string>
     <string name="patronymic_name">Отчество</string>
     <string name="name">Имя</string>
+    <string name="saved">сохранено</string>
     <string name="nickname">Ник</string>
     <string name="surname">Фамилия</string>
     <string name="phone_number">Номер телефона</string>
