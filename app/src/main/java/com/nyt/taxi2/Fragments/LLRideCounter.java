@@ -2,18 +2,13 @@ package com.nyt.taxi2.Fragments;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -25,14 +20,12 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.nyt.taxi2.Activities.ChatActivity;
 import com.nyt.taxi2.Activities.Workspace;
-import com.nyt.taxi2.Messages.LocalMessage;
 import com.nyt.taxi2.Order.TimeLineView;
 import com.nyt.taxi2.R;
 import com.nyt.taxi2.Services.WebSocketHttps;
@@ -124,7 +117,7 @@ public class LLRideCounter extends LLRoot implements
         slip = w.findViewById(R.id.slip);
         assessment = w.findViewById(R.id.assessment);
         showhide = w.findViewById(R.id.showhide);
-        tvDistance = w.findViewById(R.id.tvDistance);
+        tvDistance = w.findViewById(R.id.txtDistance);
         tvRideTime = w.findViewById(R.id.tvRideTime);
         tvRideWaitTime = w.findViewById(R.id.tvRideWaitTime);
         tvFromInfo2 = w.findViewById(R.id.fromInfo);

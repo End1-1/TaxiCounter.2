@@ -7,7 +7,6 @@ import static com.nyt.taxi2.Interfaces.WorkMenuInterface.mclProfile;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -24,7 +23,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.nyt.taxi2.Activities.OrdersHistoryActivity;
 import com.nyt.taxi2.Activities.ProfileActivity;
-import com.nyt.taxi2.Activities.Today;
 import com.nyt.taxi2.Activities.Workspace;
 import com.nyt.taxi2.Model.GCarClasses;
 import com.nyt.taxi2.Model.GInitialInfo;
@@ -41,7 +39,6 @@ import com.nyt.taxi2.Web.WebLogout;
 import com.nyt.taxi2.Web.WebResponse;
 import com.nyt.taxi2.Web.WebToggleCarClass;
 import com.nyt.taxi2.Web.WebToggleCarOption;
-import com.nyt.taxi2.databinding.ActivityTodayBinding;
 
 import java.util.ArrayList;
 
@@ -109,7 +106,7 @@ public class TodayMenu implements View.OnClickListener {
         tvActivity = ws.findViewById(R.id.tvActivity);
         tvAmountLMenu = ws.findViewById(R.id.tvAmountLMenu);
         tvRating = ws.findViewById(R.id.tvRating);
-        tvDistance = ws.findViewById(R.id.tvDistance);
+        tvDistance = ws.findViewById(R.id.txtDistance);
         tvBalance = ws.findViewById(R.id.tvBalance);
     }
 

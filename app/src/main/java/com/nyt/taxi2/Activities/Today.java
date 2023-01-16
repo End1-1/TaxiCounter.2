@@ -273,7 +273,7 @@ public class Today extends BaseActivity implements WorkMenuInterface {
                     break;
                 case mResponseInitialInfo:
                     GInitialInfo info = GInitialInfo.parse(s, GInitialInfo.class);
-                    bind.tvDistance.setText(String.format("%.1f", info.distance));
+                    bind.txtDistance.setText(String.format("%.1f", info.distance));
                     bind.tvBalance.setText(String.format("%.0f", info.balance));
                     System.out.println(s);
                     break;

@@ -822,7 +822,7 @@
                         app:srcCompat="@drawable/fromto" />
 
                     <TextView
-                        android:id="@+id/tvDistance"
+                        android:id="@+id/txtDistance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -2528,7 +2528,7 @@
         android:layout_marginBottom="0dp"
         android:background="@drawable/login_down"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <TextView
             android:layout_width="match_parent"
@@ -2744,5 +2744,60 @@
 
         </ScrollView>
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llhistory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/llDownMenu"
+        android:layout_alignTop="@id/clQueryState"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/login_down"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/HistoryOfOrders"
+            android:textAllCaps="true"
+            android:textSize="@dimen/middleFont" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sepviewheight"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/colorGrayLight2" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/llEndOrderButtons"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorSashaGray">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvOrdersHistory"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+    </LinearLayout>
+
 
 </RelativeLayout>

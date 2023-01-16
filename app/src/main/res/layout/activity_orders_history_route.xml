@@ -247,7 +247,7 @@
             android:background="@null" />
 
         <TextView
-            android:id="@+id/tvDistance"
+            android:id="@+id/txtDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="360km" />

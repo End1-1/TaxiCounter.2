@@ -38,12 +38,16 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.nyt.taxi2.Adapters.HistoryOfOrders;
 import com.nyt.taxi2.Model.GDriverStatus;
 import com.nyt.taxi2.Model.GInitialInfo;
 import com.nyt.taxi2.Model.GOrderDayInfo;
+import com.nyt.taxi2.Model.Order;
 import com.nyt.taxi2.R;
 import com.nyt.taxi2.Services.FileLogger;
 import com.nyt.taxi2.Services.FirebaseHandler;
@@ -226,6 +230,11 @@ public class ActivityCity extends BaseActivity {
     private ImageView imgDriverProfilePhoto;
     private Button btnSaveDriverInfo;
 
+    private int mCurrentSkip = 0;
+    private HistoryOfOrders mHistoryOrderAdapter = new HistoryOfOrders(this);
+    private LinearLayout llHistory;
+    private RecyclerView rvOrdersHistory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -268,7 +277,7 @@ public class ActivityCity extends BaseActivity {
         viewTo = findViewById(R.id.viewTo);
         tvAddressCommentFrom = findViewById(R.id.tvAddressCommentFrom);
         tvCarClass = findViewById(R.id.tvCarClass);
-        tvDistance = findViewById(R.id.tvDistance);
+        tvDistance = findViewById(R.id.txtDistance);
         tvRideTime = findViewById(R.id.tvRideTime);
         tvPaymentMethod = findViewById(R.id.tvPaymentMethod);
         tvArrivalToClient = findViewById(R.id.tvArrivalTime);
@@ -367,6 +376,11 @@ public class ActivityCity extends BaseActivity {
         edDriverEmail = findViewById(R.id.edEmail);
         imgDriverProfilePhoto = findViewById(R.id.imgDiverProfilePhoto);
         btnSaveDriverInfo = findViewById(R.id.btnSaveDriverInfo);
+
+        llHistory = findViewById(R.id.llhistory);
+        rvOrdersHistory = findViewById(R.id.rvOrdersHistory);
+        rvOrdersHistory.setLayoutManager(new LinearLayoutManager(this));
+        rvOrdersHistory.setAdapter(mHistoryOrderAdapter);
 
         btnChat.setOnClickListener(this);
         btnProfile2.setOnClickListener(this);
@@ -558,6 +572,7 @@ public class ActivityCity extends BaseActivity {
             case R.id.imgHistory:
                 hideDownMenuBackgrounds();
                 llbtnHistory.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
+                showHistoryPage();
                 break;
             case R.id.llGoOnline: {
                 createProgressDialog(R.string.Empty, R.string.Wait);
@@ -1026,6 +1041,7 @@ public class ActivityCity extends BaseActivity {
         llProfile.setVisibility(View.GONE);
         llChat.setVisibility(View.GONE);
         llDriverInfo.setVisibility(View.GONE);
+        llHistory.setVisibility(View.GONE);
         tvKm.setText("0");
         tvMin.setText("00:00");
         tvRideAmount.setText("0" + getString(R.string.RubSymbol));
@@ -1300,8 +1316,8 @@ public class ActivityCity extends BaseActivity {
                 WebRequest.create(jo.getAsJsonObject("driver_info").get("photo").getAsString(), WebRequest.HttpMethod.GET, new WebRequest.HttpResponseByte() {
                     @Override
                     public void httpResponse(int httpResponseCode, byte[] data) {
+                        hideProgressDialog();
                         if (httpResponseCode > 299) {
-                            hideProgressDialog();
                             queryState();
                             UDialog.alertError(ActivityCity.this, getString(R.string.ErrorGetDriverPhoto));
                             return;
@@ -1317,6 +1333,38 @@ public class ActivityCity extends BaseActivity {
             }
         }).request();
 
+    }
+
+    private void showHistoryPage() {
+        showNothings();
+        mCurrentSkip = 0;
+        mHistoryOrderAdapter.mOrders.clear();
+        mHistoryOrderAdapter.notifyDataSetChanged();
+        llHistory.setVisibility(View.VISIBLE);
+        llDownMenu.setVisibility(View.VISIBLE);
+        getOrdersOfHistory();
+    }
+
+    public void getOrdersOfHistory() {
+        createProgressDialog();
+        WebRequest.create(String.format("/api/driver/order_list/%d/%d", 10, mCurrentSkip), WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
+            @Override
+            public void httpRespone(int httpReponseCode, String data) {
+                if (!webResponseOK(httpReponseCode, data)) {
+                    return;
+                }
+                JsonArray ja = JsonParser.parseString(data).getAsJsonArray();
+                GsonBuilder gb = new GsonBuilder();
+                Gson g = gb.create();
+                for (int i = 0; i < ja.size(); i++) {
+                    JsonObject jo = ja.get(i).getAsJsonObject();
+                    Order o = g.fromJson(jo, Order.class);
+                    mHistoryOrderAdapter.mOrders.add(o);
+                    mCurrentSkip ++;
+                }
+                mHistoryOrderAdapter.notifyDataSetChanged();
+            }
+        }).request();
     }
 
     private void setStartAndFinishPoints(JsonObject j) {
@@ -1454,6 +1502,41 @@ public class ActivityCity extends BaseActivity {
                         }
                     });
                 }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            int width = imageBitmap.getWidth();
+            int height = imageBitmap.getHeight();
+            int crop = (height - width);
+            imageBitmap = Bitmap.createBitmap(imageBitmap, 0, 0, width, width);
+            imgDriverProfilePhoto.setImageBitmap(imageBitmap);
+
+            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            try (FileOutputStream out = new FileOutputStream(storageDir.getAbsolutePath() + "/drvface.png")) {
+                imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                createProgressDialog();
+                WebRequest.create("/api/driver/profile/update", WebRequest.HttpMethod.POST, new WebRequest.HttpResponse() {
+                            @Override
+                            public void httpRespone(int httpReponseCode, String data) {
+                                hideProgressDialog();
+                                if (httpReponseCode > 299) {
+                                    UDialog.alertError(ActivityCity.this, getString(R.string.Error));
+                                    return;
+                                }
+                                UDialog.alertOK(ActivityCity.this, R.string.Saved);
+                            }
+                        })
+                        .setFile("photo_file", storageDir.getAbsolutePath() + "/drvface.png")
+                        .request();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

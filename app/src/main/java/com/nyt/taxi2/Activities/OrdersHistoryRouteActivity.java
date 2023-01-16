@@ -84,7 +84,7 @@ public class OrdersHistoryRouteActivity extends BaseActivity {
         }
 
         double distance = mOneOrder.distance;
-        mBind.tvDistance.setText(String.format("%.1f", distance));
+        mBind.txtDistance.setText(String.format("%.1f", distance));
 
         long time = mOneOrder.duration;
         long hour = time / 3600;
