@@ -385,7 +385,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp"
-
+        android:background="@color/transparent"
+        android:translationZ="10dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -400,6 +401,7 @@
             android:paddingLeft="15dp"
             android:paddingTop="20dp"
             android:paddingRight="15dp"
+            android:background="@color/transparent"
             android:paddingBottom="20dp">
 
             <LinearLayout
@@ -2460,7 +2462,7 @@
         android:layout_marginBottom="0dp"
         android:background="@drawable/login_down"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -2502,20 +2504,33 @@
                 android:textSize="@dimen/smallFont" />
         </LinearLayout>
 
-        <ScrollView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvChatMessages"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/llEndOrderButtons"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_weight="1"
+            android:background="@color/colorWhite" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+            <EditText
+                android:id="@+id/edChatSendMessage"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></androidx.constraintlayout.widget.ConstraintLayout>
-
-        </ScrollView>
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <ImageButton
+                android:id="@+id/imgSendChatMessage"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:padding="5dp"
+                app:srcCompat="@drawable/send" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -2752,7 +2767,7 @@
         android:layout_above="@+id/llDownMenu"
         android:layout_alignTop="@id/clQueryState"
         android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp"
+        android:layout_marginBottom="-10dp"
         android:background="@drawable/login_down"
         android:orientation="vertical"
         android:visibility="gone">
@@ -2785,8 +2800,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorSashaGray">
+                android:layout_height="wrap_content">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvOrdersHistory"

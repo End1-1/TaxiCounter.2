@@ -23,7 +23,7 @@ public class HistoryOfOrders extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public int mCurrentPosition = -1;
     public ArrayList<Order> mOrders = new ArrayList<>();
     private boolean mShowLoadMore = false;
-    private boolean mLoadMoreVisible = true;
+    private boolean mLoadMoreVisible = false;
 
     public HistoryOfOrders(Context c) {
         mContext = c;
