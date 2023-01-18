@@ -1,8 +1,5 @@
 package com.nyt.taxi2.Utils;
 
-import static com.nyt.taxi2.Interfaces.WorkMenuInterface.mclLandscapeOrientation;
-import static com.nyt.taxi2.Interfaces.WorkMenuInterface.mclProfile;
-
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -32,12 +29,12 @@ public class ProfileMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         mContext = c;
 
         MenuAdapterOption ma = new MenuAdapterOption();
-        ma.mAction = mclProfile;
+        ma.mAction = 1;
         ma.mTitle = mContext.getString(R.string.Profile);
         ma.mImage = R.drawable.roza;
         mData.add(ma);
         ma = new MenuAdapterOption();
-        ma.mAction = mclLandscapeOrientation;
+        ma.mAction = 2;
         ma.mTitle = mContext.getString(R.string.LangscapeOrientation);
         ma.mImage = R.drawable.landscape;
         mData.add(ma);
@@ -72,7 +69,7 @@ public class ProfileMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @Override
         public void onClick(View v) {
             switch (mAction) {
-                case mclProfile:
+                case 1:
                     ((ActivityCity) mContext).showDriverInfo();
                     break;
             }
@@ -84,10 +81,10 @@ public class ProfileMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             mTextView.setText(mao.mTitle);
             //mImageView.setImageDrawable(getDrawable(mao.mImage));
             switch (i) {
-                case mclProfile:
+                case 1:
                     mSwitch.setVisibility(View.GONE);
                     break;
-                case mclLandscapeOrientation:
+                case 2:
                     mSwitch.setChecked(UPref.getBoolean("display_landscape"));
                     mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override

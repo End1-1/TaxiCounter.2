@@ -177,7 +177,9 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
             if (intent.getBooleanExtra("OrderUpdated", false)) {
                 orderUpdated();
             } else if (intent.getBooleanExtra("CallCenterWorkerDriverChat", false)) {
-
+                JsonObject jo = JsonParser.parseString(intent.getStringExtra("data")).getAsJsonObject();
+                chatWithWorker(jo.get("text").getAsString(), jo.get("created_at").getAsString(), jo.get("worker_driver_chat_id").getAsInt());
+                return;
             } else if (intent.getBooleanExtra("chatwithworker", false)) {
                 JsonObject jo = JsonParser.parseString(intent.getStringExtra("data")).getAsJsonObject();
                 chatWithWorker(jo.get("text").getAsString(), jo.get("created_at").getAsString(), jo.get("order_worker_message_id").getAsInt());

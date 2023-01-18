@@ -6,10 +6,10 @@
             <stroke android:color="#fefefe" android:width="2dp" />
             <!--corners allow us to make the rounded corners button-->
             <corners
-                android:topRightRadius="10dp"
-                android:bottomRightRadius="10dp"
-                android:bottomLeftRadius="10dp"
-                android:topLeftRadius="10dp"/>
+                android:topRightRadius="30dp"
+                android:bottomRightRadius="5dp"
+                android:bottomLeftRadius="30dp"
+                android:topLeftRadius="30dp"/>
         </shape>
     </item>
 </selector>

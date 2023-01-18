@@ -1,10 +1,5 @@
 package com.nyt.taxi2.Services;
 
-import static com.nyt.taxi2.Interfaces.WorkMenuInterface.mclLandscapeOrientation;
-import static com.nyt.taxi2.Interfaces.WorkMenuInterface.mclNavigator;
-import static com.nyt.taxi2.Interfaces.WorkMenuInterface.mclNavigatorNightMode;
-import static com.nyt.taxi2.Interfaces.WorkMenuInterface.mclProfile;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
@@ -209,21 +204,6 @@ public class TodayMenu implements View.OnClickListener {
         }
     }
 
-    public void click(int action) {
-        switch (action) {
-        case mclProfile:
-            mWorkspace.hideTodayMenu();
-            if (UPref.getBoolean("display_landscape")) {
-                close();
-                mWorkspace.showProfile(true);
-            } else {
-                Intent intent = new Intent(mWorkspace, ProfileActivity.class);
-                mWorkspace.startActivity(intent);
-            }
-            break;
-    }
-    }
-
     public class MenuAdapterOption {
         int mAction;
         int mImage;
@@ -408,7 +388,7 @@ public class TodayMenu implements View.OnClickListener {
 
     private class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        private class MenuAdapterHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private class MenuAdapterHolder extends RecyclerView.ViewHolder  {
 
             int mAction;
             private ImageView mImageView;
@@ -420,57 +400,7 @@ public class TodayMenu implements View.OnClickListener {
                 mImageView = v.findViewById(R.id.img);
                 mTextView = v.findViewById(R.id.tvCaption);
                 mSwitch = v.findViewById(R.id.idSwitch);
-                v.setOnClickListener(this);
-            }
 
-            @Override
-            public void onClick(View v) {
-                click(mAction);
-            }
-
-            public void bind(int i) {
-                MenuAdapterOption mao = mData.get(i);
-                mAction = mao.mAction;
-                mTextView.setText(mao.mTitle);
-                //mImageView.setImageDrawable(getDrawable(mao.mImage));
-                switch (i) {
-                    case mclProfile:
-                        mSwitch.setVisibility(View.GONE);
-                        break;
-                    case mclNavigator:
-                        mSwitch.setChecked(UPref.getBoolean("navigator_on"));
-                        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                UPref.setBoolean("navigator_on", isChecked);
-                            }
-                        });
-                        break;
-                    case mclNavigatorNightMode:
-                        mSwitch.setChecked(UPref.getBoolean("navigator_nightmode"));
-                        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                UPref.setBoolean("navigator_nightmode", isChecked);
-                            }
-                        });
-                        break;
-                    case mclLandscapeOrientation:
-                        mSwitch.setChecked(UPref.getBoolean("display_landscape"));
-                        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                UPref.setBoolean("display_landscape", isChecked);
-                                Intent intent = new Intent(mWorkspace, Workspace.class);
-                                intent.setAction(Intent.ACTION_VIEW);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                mWorkspace.startActivity(intent);
-                            }
-                        });
-                        break;
-                }
             }
         }
 
@@ -478,24 +408,6 @@ public class TodayMenu implements View.OnClickListener {
 
         public MenuAdapter() {
             MenuAdapterOption ma = new MenuAdapterOption();
-            ma.mAction = mclProfile;
-            ma.mTitle = mWorkspace.getString(R.string.Profile);
-            ma.mImage = R.drawable.roza;
-            mData.add(ma);
-            ma = new MenuAdapterOption();
-            ma.mAction = mclNavigator;
-            ma.mTitle = mWorkspace.getString(R.string.Navigator);
-            ma.mImage = R.drawable.navigator;
-            mData.add(ma);
-            ma = new MenuAdapterOption();
-            ma.mAction = mclNavigatorNightMode;
-            ma.mTitle = mWorkspace.getString(R.string.NavigatorNightMode);
-            ma.mImage = R.drawable.night_mode;
-            mData.add(ma);
-            ma = new MenuAdapterOption();
-            ma.mAction = mclLandscapeOrientation;
-            ma.mTitle = mWorkspace.getString(R.string.LangscapeOrientation);
-            ma.mImage = R.drawable.landscape;
             mData.add(ma);
 //            ma = new MenuAdapterOption();
 //            ma.mAction = mclCloseSession;
@@ -512,7 +424,7 @@ public class TodayMenu implements View.OnClickListener {
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-            ((MenuAdapter.MenuAdapterHolder) viewHolder).bind(i);
+
         }
 
         @Override

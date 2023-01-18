@@ -39,8 +39,8 @@ import java.util.List;
 public class ChatActivity extends com.nyt.taxi2.Activities.BaseActivity implements WebSocketEventReceiver.EventListener {
 
     private ActivityChatBinding bind;
-    private List<Messages> mMessages = new ArrayList<>();
-    private int mMode = 1;
+    private List<ChatMessages> mMessages = new ArrayList<>();
+    private int mChatMode = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +92,7 @@ public class ChatActivity extends com.nyt.taxi2.Activities.BaseActivity implemen
                 if (bind.message.getText().toString().isEmpty()) {
                     return;
                 }
-                switch (mMode) {
+                switch (mChatMode) {
                     case 1: {
                         chat(1, bind.message.getText().toString(), "chat");
                         Intent intent = new Intent("websocket_sender");
@@ -138,7 +138,7 @@ public class ChatActivity extends com.nyt.taxi2.Activities.BaseActivity implemen
     }
 
     private void chat(int s, String msg, String chat) {
-        mMessages.add(new Messages(s, msg, UPref.time()));
+        mMessages.add(new ChatMessages(s, msg, UPref.time()));
         bind.messages.getAdapter().notifyDataSetChanged();
         bind.messages.scrollToPosition(mMessages.size() - 1);
         String c = UPref.getString(chat);
@@ -157,7 +157,7 @@ public class ChatActivity extends com.nyt.taxi2.Activities.BaseActivity implemen
     private void getChatHistory() {
         bind.llsendtext.setVisibility(View.VISIBLE);
         mMessages.clear();
-        mMode = 1;
+        mChatMode = 1;
         bind.btnPreordersList.setBackground(getDrawable(R.drawable.btn_tab_active));
         bind.btnActivePreorders.setBackground(getDrawable(R.drawable.btn_tab_inactive));
         bind.btnInfo.setBackground(getDrawable(R.drawable.btn_tab_inactive));
@@ -178,7 +178,7 @@ public class ChatActivity extends com.nyt.taxi2.Activities.BaseActivity implemen
         UPref.setString("chat", ja.toString());
         for (int i = 0; i < ja.size(); i++) {
             jo = ja.get(i).getAsJsonObject();
-            mMessages.add(new Messages(jo.get("sender").getAsInt(), jo.get("message").getAsString(), jo.get("time").getAsString()));
+            mMessages.add(new ChatMessages(jo.get("sender").getAsInt(), jo.get("message").getAsString(), jo.get("time").getAsString()));
         }
         bind.messages.scrollToPosition(mMessages.size() - 1);
     }
@@ -186,7 +186,7 @@ public class ChatActivity extends com.nyt.taxi2.Activities.BaseActivity implemen
     private void getDispatcherHistory() {
         bind.llsendtext.setVisibility(View.VISIBLE);
         mMessages.clear();
-        mMode = 2;
+        mChatMode = 2;
         bind.btnPreordersList.setBackground(getDrawable(R.drawable.btn_tab_inactive));
         bind.btnActivePreorders.setBackground(getDrawable(R.drawable.btn_tab_active));
         bind.btnInfo.setBackground(getDrawable(R.drawable.btn_tab_inactive));
@@ -202,7 +202,7 @@ public class ChatActivity extends com.nyt.taxi2.Activities.BaseActivity implemen
                 JsonArray currentChatMessages = JsonParser.parseString(chat).getAsJsonArray();
                 for (int i = 0; i < currentChatMessages.size(); i++) {
                     JsonObject jm = currentChatMessages.get(i).getAsJsonObject();
-                    mMessages.add(new Messages(jm.get("sender").getAsInt(), jm.get("message").getAsString(), jm.get("time").getAsString()));
+                    mMessages.add(new ChatMessages(jm.get("sender").getAsInt(), jm.get("message").getAsString(), jm.get("time").getAsString()));
                 }
                 for (int i = 0; i < ja.size(); i++) {
                     JsonObject jm = ja.get(i).getAsJsonObject();
@@ -210,7 +210,7 @@ public class ChatActivity extends com.nyt.taxi2.Activities.BaseActivity implemen
                         ids += ",";
                     }
                     ids += jm.get("order_worker_message_id").getAsString();
-                    mMessages.add(new Messages(2, jm.get("text").getAsString(), jm.get("created_at").getAsString()));
+                    mMessages.add(new ChatMessages(2, jm.get("text").getAsString(), jm.get("created_at").getAsString()));
 
                     JsonObject jo = new JsonObject();
                     jo.addProperty("sender", 2);
@@ -238,7 +238,7 @@ public class ChatActivity extends com.nyt.taxi2.Activities.BaseActivity implemen
 
         bind.llsendtext.setVisibility(View.GONE);
         mMessages.clear();
-        mMode = 3;
+        mChatMode = 3;
         bind.btnPreordersList.setBackground(getDrawable(R.drawable.btn_tab_inactive));
         bind.btnActivePreorders.setBackground(getDrawable(R.drawable.btn_tab_inactive));
         bind.btnInfo.setBackground(getDrawable(R.drawable.btn_tab_active));
@@ -266,9 +266,9 @@ public class ChatActivity extends com.nyt.taxi2.Activities.BaseActivity implemen
                     }
                     if (!currdate.equals(sdfdate.format(d))) {
                         currdate = sdfdate.format(d);
-                        mMessages.add(new Messages(0, "", sdfdate.format(d)));
+                        mMessages.add(new ChatMessages(0, "", sdfdate.format(d)));
                     }
-                    mMessages.add(new Messages(jm.get("sender").getAsInt(), jm.get("message").getAsString(), sdftime.format(d)));
+                    mMessages.add(new ChatMessages(jm.get("sender").getAsInt(), jm.get("message").getAsString(), sdftime.format(d)));
                 }
                 for (int i = 0; i < ja.size(); i++) {
                     JsonObject jm = ja.get(i).getAsJsonObject();
@@ -285,12 +285,12 @@ public class ChatActivity extends com.nyt.taxi2.Activities.BaseActivity implemen
                     if (!currdate.equals(sdfdate.format(d))) {
                         currdate = sdfdate.format(d);
                         try {
-                            mMessages.add(new Messages(0, "", sdfdate.format(d)));
+                            mMessages.add(new ChatMessages(0, "", sdfdate.format(d)));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
-                    mMessages.add(new Messages(2, jm.get("title").getAsString() + "\r\n" + jm.get("body").getAsString(), sdftime.format(d)));
+                    mMessages.add(new ChatMessages(2, jm.get("title").getAsString() + "\r\n" + jm.get("body").getAsString(), sdftime.format(d)));
 
                     JsonObject jo = new JsonObject();
                     jo.addProperty("sender", 2);
@@ -312,8 +312,8 @@ public class ChatActivity extends com.nyt.taxi2.Activities.BaseActivity implemen
         }).setParameter("notification", "true").request();
     }
 
-    class Messages {
-        public Messages(int s, String m, String t) {
+    class ChatMessages {
+        public ChatMessages(int s, String m, String t) {
             sender = s;
             msg = m;
             time = t;
@@ -333,7 +333,7 @@ public class ChatActivity extends com.nyt.taxi2.Activities.BaseActivity implemen
             }
 
             public void onBind(int position) {
-                Messages m = mMessages.get(position);
+                ChatMessages m = mMessages.get(position);
                 bind.msg.setText(m.msg);
                 bind.time.setText(m.time);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -386,7 +386,7 @@ public class ChatActivity extends com.nyt.taxi2.Activities.BaseActivity implemen
 
     @Override
     protected void chatWithWorker(String msg, String date, int msgId) {
-        switch (mMode) {
+        switch (mChatMode) {
             case 2:
                 getDispatcherHistory();
                 break;

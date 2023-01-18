@@ -474,6 +474,14 @@ public class WebSocketHttps extends Service {
                                 .get("order").getAsJsonObject()
                                 .get("order_id").getAsInt());
                         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(msgIntent);
+                    } else if (s.contains("CallCenterWorkerDriverChat")) {
+                        Intent intent = new Intent("event_listener");
+                        intent.putExtra("CallCenterWorkerDriverChat", true);
+                        JsonObject jmo = JsonParser.parseString(s).getAsJsonObject();
+                        jmo = JsonParser.parseString(jmo.get("data").getAsString()).getAsJsonObject().getAsJsonObject("data");
+                        intent.putExtra("data", jmo.toString());
+                        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+                        playSound(R.raw.chat);
                     } else if (s.contains("WorkerDriversMessages")) {
                         JsonObject jmo = JsonParser.parseString(s).getAsJsonObject();
                         jmo = JsonParser.parseString(jmo.get("data").getAsString()).getAsJsonObject().getAsJsonObject("data");

@@ -2512,23 +2512,26 @@
             android:background="@color/colorWhite" />
 
         <LinearLayout
+            android:id="@+id/llChatSendMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingLeft="10dp"
             android:paddingRight="10dp">
+
             <EditText
                 android:id="@+id/edChatSendMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
+
             <ImageButton
                 android:id="@+id/imgSendChatMessage"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@null"
-                android:scaleType="fitXY"
                 android:padding="5dp"
+                android:scaleType="fitXY"
                 app:srcCompat="@drawable/send" />
         </LinearLayout>
     </LinearLayout>

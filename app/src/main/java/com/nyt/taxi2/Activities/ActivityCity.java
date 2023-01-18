@@ -5,6 +5,7 @@ import static com.nyt.taxi2.Utils.UConfig.mHostUrl;
 import android.Manifest;
 import android.animation.TimeAnimator;
 import android.animation.ValueAnimator;
+import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -43,6 +44,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.nyt.taxi2.Adapters.ChatAdapter;
 import com.nyt.taxi2.Adapters.HistoryOfOrders;
 import com.nyt.taxi2.Model.GDriverStatus;
 import com.nyt.taxi2.Model.GInitialInfo;
@@ -73,7 +75,9 @@ import com.nyt.taxi2.Web.WebResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -215,10 +219,13 @@ public class ActivityCity extends BaseActivity {
     private TextView tvDistanceProfile;
     private TextView tvBalanceProfile;
 
+    private int mChatMode = 1;
     private LinearLayout llChat;
     private TextView tvChatDispatcher;
     private TextView tvChatInfo;
     private TextView tvChatPassanger;
+    private LinearLayout llChatSendMessage;
+    private RecyclerView rvChatMessages;
 
     private LinearLayout llDriverInfo;
     private EditText edDriverNick;
@@ -366,6 +373,10 @@ public class ActivityCity extends BaseActivity {
         tvChatDispatcher = findViewById(R.id.tvChatDispatcher);
         tvChatInfo = findViewById(R.id.tvChatInfo);
         tvChatPassanger = findViewById(R.id.tvChatPassanger);
+        llChatSendMessage = findViewById(R.id.llChatSendMessage);
+        rvChatMessages = findViewById(R.id.rvChatMessages);
+        rvChatMessages.setLayoutManager(new LinearLayoutManager(this));
+        rvChatMessages.setAdapter(new ChatAdapter(this));
 
         llDriverInfo = findViewById(R.id.llDriverInfo);
         edDriverName = findViewById(R.id.edDriverName);
@@ -471,19 +482,25 @@ public class ActivityCity extends BaseActivity {
                 btnAcceptedOrders.setTextColor(getColor(R.color.colorGray));
                 break;
             case R.id.tvChatDispatcher:
+                mChatMode = 2;
                 tvChatDispatcher.setBackground(getDrawable(R.drawable.chatbottomyellow));
                 tvChatInfo.setBackground(null);
                 tvChatPassanger.setBackground(null);
+                chatWithWorker("", "",  0);
                 break;
             case R.id.tvChatInfo:
+                mChatMode = 3;
                 tvChatDispatcher.setBackground(null);
                 tvChatInfo.setBackground(getDrawable(R.drawable.chatbottomyellow));
                 tvChatPassanger.setBackground(null);
+                chatWithWorker("", "",  0);
                 break;
             case R.id.tvChatPassanger:
+                mChatMode = 1;
                 tvChatDispatcher.setBackground(null);
                 tvChatInfo.setBackground(null);
                 tvChatPassanger.setBackground(getDrawable(R.drawable.chatbottomyellow));
+                chatWithWorker("", "",  0);
                 break;
             case R.id.btnGoOffline:
                 UDialog.alertDialogWithButtonTitles(this, R.string.Empty, getString(R.string.QuestionGoOffline),
@@ -1537,6 +1554,160 @@ public class ActivityCity extends BaseActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public class ChatMessages {
+        public ChatMessages(int s, String m, String t) {
+            sender = s;
+            msg = m;
+            time = t;
+        }
+        public int sender;
+        public String msg;
+        public String time;
+    }
+
+    private void getClientHistory() {
+        llChatSendMessage.setVisibility(View.VISIBLE);
+        ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.clear();
+        mChatMode = 1;
+    }
+
+    private void getDispatcherHistory() {
+        llChatSendMessage.setVisibility(View.VISIBLE);
+        ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.clear();
+        mChatMode = 2;
+        WebRequest.create("/api/driver/get_unread_messages", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
+            @Override
+            public void httpRespone(int httpReponseCode, String data) {
+                JsonArray ja = JsonParser.parseString(data).getAsJsonObject().getAsJsonArray("messages");
+                String ids = "";
+                String chat = UPref.getString("dispatcherchat");
+                if (chat.isEmpty()) {
+                    chat = "[]";
+                }
+                JsonArray currentChatMessages = JsonParser.parseString(chat).getAsJsonArray();
+                for (int i = 0; i < currentChatMessages.size(); i++) {
+                    JsonObject jm = currentChatMessages.get(i).getAsJsonObject();
+                    ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(jm.get("sender").getAsInt(), jm.get("message").getAsString(), jm.get("time").getAsString()));
+                }
+                for (int i = 0; i < ja.size(); i++) {
+                    JsonObject jm = ja.get(i).getAsJsonObject();
+                    if (!ids.isEmpty()) {
+                        ids += ",";
+                    }
+                    ids += jm.get("order_worker_message_id").getAsString();
+                    ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(2, jm.get("text").getAsString(), jm.get("created_at").getAsString()));
+
+                    JsonObject jo = new JsonObject();
+                    jo.addProperty("sender", 2);
+                    jo.addProperty("message", jm.get("text").getAsString());
+                    jo.addProperty("time",jm.get("created_at").getAsString());
+                    currentChatMessages.add(jo);
+                }
+                UPref.setString("dispatcherchat", currentChatMessages.toString());
+                ids = "{\"ids\":[" + ids + "]}";
+                rvChatMessages.getAdapter().notifyDataSetChanged();
+                rvChatMessages.scrollToPosition(((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.size() - 1);
+                WebRequest.create("/api/driver/message_read", WebRequest.HttpMethod.POST, new WebRequest.HttpResponse() {
+                    @Override
+                    public void httpRespone(int httpReponseCode, String data) {
+                        System.out.println(data);
+                    }
+                }).setBody(ids).request();
+            }
+        }).request();
+    }
+
+    private void getInfoHistory() {
+        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
+        llChatSendMessage.setVisibility(View.GONE);
+        ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.clear();
+        mChatMode = 3;
+        WebRequest.create("/api/driver/get_unread_messages", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
+            @Override
+            public void httpRespone(int httpReponseCode, String data) {
+                JsonArray ja = JsonParser.parseString(data).getAsJsonObject().getAsJsonArray("messages");
+                String ids = "";
+                String chat = UPref.getString("notifications");
+                if (chat.isEmpty()) {
+                    chat = "[]";
+                }
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat sdfdate = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat sdftime = new SimpleDateFormat("HH:mm");
+                String currdate = "";
+                Date d = new Date();
+                JsonArray currentChatMessages = JsonParser.parseString(chat).getAsJsonArray();
+                for (int i = 0; i < currentChatMessages.size(); i++) {
+                    JsonObject jm = currentChatMessages.get(i).getAsJsonObject();
+                    try {
+                        d = sdf.parse(jm.get("time").getAsString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (!currdate.equals(sdfdate.format(d))) {
+                        currdate = sdfdate.format(d);
+                        ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(0, "", sdfdate.format(d)));
+                    }
+                    ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(jm.get("sender").getAsInt(), jm.get("message").getAsString(), sdftime.format(d)));
+                }
+                for (int i = 0; i < ja.size(); i++) {
+                    JsonObject jm = ja.get(i).getAsJsonObject();
+                    if (!ids.isEmpty()) {
+                        ids += ",";
+                    }
+                    ids += jm.get("notification_id").getAsString();
+
+                    try {
+                        d = sdf.parse(jm.get("created_at").getAsString().replace("T", "").replace(".000000Z", ""));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    if (!currdate.equals(sdfdate.format(d))) {
+                        currdate = sdfdate.format(d);
+                        try {
+                            ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(0, "", sdfdate.format(d)));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(2, jm.get("title").getAsString() + "\r\n" + jm.get("body").getAsString(), sdftime.format(d)));
+
+                    JsonObject jo = new JsonObject();
+                    jo.addProperty("sender", 2);
+                    jo.addProperty("message", jm.get("title").getAsString() + "\r\n" + jm.get("body").getAsString());
+                    jo.addProperty("time", sdf.format(d));
+                    currentChatMessages.add(jo);
+                }
+                UPref.setString("notifications", currentChatMessages.toString());
+                ids = "{\"ids\":[" + ids + "], \"notification\":true}";
+                rvChatMessages.getAdapter().notifyDataSetChanged();
+                rvChatMessages.scrollToPosition(((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.size() - 1);
+                WebRequest.create("/api/driver/message_read", WebRequest.HttpMethod.POST, new WebRequest.HttpResponse() {
+                    @Override
+                    public void httpRespone(int httpReponseCode, String data) {
+                        System.out.println(data);
+                    }
+                }).setBody(ids).request();
+            }
+        }).setParameter("notification", "true").request();
+    }
+
+    @Override
+    protected void chatWithWorker(String msg, String date, int msgId) {
+        switch (mChatMode) {
+            case 1:
+                getClientHistory();
+                break;
+            case 2:
+                getDispatcherHistory();
+                break;
+            case 3:
+                getInfoHistory();
+                break;
         }
     }
 
