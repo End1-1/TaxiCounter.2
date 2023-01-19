@@ -36,6 +36,7 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -226,6 +227,8 @@ public class ActivityCity extends BaseActivity {
     private TextView tvChatPassanger;
     private LinearLayout llChatSendMessage;
     private RecyclerView rvChatMessages;
+    private EditText edChatSendMessage;
+    private ImageView imgChatSendMessage;
 
     private LinearLayout llDriverInfo;
     private EditText edDriverNick;
@@ -377,6 +380,8 @@ public class ActivityCity extends BaseActivity {
         rvChatMessages = findViewById(R.id.rvChatMessages);
         rvChatMessages.setLayoutManager(new LinearLayoutManager(this));
         rvChatMessages.setAdapter(new ChatAdapter(this));
+        edChatSendMessage = findViewById(R.id.edChatSendMessage);
+        imgChatSendMessage = findViewById(R.id.imgSendChatMessage);
 
         llDriverInfo = findViewById(R.id.llDriverInfo);
         edDriverName = findViewById(R.id.edDriverName);
@@ -422,6 +427,7 @@ public class ActivityCity extends BaseActivity {
         btnHistory.setOnClickListener(this);
         btnSaveDriverInfo.setOnClickListener(this);
         imgDriverProfilePhoto.setOnClickListener(this);
+        imgChatSendMessage.setOnClickListener(this);
         authToSocket();
         showNothings();
         if (getIntent().getStringExtra("neworder") != null) {
@@ -437,12 +443,60 @@ public class ActivityCity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         imgProfile.setImageBitmap(ProfileActivity.getProfileImage());
+        if (getIntent().getBooleanExtra("notificationinfo", false)) {
+            mChatMode = 3;
+            showChatPage();
+            return;
+        }
         queryState();
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 
     @Override
     public void handleClick(int id) {
         switch (id) {
+            case R.id.imgSendChatMessage: {
+                if (edChatSendMessage.getText().toString().isEmpty()) {
+                    return;
+                }
+                switch (mChatMode) {
+                    case 1: {
+                        chat(1, edChatSendMessage.getText().toString(), "chat");
+                        Intent intent = new Intent("websocket_sender");
+                        String msg = String.format("{\n" +
+                                        "\"channel\": \"%s\"," +
+                                        "\"data\": {\"text\": \"%s\"},\n" +
+                                        "\"event\": \"client-broadcast-api/broadway-client\"" +
+                                        "}",
+                                WebSocketHttps.channelName(),
+                                edChatSendMessage.getText().toString());
+                        intent.putExtra("msg", msg);
+                        LocalBroadcastManager.getInstance(TaxiApp.getContext()).sendBroadcast(intent);
+                        edChatSendMessage.setText("");
+                        break;
+                    }
+                    case 2: {
+                        chat(1, edChatSendMessage.getText().toString(), "dispatcherchat");
+                        Intent intent = new Intent("websocket_sender");
+                        String msg = String.format("{\n" +
+                                        "\"channel\": \"%s\"," +
+                                        "\"data\": {\"text\": \"%s\", \"action\":false},\n" +
+                                        "\"event\": \"client-broadcast-api/driver-dispatcher-chat\"" +
+                                        "}",
+                                WebSocketHttps.channelName(),
+                                edChatSendMessage.getText().toString());
+                        intent.putExtra("msg", msg);
+                        LocalBroadcastManager.getInstance(TaxiApp.getContext()).sendBroadcast(intent);
+                        edChatSendMessage.setText("");
+                        break;
+                    }
+                }
+                break;
+            }
             case R.id.imgDiverProfilePhoto:
                 if (checkCameraPermission(this)) {
                     dispatchTakePictureIntent();
@@ -565,10 +619,6 @@ public class ActivityCity extends BaseActivity {
                 queryState();
                 break;
             case R.id.btnChat: {
-                hideDownMenuBackgrounds();
-                llbtnChat.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
-//                Intent intent = new Intent(this, ActivityChatAdmin.class);
-//                startActivity(intent);
                 showChatPage();
                 break;
             }
@@ -748,8 +798,8 @@ public class ActivityCity extends BaseActivity {
             case R.id.llChat2:
             case R.id.llChat3:
             case R.id.llChat4:
-                Intent i = new Intent(this, ChatActivity.class);
-                startActivity(i);
+                mChatMode = 2;
+                showChatPage();
                 break;
             case R.id.llNavigator2:
             case R.id.llNavigtor3:
@@ -869,6 +919,7 @@ public class ActivityCity extends BaseActivity {
                     case DriverState.DriverInRide:
                         tvMissOrder.setText(getString(R.string.CANCELORDER));
                         ridePage(jdata);
+                        break;
                     case DriverState.Rate:
                         tvMissOrder.setText(getString(R.string.CANCELORDER));
                         lastPage(jdata);
@@ -1072,8 +1123,16 @@ public class ActivityCity extends BaseActivity {
         clFirstPage.setVisibility(View.VISIBLE);
         llRateMoneyScore.setVisibility(View.VISIBLE);
         llDownMenu.setVisibility(View.VISIBLE);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) clFirstPage.getLayoutParams();
-        params.addRule(RelativeLayout.ABOVE, R.id.llDownMenu);
+        createProgressDialog();
+        WebRequest.create("/api/driver/commons", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
+            @Override
+            public void httpRespone(int httpReponseCode, String data) {
+                if (!webResponseOK(httpReponseCode, data)) {
+                    return;
+                }
+
+            }
+        }).request();
     }
 
     private void newOrderPage() {
@@ -1305,7 +1364,20 @@ public class ActivityCity extends BaseActivity {
     }
 
     private void showChatPage() {
+        hideDownMenuBackgrounds();
+        llbtnChat.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
         showNothings();
+        switch (mChatMode) {
+            case 1:
+                tvChatPassanger.callOnClick();
+                break;
+            case 2:
+                tvChatDispatcher.callOnClick();
+                break;
+            case 3:
+                tvChatInfo.callOnClick();
+                break;
+        }
         llChat.setVisibility(View.VISIBLE);
         llDownMenu.setVisibility(View.VISIBLE);
     }
@@ -1566,6 +1638,23 @@ public class ActivityCity extends BaseActivity {
         public int sender;
         public String msg;
         public String time;
+    }
+
+    private void chat(int s, String msg, String chatnum) {
+        ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(s, msg, UPref.time()));
+        rvChatMessages.getAdapter().notifyDataSetChanged();
+        rvChatMessages.scrollToPosition(((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.size() - 1);
+        String c = UPref.getString(chatnum);
+        if (c.isEmpty()) {
+            c = "[]";
+        }
+        JsonArray ja = JsonParser.parseString(c).getAsJsonArray();
+        JsonObject jo = new JsonObject();
+        jo.addProperty("sender", s);
+        jo.addProperty("message", msg);
+        jo.addProperty("time", UPref.time());
+        ja.add(jo);
+        UPref.setString(chatnum, ja.toString());
     }
 
     private void getClientHistory() {

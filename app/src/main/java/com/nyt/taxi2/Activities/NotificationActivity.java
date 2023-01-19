@@ -34,8 +34,8 @@ public class NotificationActivity extends AppCompatActivity {
         b.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(NotificationActivity.this, ChatActivity.class);
-                intent.putExtra("info", true);
+                Intent intent = new Intent(NotificationActivity.this, ActivityCity.class);
+                intent.putExtra("notificationinfo", true);
                 startActivity(intent);
                 finish();
             }

@@ -25,7 +25,7 @@ import com.nyt.taxi2.Services.WebSocketHttps;
 import com.nyt.taxi2.Utils.UPref;
 import com.nyt.taxi2.Utils.WebSocketEventReceiver;
 import com.nyt.taxi2.databinding.ActivityChatBinding;
-import com.nyt.taxi2.databinding.ItemChatBinding;
+import com.nyt.taxi2.databinding.ItemChatLeftBinding;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -326,8 +326,8 @@ public class ChatActivity extends com.nyt.taxi2.Activities.BaseActivity implemen
     class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private class VH extends RecyclerView.ViewHolder {
-            private ItemChatBinding bind;
-            public VH(ItemChatBinding b) {
+            private ItemChatLeftBinding bind;
+            public VH(ItemChatLeftBinding b) {
                 super(b.getRoot());
                 bind = b;
             }
@@ -361,7 +361,7 @@ public class ChatActivity extends com.nyt.taxi2.Activities.BaseActivity implemen
         @NonNull
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            ItemChatBinding b = ItemChatBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            ItemChatLeftBinding b = ItemChatLeftBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
             return new VH(b);
         }
 

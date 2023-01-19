@@ -81,10 +81,10 @@ public class ProfileMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             mTextView.setText(mao.mTitle);
             //mImageView.setImageDrawable(getDrawable(mao.mImage));
             switch (i) {
-                case 1:
+                case 0:
                     mSwitch.setVisibility(View.GONE);
                     break;
-                case 2:
+                case 1:
                     mSwitch.setChecked(UPref.getBoolean("display_landscape"));
                     mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override

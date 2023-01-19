@@ -1,242 +1,265 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@drawable/order_item_bg"
-    android:layout_margin="10dp"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
-    android:paddingBottom="10dp"
-    >
+    android:padding="10dp"
+    android:id="@+id/relativeLayout2">
+
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/shadow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <LinearLayout
+        android:id="@+id/llcontainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="3dp">
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginRight="5dp"
-            app:srcCompat="@drawable/calendar" />
-
-        <TextView
-            android:id="@+id/startTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="20/02/2020 28:00" />
-
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:visibility="gone"
-            android:text="-" />
-
-        <TextView
-            android:id="@+id/endTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="20/12/2020 02:00" />
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@null" />
-
-        <ImageView
-            android:id="@+id/imageView11"
-            android:padding="3dp"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            app:srcCompat="@drawable/quantity" />
-
-        <TextView
-            android:id="@+id/price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:text="500"
-            android:textSize="18dp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:background="@color/colorWhite"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:orientation="vertical"
+            android:gravity="center"
+            android:orientation="horizontal"
             android:padding="3dp">
 
             <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_gravity="center_horizontal"
-                app:srcCompat="@drawable/od_black" />
+                android:id="@+id/imageView4"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginRight="5dp"
+                app:srcCompat="@drawable/calendar" />
 
-            <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="8dp"
-                android:layout_weight="1"
+            <TextView
+                android:id="@+id/startTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="20/02/2020 28:00" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="-"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/endTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="20/12/2020 02:00" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="2dp"
-                android:layout_marginTop="2dp"
-                android:layout_gravity="center_horizontal"
-                app:srcCompat="@drawable/line" />
+                android:layout_weight="1"
+                android:background="@null" />
 
             <ImageView
-                android:id="@+id/imageView7"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:id="@+id/imageView11"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:padding="3dp"
+                app:srcCompat="@drawable/quantity" />
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:text="500"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
-                app:srcCompat="@drawable/od_red" />
+                android:orientation="vertical"
+                android:padding="3dp">
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_horizontal"
+                    app:srcCompat="@drawable/od_black" />
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="8dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/line" />
+
+                <ImageView
+                    android:id="@+id/imageView7"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_horizontal"
+                    app:srcCompat="@drawable/od_red" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/from"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/From" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorGrayLight" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/editTo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:text="@string/To" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:padding="5dp">
 
             <TextView
-                android:id="@+id/from"
-                android:layout_width="match_parent"
+                android:id="@+id/txtWaitStr"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/From"/>
+                android:text="@string/Distance" />
 
             <View
-                android:layout_width="match_parent"
+                android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorGrayLight" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@null" />
 
             <TextView
-                android:id="@+id/editTo"
-                android:layout_width="match_parent"
+                android:id="@+id/txtDistance"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:text="@string/To"/>
+                android:text="360km" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view20"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@color/colorGrayLight2" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/PaymentMethod" />
+
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null" />
+
+            <TextView
+                android:id="@+id/txtPaymentMethod"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Maybe cash" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view7"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@color/colorGrayLight2" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/TrackTime" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null" />
+
+            <TextView
+                android:id="@+id/txtRideTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="36m" />
         </LinearLayout>
 
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:padding="5dp">
-
-        <TextView
-            android:id="@+id/txtWaitStr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Distance" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@null" />
-
-        <TextView
-            android:id="@+id/txtDistance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="360km" />
-    </LinearLayout>
-
-    <View
-        android:id="@+id/view20"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
-        android:background="@color/colorGrayLight2" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:padding="5dp">
-
-        <TextView
-            android:id="@+id/textView15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/PaymentMethod" />
-
-        <View
-            android:id="@+id/divider3"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@null" />
-
-        <TextView
-            android:id="@+id/txtPaymentMethod"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Maybe cash" />
-    </LinearLayout>
-
-    <View
-        android:id="@+id/view7"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
-        android:background="@color/colorGrayLight2" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:padding="5dp">
-
-        <TextView
-            android:id="@+id/textView18"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/TrackTime" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@null" />
-
-        <TextView
-            android:id="@+id/txtRideTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="36m" />
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

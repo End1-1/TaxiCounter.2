@@ -26,7 +26,6 @@ import com.nyt.taxi2.Utils.UPref;
 import com.nyt.taxi2.databinding.ActivityChatAdminBinding;
 import com.nyt.taxi2.databinding.ItemAdminchatBinding;
 import com.nyt.taxi2.databinding.ItemAdminsNameBinding;
-import com.nyt.taxi2.databinding.ItemChatBinding;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

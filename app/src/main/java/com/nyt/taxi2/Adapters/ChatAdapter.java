@@ -5,14 +5,16 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nyt.taxi2.Activities.ActivityCity;
+import com.nyt.taxi2.Activities.ProfileActivity;
 import com.nyt.taxi2.R;
-import com.nyt.taxi2.databinding.ItemChatBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,43 +29,45 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     private class VH extends RecyclerView.ViewHolder {
-        private ItemChatBinding bind;
-        public VH(ItemChatBinding b) {
-            super(b.getRoot());
-            bind = b;
+
+        TextView tvMsg;
+        TextView tvTime;
+        ImageView imgProfile;
+
+        public VH(View v) {
+            super(v);
+            tvMsg = v.findViewById(R.id.msg);
+            tvTime = v.findViewById(R.id.time);
+            imgProfile = v.findViewById(R.id.imgProfile);
         }
 
         public void onBind(int position) {
             ActivityCity.ChatMessages m = mChatMessages.get(position);
-            bind.msg.setText(m.msg);
-            bind.time.setText(m.time);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            tvMsg.setText(m.msg);
+            tvTime.setText(m.time);
             switch (m.sender) {
-                case 0:
-                    params.gravity = Gravity.CENTER_VERTICAL | Gravity.CENTER;
-                    bind.lmsg.setBackground(mContext.getDrawable(R.color.colorYellow));
-                    bind.lmsg.setVisibility(View.GONE);
-                    break;
                 case 1:
-                    params.gravity = Gravity.CENTER_VERTICAL | Gravity.END;
-                    bind.lmsg.setBackground(mContext.getDrawable(R.drawable.message1));
-                    bind.lmsg.setVisibility(View.VISIBLE);
+                    imgProfile.setImageBitmap(ProfileActivity.getProfileImage());
                     break;
                 case 2:
-                    params.gravity = Gravity.CENTER_VERTICAL | Gravity.START;
-                    bind.lmsg.setBackground(mContext.getDrawable(R.drawable.message2));
-                    bind.lmsg.setVisibility(View.VISIBLE);
+                    imgProfile.setImageDrawable(mContext.getDrawable(R.drawable.profile));
                     break;
             }
-            bind.lbg.setLayoutParams(params);
         }
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemChatBinding b = ItemChatBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new ChatAdapter.VH(b);
+        switch (viewType) {
+            case 0:
+                return new VH(((LayoutInflater) mContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE )).inflate(R.layout.item_chat_center, parent, false));
+            case 1:
+                return new VH(((LayoutInflater) mContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE )).inflate(R.layout.item_chat_left, parent, false));
+            case 2:
+                return new VH(((LayoutInflater) mContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE )).inflate(R.layout.item_chat_right, parent, false));
+        }
+        return null;
     }
 
     @Override
@@ -74,5 +78,11 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public int getItemCount() {
         return mChatMessages.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        ActivityCity.ChatMessages m = mChatMessages.get(position);
+        return m.sender;
     }
 }

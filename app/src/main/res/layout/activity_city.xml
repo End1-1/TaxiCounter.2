@@ -1853,7 +1853,6 @@
                         android:layout_marginTop="4dp"
                         android:background="@color/colorGrayLight2"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvCommentToText4" />
 
@@ -1884,6 +1883,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="4dp"
+                        android:layout_marginRight="8dp"
                         android:text="Чудный коментарий"
                         android:textSize="@dimen/middleFont"
                         app:layout_constraintStart_toEndOf="@+id/imgCommentTo4"
@@ -1934,15 +1934,6 @@
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvPaymentMethod_4" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="@drawable/gradient_line_hor"
-                        android:orientation="horizontal"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/llOrderOptions_4"
@@ -2190,7 +2181,7 @@
         android:layout_above="@+id/llDownMenu"
         android:layout_alignTop="@id/clQueryState"
         android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp"
+        android:layout_marginBottom="-10dp"
         android:background="@drawable/login_down"
         android:orientation="vertical"
         android:visibility="gone">
@@ -2419,7 +2410,9 @@
                         android:id="@+id/btnGoOffline"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorFioletBlack"
+                        android:layout_marginRight="30dp"
+                        android:layout_marginLeft="30dp"
+                        android:background="@drawable/gradient_blue"
                         android:text="@string/GoOffline"
                         android:textColor="@color/colorWhite" />
 
@@ -2434,9 +2427,11 @@
                         android:id="@+id/btnCloseApp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorRed"
+                        android:background="@drawable/gradient_malina"
                         android:text="@string/CloseApp"
-                        android:textColor="#000000" />
+                        android:layout_marginRight="30dp"
+                        android:layout_marginLeft="30dp"
+                        android:textColor="@color/colorWhite" />
 
                     <View
                         android:id="@+id/view6"
@@ -2462,7 +2457,7 @@
         android:layout_marginBottom="0dp"
         android:background="@drawable/login_down"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -2803,7 +2798,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                >
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvOrdersHistory"
