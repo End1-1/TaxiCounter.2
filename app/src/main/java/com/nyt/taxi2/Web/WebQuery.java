@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.nyt.taxi2.Activities.TaxiApp;
-import com.nyt.taxi2.Activities.Today;
 import com.nyt.taxi2.Services.FileLogger;
 import com.nyt.taxi2.Services.WebSocketHttps;
 import com.nyt.taxi2.Utils.UPref;

@@ -50,7 +50,6 @@ import com.nyt.taxi2.Activities.ChatActivity;
 import com.nyt.taxi2.Activities.MainActivity;
 import com.nyt.taxi2.Activities.NotificationActivity;
 import com.nyt.taxi2.Activities.TaxiApp;
-import com.nyt.taxi2.Activities.Workspace;
 import com.nyt.taxi2.Model.GDriverStatus;
 import com.nyt.taxi2.R;
 import com.nyt.taxi2.Utils.DownloadControllerVer;
@@ -839,7 +838,7 @@ public class WebSocketHttps extends Service {
 
         } else if (jpayload.get("status").getAsString().equalsIgnoreCase("accept")) {
 
-            Intent intent = new Intent(WebSocketHttps.this, Workspace.class);
+            Intent intent = new Intent(WebSocketHttps.this, ActivityCity.class);
             intent.setAction(Intent.ACTION_VIEW);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

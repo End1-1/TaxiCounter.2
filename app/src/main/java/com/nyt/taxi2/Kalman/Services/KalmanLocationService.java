@@ -43,7 +43,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.nyt.taxi2.Activities.MainActivity;
-import com.nyt.taxi2.Activities.Workspace;
 import com.nyt.taxi2.Kalman.Commons.Coordinates;
 import com.nyt.taxi2.Kalman.Commons.GeoPoint;
 import com.nyt.taxi2.Kalman.Commons.SensorGpsDataItem;

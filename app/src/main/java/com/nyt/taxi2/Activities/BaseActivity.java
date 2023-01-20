@@ -49,19 +49,6 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        System.out.println(String.format("ORIENTATION %d %d:%d",
-                getResources().getConfiguration().orientation,
-                ActivityInfo.SCREEN_ORIENTATION_PORTRAIT,
-                ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
-        if (UPref.getBoolean("display_landscape")) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-        System.out.println(String.format("ORIENTATION %d %d:%d",
-                getResources().getConfiguration().orientation,
-                ActivityInfo.SCREEN_ORIENTATION_PORTRAIT,
-                ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         getSupportActionBar().hide();
@@ -287,7 +274,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
                     return;
                 } else if (jord.get("status").getAsString().equalsIgnoreCase("accept")) {
 
-                    Intent ddd = new Intent(BaseActivity.this, Workspace.class);
+                    Intent ddd = new Intent(BaseActivity.this, ActivityCity.class);
                     ddd.setAction(Intent.ACTION_VIEW);
                     ddd.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     ddd.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

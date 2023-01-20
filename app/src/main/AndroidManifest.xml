@@ -37,8 +37,6 @@
         android:name="android.hardware.camera.autofocus"
         android:required="false" />
 
-
-
     <application
         android:name=".Activities.TaxiApp"
         android:allowBackup="true"
@@ -53,15 +51,10 @@
             android:name=".Activities.ActivityCity"
             android:exported="false"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="locked"
             android:showWhenLocked="true"
             android:turnScreenOn="true"
+            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustResize">
-        </activity>
-        <activity
-            android:name=".Activities.ActivityChatAdmin"
-            android:exported="false">
-
         </activity>
         <activity
             android:name=".Activities.NotificationActivity"
@@ -85,21 +78,11 @@
         <meta-data
             android:name="com.google.android.wearable.standalone"
             android:value="true" />
-
-        <activity
-            android:name=".Activities.SelectAddressMapActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="locked" />
         <activity
             android:name=".Activities.ChatActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".Activities.CommonOrderActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Activities.SelectAddressActivity"
-            android:screenOrientation="locked" />
+
         <activity
             android:name=".Activities.OrdersHistoryRouteActivity"
             android:screenOrientation="portrait" />
@@ -107,22 +90,12 @@
             android:name=".Activities.OrdersHistoryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.Today"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".Activities.ProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.Workspace"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="locked"
-            android:showWhenLocked="true"
-            android:turnScreenOn="true"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
             android:name=".Activities.MainActivity"
             android:exported="true"
-            android:screenOrientation="locked">
+            android:screenOrientation="fullSensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

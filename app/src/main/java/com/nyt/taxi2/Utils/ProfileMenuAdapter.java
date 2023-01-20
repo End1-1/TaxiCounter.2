@@ -14,10 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nyt.taxi2.Activities.ActivityCity;
-import com.nyt.taxi2.Activities.ProfileActivity;
-import com.nyt.taxi2.Activities.Workspace;
 import com.nyt.taxi2.R;
-import com.nyt.taxi2.Services.TodayMenu;
 
 import java.util.ArrayList;
 
@@ -33,11 +30,11 @@ public class ProfileMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ma.mTitle = mContext.getString(R.string.Profile);
         ma.mImage = R.drawable.roza;
         mData.add(ma);
-        ma = new MenuAdapterOption();
-        ma.mAction = 2;
-        ma.mTitle = mContext.getString(R.string.LangscapeOrientation);
-        ma.mImage = R.drawable.landscape;
-        mData.add(ma);
+//        ma = new MenuAdapterOption();
+//        ma.mAction = 2;
+//        ma.mTitle = mContext.getString(R.string.LangscapeOrientation);
+//        ma.mImage = R.drawable.landscape;
+//        mData.add(ma);
 //            ma = new MenuAdapterOption();
 //            ma.mAction = mclCloseSession;
 //            ma.mTitle = getString(R.string.CloseSession);
@@ -83,21 +80,6 @@ public class ProfileMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             switch (i) {
                 case 0:
                     mSwitch.setVisibility(View.GONE);
-                    break;
-                case 1:
-                    mSwitch.setChecked(UPref.getBoolean("display_landscape"));
-                    mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            UPref.setBoolean("display_landscape", isChecked);
-                            Intent intent = new Intent(mContext, Workspace.class);
-                            intent.setAction(Intent.ACTION_VIEW);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            mContext.startActivity(intent);
-                        }
-                    });
                     break;
             }
         }

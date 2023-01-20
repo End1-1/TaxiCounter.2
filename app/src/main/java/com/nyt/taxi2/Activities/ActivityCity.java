@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
@@ -63,6 +64,7 @@ import com.nyt.taxi2.Utils.ProfileMenuAdapter;
 import com.nyt.taxi2.Utils.UConfig;
 import com.nyt.taxi2.Utils.UDialog;
 import com.nyt.taxi2.Utils.UDialogLateOptions;
+import com.nyt.taxi2.Utils.UDialogSelectChatOperator;
 import com.nyt.taxi2.Utils.UPref;
 import com.nyt.taxi2.Utils.UText;
 import com.nyt.taxi2.Utils.YandexNavigator;
@@ -210,7 +212,9 @@ public class ActivityCity extends BaseActivity {
     private int mCurrentOrderId = 0;
     private String mWebHash = "";
     private int mRoadId;
+    private int mDriverState = 0;
     private boolean mQueryStateAllowed = true;
+    private int mCurrentChatOperator = 0;
 
     private LinearLayout llProfile;
     private Button btnCloseApp;
@@ -229,6 +233,7 @@ public class ActivityCity extends BaseActivity {
     private RecyclerView rvChatMessages;
     private EditText edChatSendMessage;
     private ImageView imgChatSendMessage;
+    private ImageView imgSelectChatOperator;
 
     private LinearLayout llDriverInfo;
     private EditText edDriverNick;
@@ -382,6 +387,7 @@ public class ActivityCity extends BaseActivity {
         rvChatMessages.setAdapter(new ChatAdapter(this));
         edChatSendMessage = findViewById(R.id.edChatSendMessage);
         imgChatSendMessage = findViewById(R.id.imgSendChatMessage);
+        imgSelectChatOperator = findViewById(R.id.imgSelectOperator);
 
         llDriverInfo = findViewById(R.id.llDriverInfo);
         edDriverName = findViewById(R.id.edDriverName);
@@ -428,6 +434,7 @@ public class ActivityCity extends BaseActivity {
         btnSaveDriverInfo.setOnClickListener(this);
         imgDriverProfilePhoto.setOnClickListener(this);
         imgChatSendMessage.setOnClickListener(this);
+        imgSelectChatOperator.setOnClickListener(this);
         authToSocket();
         showNothings();
         if (getIntent().getStringExtra("neworder") != null) {
@@ -448,7 +455,7 @@ public class ActivityCity extends BaseActivity {
             showChatPage();
             return;
         }
-        queryState();
+        btnHome.callOnClick();
     }
 
     @Override
@@ -457,15 +464,23 @@ public class ActivityCity extends BaseActivity {
     }
 
     @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
     public void handleClick(int id) {
         switch (id) {
+            case R.id.imgSelectOperator:
+                selectChatOperator();
+                break;
             case R.id.imgSendChatMessage: {
                 if (edChatSendMessage.getText().toString().isEmpty()) {
                     return;
                 }
                 switch (mChatMode) {
                     case 1: {
-                        chat(1, edChatSendMessage.getText().toString(), "chat");
+                        chat(1, edChatSendMessage.getText().toString(), "chat", UPref.getString("driver_fullname"));
                         Intent intent = new Intent("websocket_sender");
                         String msg = String.format("{\n" +
                                         "\"channel\": \"%s\"," +
@@ -480,21 +495,43 @@ public class ActivityCity extends BaseActivity {
                         break;
                     }
                     case 2: {
-                        chat(1, edChatSendMessage.getText().toString(), "dispatcherchat");
-                        Intent intent = new Intent("websocket_sender");
-                        String msg = String.format("{\n" +
-                                        "\"channel\": \"%s\"," +
-                                        "\"data\": {\"text\": \"%s\", \"action\":false},\n" +
-                                        "\"event\": \"client-broadcast-api/driver-dispatcher-chat\"" +
-                                        "}",
-                                WebSocketHttps.channelName(),
-                                edChatSendMessage.getText().toString());
-                        intent.putExtra("msg", msg);
-                        LocalBroadcastManager.getInstance(TaxiApp.getContext()).sendBroadcast(intent);
-                        edChatSendMessage.setText("");
+                        if (mDriverState > 1) {
+                            chat(1, edChatSendMessage.getText().toString(), "dispatcherchat", UPref.getString("driver_fullname"));
+                            Intent intent = new Intent("websocket_sender");
+                            String msg = String.format("{\n" +
+                                            "\"channel\": \"%s\"," +
+                                            "\"data\": {\"text\": \"%s\", \"action\":false},\n" +
+                                            "\"event\": \"client-broadcast-api/driver-dispatcher-chat\"" +
+                                            "}",
+                                    WebSocketHttps.channelName(),
+                                    edChatSendMessage.getText().toString());
+                            intent.putExtra("msg", msg);
+                            LocalBroadcastManager.getInstance(TaxiApp.getContext()).sendBroadcast(intent);
+                            edChatSendMessage.setText("");
+                        } else {
+                            if (mCurrentChatOperator == 0) {
+                                 UDialog.alertOK(this, getString(R.string.SelectAdmin));
+                                 return;
+                            }
+                            chat(1, edChatSendMessage.getText().toString(), "chatadmin", UPref.getString("driver_fullinfo"));
+                            Intent intent = new Intent("websocket_sender");
+                            String msg = String.format("{\n" +
+                                            "\"channel\": \"%s\"," +
+                                            "\"data\": {\"text\": \"%s\"," +
+                                            "\"system_worker_id\": %d" +
+                                            "},\n" +
+                                            "\"event\": \"client-broadcast-api/call-center-driver-chat\"" +
+                                            "}",
+                                    WebSocketHttps.channelName(),
+                                    edChatSendMessage.getText().toString(),
+                                    mCurrentChatOperator);
+                            intent.putExtra("msg", msg);
+                            LocalBroadcastManager.getInstance(TaxiApp.getContext()).sendBroadcast(intent);
+                        }
                         break;
                     }
                 }
+                edChatSendMessage.setText("");
                 break;
             }
             case R.id.imgDiverProfilePhoto:
@@ -874,6 +911,7 @@ public class ActivityCity extends BaseActivity {
                 } else {
                     imgOnlineAnim.setVisibility(View.GONE);
                 }
+                mDriverState = g.state;
                 switch (g.state) {
                     case DriverState.Free:
                     case DriverState.None:
@@ -1370,11 +1408,16 @@ public class ActivityCity extends BaseActivity {
         switch (mChatMode) {
             case 1:
                 tvChatPassanger.callOnClick();
+                imgSelectChatOperator.setVisibility(View.GONE);
                 break;
             case 2:
+                llChatSendMessage.setVisibility(View.VISIBLE);
                 tvChatDispatcher.callOnClick();
+                imgSelectChatOperator.setVisibility(View.VISIBLE);
                 break;
             case 3:
+                llChatSendMessage.setVisibility(View.GONE);
+                imgSelectChatOperator.setVisibility(View.GONE);
                 tvChatInfo.callOnClick();
                 break;
         }
@@ -1520,6 +1563,8 @@ public class ActivityCity extends BaseActivity {
             UDialog.alertDialog(this, R.string.Empty, R.string.OrderCanceled);
         } else if (e.contains("refresh_profile_image")) {
             imgProfile.setImageBitmap(ProfileActivity.getProfileImage());
+        } else if (e.contains("CallCenterWorkerDriverChat")) {
+
         }
     }
 
@@ -1629,19 +1674,53 @@ public class ActivityCity extends BaseActivity {
         }
     }
 
+    public class ChatOperator {
+        public int id;
+        public String name;
+    }
+
     public class ChatMessages {
-        public ChatMessages(int s, String m, String t) {
+        public ChatMessages(int s, String m, String t, String n) {
             sender = s;
             msg = m;
             time = t;
+            name = n;
         }
         public int sender;
         public String msg;
         public String time;
+        public String name;
     }
 
-    private void chat(int s, String msg, String chatnum) {
-        ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(s, msg, UPref.time()));
+    private void selectChatOperator() {
+        createProgressDialog();
+        WebRequest.create("/api/driver/get_online_workers", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
+            @Override
+            public void httpRespone(int httpReponseCode, String data) {
+                if (!webResponseOK(httpReponseCode, data)) {
+                    return;
+                }
+                JsonArray ja = JsonParser.parseString(data).getAsJsonObject().getAsJsonArray("workers");
+                List<ChatOperator> operators = new ArrayList();
+                for (int i = 0; i < ja.size(); i++) {
+                    JsonObject jo = ja.get(i).getAsJsonObject();
+                    ChatOperator a = new ChatOperator();
+                    a.id = jo.get("system_worker_id").getAsInt();
+                    a.name = String.format("%s %s", jo.get("surname").getAsString(), jo.get("name").getAsString());
+                    operators.add(a);
+                }
+                new UDialogSelectChatOperator(ActivityCity.this, new UDialogSelectChatOperator.SelectOperator() {
+                    @Override
+                    public void onClick(int op) {
+                        mCurrentChatOperator = op;
+                    }
+                }, operators).show();
+            }
+        }).request();
+    }
+
+    private void chat(int s, String msg, String chatnum, String name) {
+        ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(s, msg, UPref.time(), name));
         rvChatMessages.getAdapter().notifyDataSetChanged();
         rvChatMessages.scrollToPosition(((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.size() - 1);
         String c = UPref.getString(chatnum);
@@ -1653,6 +1732,7 @@ public class ActivityCity extends BaseActivity {
         jo.addProperty("sender", s);
         jo.addProperty("message", msg);
         jo.addProperty("time", UPref.time());
+        jo.addProperty("name", name);
         ja.add(jo);
         UPref.setString(chatnum, ja.toString());
     }
@@ -1661,12 +1741,16 @@ public class ActivityCity extends BaseActivity {
         llChatSendMessage.setVisibility(View.VISIBLE);
         ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.clear();
         mChatMode = 1;
+        llChatSendMessage.setVisibility(View.VISIBLE);
+        imgSelectChatOperator.setVisibility(View.GONE);
     }
 
     private void getDispatcherHistory() {
         llChatSendMessage.setVisibility(View.VISIBLE);
         ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.clear();
         mChatMode = 2;
+        llChatSendMessage.setVisibility(View.VISIBLE);
+        imgSelectChatOperator.setVisibility(View.VISIBLE);
         WebRequest.create("/api/driver/get_unread_messages", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
             @Override
             public void httpRespone(int httpReponseCode, String data) {
@@ -1679,7 +1763,10 @@ public class ActivityCity extends BaseActivity {
                 JsonArray currentChatMessages = JsonParser.parseString(chat).getAsJsonArray();
                 for (int i = 0; i < currentChatMessages.size(); i++) {
                     JsonObject jm = currentChatMessages.get(i).getAsJsonObject();
-                    ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(jm.get("sender").getAsInt(), jm.get("message").getAsString(), jm.get("time").getAsString()));
+                    ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(jm.get("sender").getAsInt(),
+                            jm.get("message").getAsString(),
+                            jm.get("time").getAsString(),
+                            jm.get("name").getAsString()));
                 }
                 for (int i = 0; i < ja.size(); i++) {
                     JsonObject jm = ja.get(i).getAsJsonObject();
@@ -1687,7 +1774,9 @@ public class ActivityCity extends BaseActivity {
                         ids += ",";
                     }
                     ids += jm.get("order_worker_message_id").getAsString();
-                    ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(2, jm.get("text").getAsString(), jm.get("created_at").getAsString()));
+                    ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(2, jm.get("text").getAsString(),
+                            jm.get("created_at").getAsString(),
+                            "" /* driver name when available */));
 
                     JsonObject jo = new JsonObject();
                     jo.addProperty("sender", 2);
@@ -1715,6 +1804,7 @@ public class ActivityCity extends BaseActivity {
         llChatSendMessage.setVisibility(View.GONE);
         ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.clear();
         mChatMode = 3;
+        llChatSendMessage.setVisibility(View.GONE);
         WebRequest.create("/api/driver/get_unread_messages", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
             @Override
             public void httpRespone(int httpReponseCode, String data) {
@@ -1739,9 +1829,12 @@ public class ActivityCity extends BaseActivity {
                     }
                     if (!currdate.equals(sdfdate.format(d))) {
                         currdate = sdfdate.format(d);
-                        ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(0, "", sdfdate.format(d)));
+                        ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(0, "", sdfdate.format(d), ""));
                     }
-                    ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(jm.get("sender").getAsInt(), jm.get("message").getAsString(), sdftime.format(d)));
+                    ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(jm.get("sender").getAsInt(),
+                            jm.get("message").getAsString(),
+                            sdftime.format(d),
+                            jm.get("name").getAsString()));
                 }
                 for (int i = 0; i < ja.size(); i++) {
                     JsonObject jm = ja.get(i).getAsJsonObject();
@@ -1758,12 +1851,13 @@ public class ActivityCity extends BaseActivity {
                     if (!currdate.equals(sdfdate.format(d))) {
                         currdate = sdfdate.format(d);
                         try {
-                            ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(0, "", sdfdate.format(d)));
+                            ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(0, "", sdfdate.format(d), ""));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
-                    ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(2, jm.get("title").getAsString() + "\r\n" + jm.get("body").getAsString(), sdftime.format(d)));
+                    ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(2, jm.get("title").getAsString() + "\r\n" + jm.get("body").getAsString(),
+                            sdftime.format(d), ""));
 
                     JsonObject jo = new JsonObject();
                     jo.addProperty("sender", 2);
@@ -1785,6 +1879,88 @@ public class ActivityCity extends BaseActivity {
         }).setParameter("notification", "true").request();
     }
 
+    private void getOperatorsChat() {
+        llChatSendMessage.setVisibility(View.VISIBLE);
+        imgSelectChatOperator.setVisibility(View.VISIBLE);
+        mChatMode = 2;
+        WebRequest.create("/api/driver/get_unread_messages", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
+            @Override
+            public void httpRespone(int httpReponseCode, String data) {
+                if (!webResponseOK(httpReponseCode, data)) {
+                    return;
+                }
+                ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.clear();
+                JsonArray ja = JsonParser.parseString(data).getAsJsonObject().getAsJsonArray("messages");
+                String ids = "";
+                String chat = UPref.getString("chatadmin");
+                if (chat.isEmpty()) {
+                    chat = "[]";
+                }
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat sdfdate = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat sdftime = new SimpleDateFormat("HH:mm");
+                String currdate = "";
+                Date d = new Date();
+                JsonArray currentChatMessages = JsonParser.parseString(chat).getAsJsonArray();
+                for (int i = 0; i < currentChatMessages.size(); i++) {
+                    JsonObject jm = currentChatMessages.get(i).getAsJsonObject();
+                    try {
+                        d = sdf.parse(jm.get("time").getAsString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (!currdate.equals(sdfdate.format(d))) {
+                        currdate = sdfdate.format(d);
+                        ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(0, "", sdfdate.format(d), ""));
+                    }
+                    ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(jm.get("sender").getAsInt(),
+                            jm.get("message").getAsString(), sdftime.format(d), jm.get("name").getAsString()));
+                }
+                for (int i = 0; i < ja.size(); i++) {
+                    JsonObject jm = ja.get(i).getAsJsonObject();
+                    if (!ids.isEmpty()) {
+                        ids += ",";
+                    }
+                    ids += jm.get("worker_driver_chat_id").getAsString();
+
+                    try {
+                        d = sdf.parse(jm.get("created_at").getAsString().replace("T", " ").replace(".000000Z", ""));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    if (!currdate.equals(sdfdate.format(d))) {
+                        currdate = sdfdate.format(d);
+                        try {
+                            ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(0, "", "", sdfdate.format(d)));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(2,
+                            jm.get("text").getAsString(), sdftime.format(d),
+                            String.format("%s %s", jm.getAsJsonObject("worker").get("surname").getAsString(), jm.getAsJsonObject("worker").get("name").getAsString())));
+
+                    JsonObject jo = new JsonObject();
+                    jo.addProperty("sender", 2);
+                    jo.addProperty("name", String.format("%s %s", jm.getAsJsonObject("worker").get("surname").getAsString(), jm.getAsJsonObject("worker").get("name").getAsString()));
+                    jo.addProperty("message", jm.get("text").getAsString());
+                    jo.addProperty("time", jm.get("created_at").getAsString().replace("T", " ").replace(".000000Z", ""));
+                    currentChatMessages.add(jo);
+                }
+                UPref.setString("chatadmin", currentChatMessages.toString());
+                ids = "{\"ids\":[" + ids + "], \"CallCenterDriverChat\":true}";
+                rvChatMessages.getAdapter().notifyDataSetChanged();
+                rvChatMessages.scrollToPosition(((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.size() - 1);
+                WebRequest.create("/api/driver/message_read", WebRequest.HttpMethod.POST, new WebRequest.HttpResponse() {
+                    @Override
+                    public void httpRespone(int httpReponseCode, String data) {
+                        System.out.println(data);
+                    }
+                }).setBody(ids).request();
+            }
+        }).setParameter("CallCenterDriverChat", "true").request();
+    }
+
     @Override
     protected void chatWithWorker(String msg, String date, int msgId) {
         switch (mChatMode) {
@@ -1792,7 +1968,11 @@ public class ActivityCity extends BaseActivity {
                 getClientHistory();
                 break;
             case 2:
-                getDispatcherHistory();
+                if (mDriverState < 2) {
+                    getOperatorsChat();
+                } else {
+                    getDispatcherHistory();
+                }
                 break;
             case 3:
                 getInfoHistory();
