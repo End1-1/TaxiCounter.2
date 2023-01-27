@@ -152,7 +152,7 @@
             android:layout_margin="10dp"
             android:layout_marginLeft="32dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_color_move_green"
+            android:background="@drawable/gradient_green"
             android:text="@string/YES"
             android:textSize="@dimen/bigFont"
             android:textColor="@color/colorWhite" />

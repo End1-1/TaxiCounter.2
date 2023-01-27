@@ -141,7 +141,6 @@ public class ActivityCity extends BaseActivity {
     private TextView tvAddressToComment;
     private ImageView imgAddressToComment;
     private View viewCommentTo;
-    private TextView tvTimeLeft;
 
     private LinearLayout llOnPlace;
     private TextView tvAddressFrom2;
@@ -306,7 +305,10 @@ public class ActivityCity extends BaseActivity {
         imgCommentFrom = findViewById(R.id.imgAddressCommentFrom);
         tvAddressToComment = findViewById(R.id.tvAddressCommentTo);
         imgAddressToComment = findViewById(R.id.imgAddressCommentTo);
-        tvTimeLeft = findViewById(R.id.tvTimeLeft);
+        imgCommentFrom.setOnClickListener(animHeightListener);
+        tvCommentFromText.setOnClickListener(animHeightListener);
+        imgAddressToComment.setOnClickListener(animHeightListener);
+        tvCommentToText.setOnClickListener(animHeightListener);
 
         llOnPlace = findViewById(R.id.llOnPlace);
         tvAddressFrom2 = findViewById(R.id.tvAddressFrom2);
@@ -326,6 +328,10 @@ public class ActivityCity extends BaseActivity {
         llChat2 = findViewById(R.id.llChat2);
         llNavigator2 = findViewById(R.id.llNavigator2);
         llImLate2 = findViewById(R.id.llImLate2);
+        imgCommentFrom2.setOnClickListener(animHeightListener);
+        tvCommentFromText2.setOnClickListener(animHeightListener);
+        imgCommentTo2.setOnClickListener(animHeightListener);
+        tvCommentToText2.setOnClickListener(animHeightListener);
 
         llBeforeStart = findViewById(R.id.llBeforeStart);
         tvAddressFrom3 = findViewById(R.id.tvAddressFrom3);
@@ -346,6 +352,10 @@ public class ActivityCity extends BaseActivity {
         llImLate3 = findViewById(R.id.llImLate3);
         llNavigator3 = findViewById(R.id.llNavigtor3);
         tvWaitTime3 = findViewById(R.id.tvWaitTime3);
+        imgCommentFrom3.setOnClickListener(animHeightListener);
+        tvCommentFromText3.setOnClickListener(animHeightListener);
+        imgCommentTo3.setOnClickListener(animHeightListener);
+        tvCommentToText3.setOnClickListener(animHeightListener);
 
         llRide = findViewById(R.id.llRide);
         tvRideAmount = findViewById(R.id.tvRideAmount);
@@ -368,6 +378,10 @@ public class ActivityCity extends BaseActivity {
         btnOrderDone = findViewById(R.id.btnAllDone);
         llChat4 = findViewById(R.id.llChat4);
         llNavigator4 = findViewById(R.id.llNavigator4);
+        imgCommentFrom4.setOnClickListener(animHeightListener);
+        tvCommentFromText4.setOnClickListener(animHeightListener);
+        imgCommentTo4.setOnClickListener(animHeightListener);
+        tvCommentToText4.setOnClickListener(animHeightListener);
 
         llProfile = findViewById(R.id.llProfile);
         btnCloseApp = findViewById(R.id.btnCloseApp);
@@ -766,7 +780,6 @@ public class ActivityCity extends BaseActivity {
                 }).request();
                 break;
             case R.id.btnEndOrder:
-                btnEndOrder.setEnabled(false);
                 UDialog.alertDialog(this, R.string.Empty, getString(R.string.FINISHRIDE), new DialogInterface() {
                     @Override
                     public void cancel() {
@@ -775,6 +788,7 @@ public class ActivityCity extends BaseActivity {
 
                     @Override
                     public void dismiss() {
+                        btnEndOrder.setEnabled(false);
                         String l = String.format("%s/api/driver/order_on_end/%d/%s", UConfig.mWebHost, mCurrentOrderId, mWebHash);
                         WebQuery.create(l, WebQuery.HttpMethod.GET, WebResponse.mResponseEndOrder, new WebResponse() {
                             @Override
@@ -789,31 +803,7 @@ public class ActivityCity extends BaseActivity {
                                             queryState();
                                             return;
                                         }
-                                        JsonObject j = JsonParser.parseString(s).getAsJsonObject();
-                                        mCurrentOrderId = j.get("completed_order_id").getAsInt();
-                                        ValueAnimator widthAnimator = ValueAnimator.ofInt(btnEndOrder.getWidth(), 1);
-                                        widthAnimator.setDuration(300);
-                                        widthAnimator.setInterpolator(new DecelerateInterpolator());
-                                        widthAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                                            @Override
-                                            public void onAnimationUpdate(ValueAnimator animation) {
-                                                btnEndOrder.getLayoutParams().width = (int) animation.getAnimatedValue();
-                                                btnEndOrder.requestLayout();
-                                            }
-                                        });
-                                        int w = ((View) btnOrderDone.getParent()).getMeasuredWidth();
-                                        ValueAnimator widthAnimator2 = ValueAnimator.ofInt(1, w);
-                                        widthAnimator2.setDuration(300);
-                                        widthAnimator2.setInterpolator(new DecelerateInterpolator());
-                                        widthAnimator2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                                            @Override
-                                            public void onAnimationUpdate(ValueAnimator animation) {
-                                                btnOrderDone.getLayoutParams().width = (int) animation.getAnimatedValue();
-                                                btnOrderDone.requestLayout();
-                                            }
-                                        });
-                                        widthAnimator.start();
-                                        widthAnimator2.start();
+                                        queryState();
                                     }
                                 }).request();
 
@@ -1001,6 +991,9 @@ public class ActivityCity extends BaseActivity {
         hideProgressDialog();
         if (code > 299) {
             mQueryStateAllowed = true;
+            if (s.contains("time left")) {
+                return false;
+            }
             UDialog.alertError(this, s);
             return false;
         }
@@ -1047,7 +1040,7 @@ public class ActivityCity extends BaseActivity {
         mWebHash = ord.get("accept_hash").getAsString();
 
         mQueryStateAllowed = false;
-        tvTimeLeft.setText("29");
+        btnAcceptGreen.setText(String.format("%s (%s)", getString(R.string.ACCEPT), "29"));
 
         String info = infoFullAddress(ord.getAsJsonObject("full_address_from"));
         tvAddressCommentFrom.setText(Html.fromHtml(info, Html.FROM_HTML_MODE_COMPACT));
@@ -1055,6 +1048,7 @@ public class ActivityCity extends BaseActivity {
         tvAddressCommentFrom.setVisibility(v);
         imgAddressCommentFrom.setVisibility(v);
         tvCommentFromText.setVisibility(v);
+        animateHeight(tvAddressCommentFrom, 1);
 
         v = tvAddressTo.getText().toString().isEmpty() ? View.GONE : View.VISIBLE;
         tvAddressTo.setVisibility(v);
@@ -1068,6 +1062,7 @@ public class ActivityCity extends BaseActivity {
         imgAddressToComment.setVisibility(v);
         tvCommentToText.setVisibility(v);
         viewCommentTo.setVisibility(v);
+        animateHeight(tvAddressToComment, 1);
 
         LayerDrawable layerDrawable = (LayerDrawable) btnAcceptGreen.getBackground();
         mClipDrawable = (ClipDrawable) layerDrawable.findDrawableByLayerId(R.id.clip_drawable);
@@ -1094,7 +1089,7 @@ public class ActivityCity extends BaseActivity {
                         sec = 1;
                     }
                     mCurrentLevel = (int) (10000 - (sec / 3));
-                    tvTimeLeft.setText(String.valueOf(30 - (sec / 1000)));
+                    btnAcceptGreen.setText(String.format("%s (%s)", getString(R.string.ACCEPT), String.valueOf(30 - (sec / 1000))));
                 }
             }
         });
@@ -1193,7 +1188,7 @@ public class ActivityCity extends BaseActivity {
 
         int hour = mRouteTime / 60;
         int min = mRouteTime % 60;
-        tvAddressFrom2.setText(j.get("address_from").getAsString());
+        tvAddressFrom2.setText(j.get("address_from").getAsString().replace("Москва, ", ""));
         int v = View.GONE;
         if (j.has("full_address_from")) {
             String info = infoFullAddress(j.getAsJsonObject("full_address_from"));
@@ -1206,9 +1201,10 @@ public class ActivityCity extends BaseActivity {
         tvCommentFrom2.setVisibility(v);
         imgCommentFrom2.setVisibility(v);
         viewCommentFrom2.setVisibility(v);
+        animateHeight(tvCommentFrom2, 1);
 
         v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
-        tvAddressTo2.setText(j.get("address_to").getAsString());
+        tvAddressTo2.setText(j.get("address_to").getAsString().replace("Москва, ", ""));
         tvAddressTo2.setVisibility(v);
         tvAddressToText2.setVisibility(v);
         imgAddressTo2.setVisibility(v);
@@ -1224,7 +1220,7 @@ public class ActivityCity extends BaseActivity {
         viewCommentTo2.setVisibility(v);
         imgCommentTo2.setVisibility(v);
         tvCommentTo2.setVisibility(v);
-
+        animateHeight(tvCommentTo2, 1);
     }
     
     private void beforeOrderStartPage(JsonObject j) {
@@ -1237,7 +1233,7 @@ public class ActivityCity extends BaseActivity {
         llMissOrder.setVisibility(View.VISIBLE);
 
         j = j.getAsJsonObject("order");
-        tvAddressFrom3.setText(j.get("address_from").getAsString());
+        tvAddressFrom3.setText(j.get("address_from").getAsString().replace("Москва, ", ""));
         int v;
         if (j.has("full_address_from")) {
             String info = infoFullAddress(j.getAsJsonObject("full_address_from"));
@@ -1250,9 +1246,10 @@ public class ActivityCity extends BaseActivity {
         tvCommentFrom3.setVisibility(v);
         imgCommentFrom3.setVisibility(v);
         viewCommentFrom3.setVisibility(v);
+        animateHeight(tvCommentFrom3, 1);
 
         v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
-        tvTo3.setText(j.get("address_to").getAsString());
+        tvTo3.setText(j.get("address_to").getAsString().replace("Москва, ", ""));
         tvTo3.setVisibility(v);
         tvToText3.setVisibility(v);
         imgTo3.setVisibility(v);
@@ -1268,6 +1265,7 @@ public class ActivityCity extends BaseActivity {
         viewCommentTo3.setVisibility(v);
         imgCommentTo3.setVisibility(v);
         tvCommentTo3.setVisibility(v);
+        animateHeight(tvCommentTo3, 1);
     }
     
     private void ridePage(JsonObject j) {
@@ -1282,7 +1280,7 @@ public class ActivityCity extends BaseActivity {
         tvMissOrder.setText(getString(R.string.CANCELORDER));
 
         j = j.getAsJsonObject("order");
-        tvAddressFrom4.setText(j.get("address_from").getAsString());
+        tvAddressFrom4.setText(j.get("address_from").getAsString().replace("Москва, ", ""));
         int v;
         if (j.has("full_address_from")) {
             String info = infoFullAddress(j.getAsJsonObject("full_address_from"));
@@ -1295,13 +1293,15 @@ public class ActivityCity extends BaseActivity {
         tvCommentFrom4.setVisibility(v);
         imgCommentFrom4.setVisibility(v);
         viewCommentFrom4.setVisibility(v);
+        animateHeight(tvCommentFrom4, 1);
 
         v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
-        tvTo4.setText(j.get("address_to").getAsString());
+        tvTo4.setText(j.get("address_to").getAsString().replace("Москва, ", ""));
         tvTo4.setVisibility(v);
         tvToText4.setVisibility(v);
         imgTo4.setVisibility(v);
         viewTo4.setVisibility(v);
+        animateHeight(tvCommentTo4, 1);
 
         v = View.GONE;
         tvCommentTo4.setText("");
@@ -1331,7 +1331,7 @@ public class ActivityCity extends BaseActivity {
 
         j = j.getAsJsonObject("order");
         mCurrentOrderId = j.get("completed_order_id").getAsInt();
-        tvAddressFrom4.setText(j.get("address_from").getAsString());
+        tvAddressFrom4.setText(j.get("address_from").getAsString().replace("Москва, ", ""));
         int v;
         if (j.has("full_address_from")) {
             String info = infoFullAddress(j.getAsJsonObject("full_address_from"));
@@ -1344,9 +1344,10 @@ public class ActivityCity extends BaseActivity {
         tvCommentFrom4.setVisibility(v);
         imgCommentFrom4.setVisibility(v);
         viewCommentFrom4.setVisibility(v);
+        animateHeight(tvCommentFrom4, 1);
 
         v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
-        tvTo4.setText(j.get("address_to").getAsString());
+        tvTo4.setText(j.get("address_to").getAsString().replace("Москва, ", ""));
         tvTo4.setVisibility(v);
         tvToText4.setVisibility(v);
         imgTo4.setVisibility(v);
@@ -1363,6 +1364,7 @@ public class ActivityCity extends BaseActivity {
         viewCommentTo4.setVisibility(v);
         imgCommentTo4.setVisibility(v);
         tvCommentTo4.setVisibility(v);
+        animateHeight(tvCommentTo4, 1);
 
         btnEndOrder.setVisibility(View.GONE);
         btnOrderDone.setVisibility(View.VISIBLE);
@@ -1559,6 +1561,7 @@ public class ActivityCity extends BaseActivity {
             tvMin.setText(String.format("%02d:%02d", hour, min));
         } else if (e.contains("ClientOrderCancel")) {
             playSound(0);
+            mQueryStateAllowed = true;
             queryState();
             UDialog.alertDialog(this, R.string.Empty, R.string.OrderCanceled);
         } else if (e.contains("refresh_profile_image")) {
@@ -1782,6 +1785,7 @@ public class ActivityCity extends BaseActivity {
                     jo.addProperty("sender", 2);
                     jo.addProperty("message", jm.get("text").getAsString());
                     jo.addProperty("time",jm.get("created_at").getAsString());
+                    jo.addProperty("name", "");
                     currentChatMessages.add(jo);
                 }
                 UPref.setString("dispatcherchat", currentChatMessages.toString());
@@ -2022,4 +2026,64 @@ public class ActivityCity extends BaseActivity {
           });
         }
     };
+
+    View.OnClickListener animHeightListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            View v = null;
+            switch (view.getId()) {
+                case R.id.imgAddressCommentFrom:
+                case R.id.tvCommentFromText:
+                    v = tvAddressCommentFrom;
+                    break;
+                case R.id.imgAddressCommentTo:
+                case R.id.tvCommentToText:
+                    v = tvAddressToComment;
+                    break;
+                case R.id.imgCommentFrom2:
+                case R.id.tvCommentFromText2:
+                    v = tvCommentFrom2;
+                    break;
+                case R.id.imgCommentTo2:
+                case R.id.tvCommentToText2:
+                    v = tvCommentTo2;
+                    break;
+                case R.id.imgCommentFrom3:
+                case R.id.tvCommentFromText3:
+                    v = tvCommentFrom3;
+                    break;
+                case R.id.imgCommentTo3:
+                case R.id.tvCommentToText3:
+                    v = tvCommentTo3;
+                    break;
+                case R.id.imgCommentFrom4:
+                case R.id.tvCommentFromText4:
+                    v = tvCommentFrom4;
+                    break;
+                case R.id.imgCommentTo4:
+                case R.id.tvCommentToText4:
+                    v = tvCommentTo4;
+                    break;
+            }
+            animateHeight(v, v.getHeight() == 1 ? -1 : 1);
+        }
+    };
+
+    void animateHeight(View v, int value) {
+        if (value == -1) {
+            v.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            value = v.getMeasuredHeight();
+        }
+        ValueAnimator heightAnimator = ValueAnimator.ofInt(value == 1 ? v.getHeight() : 1, value);
+        heightAnimator.setDuration(300);
+        heightAnimator.setInterpolator(new DecelerateInterpolator());
+        heightAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                v.getLayoutParams().height = (int) animation.getAnimatedValue();
+                v.requestLayout();
+            }
+        });
+        heightAnimator.start();
+    }
 }

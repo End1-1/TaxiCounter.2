@@ -89,9 +89,7 @@
         <activity
             android:name=".Activities.OrdersHistoryActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".Activities.ProfileActivity"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".Activities.MainActivity"
             android:exported="true"
