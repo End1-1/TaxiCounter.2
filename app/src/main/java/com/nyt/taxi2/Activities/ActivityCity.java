@@ -119,6 +119,7 @@ public class ActivityCity extends BaseActivity {
     private LinearLayout llbtnProfile;
     private LinearLayout llbtnHistory;
     private LinearLayout llbtnChat;
+    private RecyclerView rvNotifications;
 
     private LinearLayout llNewOrder;
     private LinearLayout llMissOrder;
@@ -141,6 +142,7 @@ public class ActivityCity extends BaseActivity {
     private TextView tvAddressToComment;
     private ImageView imgAddressToComment;
     private View viewCommentTo;
+    private TextView tvArrivalText;
 
     private LinearLayout llOnPlace;
     private TextView tvAddressFrom2;
@@ -202,6 +204,7 @@ public class ActivityCity extends BaseActivity {
     private Button btnOrderDone;
     private LinearLayout llChat4;
     private LinearLayout llNavigator4;
+    private TextView tvRideCost;
 
     private ImageView imgOnlineAnim;
     private Button btnAcceptGreen;
@@ -281,6 +284,9 @@ public class ActivityCity extends BaseActivity {
         llbtnProfile = findViewById(R.id.llbtnprofile);
         llbtnHistory = findViewById(R.id.llbtnhistory);
         llbtnChat = findViewById(R.id.llbtnchat);
+        rvNotifications = findViewById(R.id.rvNotifications);
+        rvNotifications.setLayoutManager(new LinearLayoutManager(this));
+        rvNotifications.setAdapter( new ChatAdapter(this));
 
         llNewOrder = findViewById(R.id.llNewOrder);
         llMissOrder = findViewById(R.id.llMissOrder);
@@ -293,6 +299,7 @@ public class ActivityCity extends BaseActivity {
         tvCarClass = findViewById(R.id.tvCarClass);
         tvDistance = findViewById(R.id.txtDistance);
         tvRideTime = findViewById(R.id.tvRideTime);
+        tvArrivalText = findViewById(R.id.txtArrivalTime);
         tvPaymentMethod = findViewById(R.id.tvPaymentMethod);
         tvArrivalToClient = findViewById(R.id.tvArrivalTime);
         tvAddressCommentFrom = findViewById(R.id.tvAddressCommentFrom);
@@ -377,6 +384,7 @@ public class ActivityCity extends BaseActivity {
         btnEndOrder = findViewById(R.id.btnEndOrder);
         btnOrderDone = findViewById(R.id.btnAllDone);
         llChat4 = findViewById(R.id.llChat4);
+        tvRideCost = findViewById(R.id.tvRideCost4);
         llNavigator4 = findViewById(R.id.llNavigator4);
         imgCommentFrom4.setOnClickListener(animHeightListener);
         tvCommentFromText4.setOnClickListener(animHeightListener);
@@ -1034,6 +1042,7 @@ public class ActivityCity extends BaseActivity {
         tvDistance.setText(ord.get("distance").getAsString() + " " + getString(R.string.km));
         tvRideTime.setText(ord.get("duration").getAsString() + "" + getString(R.string.min));
         tvPaymentMethod.setText(ord.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
+        tvArrivalText.setText(String.format("%s %s", getString(R.string.OrderOn), ""));
         tvArrivalToClient.setText(ord.get("order_start_time").getAsString());
         btnAcceptGreen.setText(getString(R.string.Accept) + " +" + ord.get("rating_accepted").getAsString());
         mCurrentOrderId = ord.get("order_id").getAsInt();
@@ -1152,20 +1161,22 @@ public class ActivityCity extends BaseActivity {
 
     private void homePage() {
         showNothings();
+        mChatMode = 3;
         UPref.setLong("inplacedate", (long) new Date().getTime());
         clFirstPage.setVisibility(View.VISIBLE);
         llRateMoneyScore.setVisibility(View.VISIBLE);
         llDownMenu.setVisibility(View.VISIBLE);
         createProgressDialog();
-        WebRequest.create("/api/driver/commons", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
-            @Override
-            public void httpRespone(int httpReponseCode, String data) {
-                if (!webResponseOK(httpReponseCode, data)) {
-                    return;
-                }
-
-            }
-        }).request();
+//        WebRequest.create("/api/driver/commons", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
+//            @Override
+//            public void httpRespone(int httpReponseCode, String data) {
+//                if (!webResponseOK(httpReponseCode, data)) {
+//                    return;
+//                }
+//
+//            }
+//        }).request();
+        getInfoHistory();
     }
 
     private void newOrderPage() {
@@ -1352,6 +1363,10 @@ public class ActivityCity extends BaseActivity {
         tvToText4.setVisibility(v);
         imgTo4.setVisibility(v);
         viewTo4.setVisibility(v);
+        int time = j.get("duration").getAsInt();
+        long hour = time / 60;
+        long min = time - (hour * 60);
+        tvMin.setText(String.format("%02d:%02d", hour, min));
 
         v = View.GONE;
         tvCommentTo4.setText("");
@@ -1365,6 +1380,10 @@ public class ActivityCity extends BaseActivity {
         imgCommentTo4.setVisibility(v);
         tvCommentTo4.setVisibility(v);
         animateHeight(tvCommentTo4, 1);
+
+        tvRideAmount.setText(UText.valueOf(j.get("price").getAsDouble()));
+        tvRideCost.setText(UText.valueOf(j.get("initial_price").getAsDouble()));
+        tvKm.setText(UText.valueOf(j.get("distance").getAsDouble()));
 
         btnEndOrder.setVisibility(View.GONE);
         btnOrderDone.setVisibility(View.VISIBLE);
@@ -1805,13 +1824,16 @@ public class ActivityCity extends BaseActivity {
     private void getInfoHistory() {
         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
-        llChatSendMessage.setVisibility(View.GONE);
-        ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.clear();
+        //llChatSendMessage.setVisibility(View.GONE);
+        ((ChatAdapter) rvNotifications.getAdapter()).mChatMessages.clear();
         mChatMode = 3;
-        llChatSendMessage.setVisibility(View.GONE);
+        //llChatSendMessage.setVisibility(View.GONE);
         WebRequest.create("/api/driver/get_unread_messages", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
             @Override
             public void httpRespone(int httpReponseCode, String data) {
+                if (!webResponseOK(httpReponseCode, data)) {
+                    return;
+                }
                 JsonArray ja = JsonParser.parseString(data).getAsJsonObject().getAsJsonArray("messages");
                 String ids = "";
                 String chat = UPref.getString("notifications");
@@ -1833,9 +1855,9 @@ public class ActivityCity extends BaseActivity {
                     }
                     if (!currdate.equals(sdfdate.format(d))) {
                         currdate = sdfdate.format(d);
-                        ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(0, "", sdfdate.format(d), ""));
+                        ((ChatAdapter) rvNotifications.getAdapter()).mChatMessages.add(new ChatMessages(0, "", sdfdate.format(d), ""));
                     }
-                    ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(jm.get("sender").getAsInt(),
+                    ((ChatAdapter) rvNotifications.getAdapter()).mChatMessages.add(new ChatMessages(jm.get("sender").getAsInt(),
                             jm.get("message").getAsString(),
                             sdftime.format(d),
                             jm.get("name").getAsString()));
@@ -1855,12 +1877,12 @@ public class ActivityCity extends BaseActivity {
                     if (!currdate.equals(sdfdate.format(d))) {
                         currdate = sdfdate.format(d);
                         try {
-                            ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(0, "", sdfdate.format(d), ""));
+                            ((ChatAdapter) rvNotifications.getAdapter()).mChatMessages.add(new ChatMessages(0, "", sdfdate.format(d), ""));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
-                    ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(2, jm.get("title").getAsString() + "\r\n" + jm.get("body").getAsString(),
+                    ((ChatAdapter) rvNotifications.getAdapter()).mChatMessages.add(new ChatMessages(2, jm.get("title").getAsString() + "\r\n" + jm.get("body").getAsString(),
                             sdftime.format(d), ""));
 
                     JsonObject jo = new JsonObject();
@@ -1871,8 +1893,8 @@ public class ActivityCity extends BaseActivity {
                 }
                 UPref.setString("notifications", currentChatMessages.toString());
                 ids = "{\"ids\":[" + ids + "], \"notification\":true}";
-                rvChatMessages.getAdapter().notifyDataSetChanged();
-                rvChatMessages.scrollToPosition(((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.size() - 1);
+                rvNotifications.getAdapter().notifyDataSetChanged();
+                rvNotifications.scrollToPosition(((ChatAdapter) rvNotifications.getAdapter()).mChatMessages.size() - 1);
                 WebRequest.create("/api/driver/message_read", WebRequest.HttpMethod.POST, new WebRequest.HttpResponse() {
                     @Override
                     public void httpRespone(int httpReponseCode, String data) {

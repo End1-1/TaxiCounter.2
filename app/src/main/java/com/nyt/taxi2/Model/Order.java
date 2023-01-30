@@ -9,4 +9,5 @@ public class Order {
     public int duration;
     public String started;
     public String ended;
+    public String payment_type;
 }

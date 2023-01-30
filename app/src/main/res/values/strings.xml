@@ -58,6 +58,7 @@
     <string name="CHAT">ЧАТ</string>
     <string name="km">км</string>
     <string name="min">мин</string>
+    <string name="OrderOn">Заказ на</string>
     <string name="m">м</string>
     <string name="RIDETIME">Время в пути</string>
     <string name="RIDEDISTANCE">Расстояние</string>

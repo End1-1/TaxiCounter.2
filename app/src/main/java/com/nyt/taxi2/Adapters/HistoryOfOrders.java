@@ -60,7 +60,7 @@ public class HistoryOfOrders extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 tvEnded.setText(o.started);
                 tvTo.setText(String.format("%s", o.to));
                 tvDistance.setText(String.format("%d %s", o.distance, mContext.getString(R.string.km)));
-                tvPaymentMethod.setText("Hayka chi tali");
+                tvPaymentMethod.setText(o.payment_type);
                 tvRideTime.setText(String.format("%s %s", o.duration, mContext.getString(R.string.min)));
             }
         }
