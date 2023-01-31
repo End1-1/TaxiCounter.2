@@ -190,6 +190,8 @@ public class ActivityCity extends BaseActivity {
     private LinearLayout llImLate3;
     private LinearLayout llNavigator3;
     private TextView tvWaitTime3;
+    private TextView tvPaymentMethod3;
+    private TextView tvArrivalText3;
 
     private LinearLayout llRide;
     private TextView tvRideAmount;
@@ -376,6 +378,8 @@ public class ActivityCity extends BaseActivity {
         tvCommentFromText3.setOnClickListener(animHeightListener);
         imgCommentTo3.setOnClickListener(animHeightListener);
         tvCommentToText3.setOnClickListener(animHeightListener);
+        tvArrivalText3 = findViewById(R.id.tvArrivalTime3);
+        tvPaymentMethod3 = findViewById(R.id.tvPaymentMethod3);
 
         llRide = findViewById(R.id.llRide);
         tvRideAmount = findViewById(R.id.tvRideAmount);
@@ -704,6 +708,9 @@ public class ActivityCity extends BaseActivity {
                 showProfilePage();
                 break;
             case R.id.btnProfile:
+                if (mDriverState > DriverState.Free) {
+                    return;
+                }
                 hideDownMenuBackgrounds();
                 llbtnProfile.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
                 if (llProfile.getVisibility() == View.GONE) {
@@ -1074,7 +1081,7 @@ public class ActivityCity extends BaseActivity {
         tvAddressCommentFrom.setVisibility(v);
         imgAddressCommentFrom.setVisibility(v);
         tvCommentFromText.setVisibility(v);
-        animateHeight(tvAddressCommentFrom, 1);
+        //animateHeight(tvAddressCommentFrom, 1);
 
         v = tvAddressTo.getText().toString().isEmpty() ? View.GONE : View.VISIBLE;
         tvAddressTo.setVisibility(v);
@@ -1088,7 +1095,7 @@ public class ActivityCity extends BaseActivity {
         imgAddressToComment.setVisibility(v);
         tvCommentToText.setVisibility(v);
         viewCommentTo.setVisibility(v);
-        animateHeight(tvAddressToComment, 1);
+        //animateHeight(tvAddressToComment, 1);
 
         LayerDrawable layerDrawable = (LayerDrawable) btnAcceptGreen.getBackground();
         mClipDrawable = (ClipDrawable) layerDrawable.findDrawableByLayerId(R.id.clip_drawable);
@@ -1214,8 +1221,8 @@ public class ActivityCity extends BaseActivity {
         mCurrentOrderId = j.get("order_id").getAsInt();
         mWebHash = j.get("hash").getAsString();
         j = j.getAsJsonObject("order");
-        //tvPaymentMethod2.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
         tvArrivalText2.setText(String.format("%s %s", getString(R.string.OrderOn), ""));
+        tvPaymentMethod2.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
 //        tvArrivalTime2.setText(j.get("order_start_time").getAsString());
 
         int hour = mRouteTime / 60;
@@ -1233,7 +1240,7 @@ public class ActivityCity extends BaseActivity {
         tvCommentFrom2.setVisibility(v);
         imgCommentFrom2.setVisibility(v);
         viewCommentFrom2.setVisibility(v);
-        animateHeight(tvCommentFrom2, 1);
+        //animateHeight(tvCommentFrom2, 1);
 
         v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
         tvAddressTo2.setText(j.get("address_to").getAsString().replace("Москва, ", ""));
@@ -1252,7 +1259,7 @@ public class ActivityCity extends BaseActivity {
         viewCommentTo2.setVisibility(v);
         imgCommentTo2.setVisibility(v);
         tvCommentTo2.setVisibility(v);
-        animateHeight(tvCommentTo2, 1);
+        //animateHeight(tvCommentTo2, 1);
     }
     
     private void beforeOrderStartPage(JsonObject j) {
@@ -1265,6 +1272,9 @@ public class ActivityCity extends BaseActivity {
         llMissOrder.setVisibility(View.VISIBLE);
 
         j = j.getAsJsonObject("order");
+        tvPaymentMethod2.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
+//        tvArrivalTime2.setText(j.get("order_start_time").getAsString());
+
         tvAddressFrom3.setText(j.get("address_from").getAsString().replace("Москва, ", ""));
         int v;
         if (j.has("full_address_from")) {
@@ -1278,7 +1288,7 @@ public class ActivityCity extends BaseActivity {
         tvCommentFrom3.setVisibility(v);
         imgCommentFrom3.setVisibility(v);
         viewCommentFrom3.setVisibility(v);
-        animateHeight(tvCommentFrom3, 1);
+        //animateHeight(tvCommentFrom3, 1);
 
         v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
         tvTo3.setText(j.get("address_to").getAsString().replace("Москва, ", ""));
@@ -1297,7 +1307,7 @@ public class ActivityCity extends BaseActivity {
         viewCommentTo3.setVisibility(v);
         imgCommentTo3.setVisibility(v);
         tvCommentTo3.setVisibility(v);
-        animateHeight(tvCommentTo3, 1);
+        //animateHeight(tvCommentTo3, 1);
     }
     
     private void ridePage(JsonObject j) {
@@ -1327,7 +1337,7 @@ public class ActivityCity extends BaseActivity {
         tvCommentFrom4.setVisibility(v);
         imgCommentFrom4.setVisibility(v);
         viewCommentFrom4.setVisibility(v);
-        animateHeight(findViewById(R.id.llCommentFrom4), 1);
+        //animateHeight(findViewById(R.id.llCommentFrom4), 1);
 
         v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
         tvTo4.setText(j.get("address_to").getAsString().replace("Москва, ", ""));
@@ -1335,7 +1345,7 @@ public class ActivityCity extends BaseActivity {
         tvToText4.setVisibility(v);
         imgTo4.setVisibility(v);
         viewTo4.setVisibility(v);
-        animateHeight(findViewById(R.id.llCommentTo4), 1);
+        //animateHeight(findViewById(R.id.llCommentTo4), 1);
 
         v = View.GONE;
         tvCommentTo4.setText("");
@@ -1378,7 +1388,7 @@ public class ActivityCity extends BaseActivity {
         tvCommentFrom4.setVisibility(v);
         imgCommentFrom4.setVisibility(v);
         viewCommentFrom4.setVisibility(v);
-        animateHeight(tvCommentFrom4, 1);
+        //animateHeight(tvCommentFrom4, 1);
 
         v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
         tvTo4.setText(j.get("address_to").getAsString().replace("Москва, ", ""));
@@ -1402,7 +1412,7 @@ public class ActivityCity extends BaseActivity {
         viewCommentTo4.setVisibility(v);
         imgCommentTo4.setVisibility(v);
         tvCommentTo4.setVisibility(v);
-        animateHeight(tvCommentTo4, 1);
+        //animateHeight(tvCommentTo4, 1);
 
         tvRideAmount.setText(UText.valueOf(j.get("price").getAsDouble()));
         tvRideCost4.setText(UText.valueOf(j.get("initial_price").getAsDouble()));
