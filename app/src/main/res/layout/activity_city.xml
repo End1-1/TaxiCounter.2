@@ -705,6 +705,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:inputType="textMultiLine"
                 android:text="@string/comment"
                 android:textAllCaps="true"
                 app:layout_constraintBottom_toBottomOf="@+id/imgAddressCommentFrom"
@@ -717,6 +718,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
+                android:inputType="textMultiLine"
                 android:text="Россия, Москва, Чебурашкенский переулок, дом 54б квартира 10"
                 android:textSize="@dimen/middleFont"
                 android:textStyle="bold"
@@ -729,6 +731,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
+                android:inputType="textMultiLine"
                 android:text="Россия, Москва, Чебурашкенский переулок, дом 54б квартира 10"
                 android:textSize="@dimen/middleFont"
                 android:textStyle="bold"
@@ -806,6 +809,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:inputType="textMultiLine"
                 android:text="Чудный коментарий"
                 android:textSize="@dimen/middleFont"
                 app:layout_constraintStart_toEndOf="@+id/imgAddressCommentTo"
@@ -943,6 +947,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:inputType="textMultiLine"
                 android:text="Чудный коментарий"
                 android:textSize="@dimen/middleFont"
                 app:layout_constraintStart_toEndOf="@+id/imgAddressCommentFrom"
@@ -1077,6 +1082,7 @@
                 android:text="Россия, Москва, Чебурашкенский переулок, дом 54б квартира 10"
                 android:textSize="@dimen/middleFont"
                 android:textStyle="bold"
+                android:inputType="textMultiLine"
                 app:layout_constraintStart_toEndOf="@+id/imgTo3"
                 app:layout_constraintTop_toBottomOf="@+id/viewTo3" />
 
@@ -1153,6 +1159,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Чудный коментарий"
+                android:inputType="textMultiLine"
                 android:textSize="@dimen/middleFont"
                 app:layout_constraintStart_toEndOf="@+id/imgCommentTo3"
                 app:layout_constraintTop_toBottomOf="@+id/viewCommentTo3" />
@@ -1353,6 +1360,95 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <LinearLayout
+                android:id="@+id/llSuperInfo2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/black_border"
+                android:orientation="vertical"
+                android:padding="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView14_2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:textAllCaps="true">
+
+                    <TextView
+                        android:id="@+id/txtArrivalTime2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/ArrivalTime"
+                        android:textAllCaps="true"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="5dp"
+                        app:srcCompat="@drawable/clock" />
+
+                    <TextView
+                        android:id="@+id/tvArrivalTime2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="15:30"
+                        android:textAllCaps="true"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvPaymentMethod" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/colorButtonBgYellow" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/PaymentMethod"
+                        android:textAllCaps="true"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/llOrderOptions" />
+
+                    <TextView
+                        android:id="@+id/tvPaymentMethod2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Cash"
+                        android:textAllCaps="true"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/llOrderOptions" />
+                </LinearLayout>
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/textView14_2"
                 android:layout_width="wrap_content"
@@ -1366,28 +1462,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <View
-                android:id="@+id/view13_2"
-                android:layout_width="0dp"
-                android:layout_height="2dp"
-                android:layout_marginStart="64dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="64dp"
-                android:background="@color/colorButtonBgYellow"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textView14_2" />
-
             <TextView
                 android:id="@+id/textView17_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/From"
                 android:textAllCaps="true"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view13_2" />
+                app:layout_constraintTop_toBottomOf="@+id/llSuperInfo2" />
 
             <View
                 android:id="@+id/view14_2"
@@ -1454,25 +1538,31 @@
 
             <TextView
                 android:id="@+id/tvAddressFrom2"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:inputType="textMultiLine"
                 android:text="Россия, Москва, Чебурашкенский переулок, дом 54б квартира 10"
                 android:textSize="@dimen/middleFont"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView20_2"
                 app:layout_constraintTop_toBottomOf="@+id/view14_2" />
 
             <TextView
                 android:id="@+id/tvAddressTo2"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:inputType="textMultiLine"
                 android:text="Россия, Москва, Чебурашкенский переулок, дом 54б квартира 10"
                 android:textSize="@dimen/middleFont"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imgAddressTo2"
                 app:layout_constraintTop_toBottomOf="@+id/viewTo2" />
 
@@ -1521,37 +1611,16 @@
 
             <TextView
                 android:id="@+id/tvCommentTo2"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
                 android:text="Чудный коментарий"
                 android:textSize="@dimen/middleFont"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imgCommentTo2"
                 app:layout_constraintTop_toBottomOf="@+id/viewCommentTo2" />
-
-            <TextView
-                android:id="@+id/textView12_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:text="@string/PaymentMethod"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/llOrderOptions_2" />
-
-            <TextView
-                android:id="@+id/tvPaymentMethod2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="24dp"
-                android:text="@string/Cash"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/llOrderOptions_2" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -1690,12 +1759,14 @@
 
             <TextView
                 android:id="@+id/tvCommentFrom2"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Чудный коментарий"
+                android:layout_marginEnd="8dp"
+                android:text="Чудный коментарийЧудный коментарийЧудный коментарийЧудный коментарий Чудный коментарий"
                 android:textSize="@dimen/middleFont"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imgCommentFrom2"
                 app:layout_constraintTop_toBottomOf="@+id/viewCommentFrom2" />
 
@@ -1723,7 +1794,7 @@
         android:layout_marginBottom="0dp"
         android:background="@drawable/login_down"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -1864,7 +1935,7 @@
                         android:text="@string/To"
                         android:textAllCaps="true"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvCommentFrom4" />
+                        app:layout_constraintTop_toBottomOf="@id/llCommentFrom4" />
 
                     <TextView
                         android:id="@+id/tvCommentToText4"
@@ -1908,17 +1979,25 @@
                         app:layout_constraintTop_toBottomOf="@+id/tvTo4"
                         app:srcCompat="@drawable/information" />
 
-                    <TextView
-                        android:id="@+id/tvCommentTo4"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/llCommentTo4"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginRight="8dp"
-                        android:text="Чудный коментарий"
-                        android:textSize="@dimen/middleFont"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/imgCommentTo4"
-                        app:layout_constraintTop_toBottomOf="@+id/viewCommentTo4" />
+                        app:layout_constraintTop_toBottomOf="@+id/viewCommentTo4">
+
+                    <TextView
+                        android:id="@+id/tvCommentTo4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Чудный коментарий"
+                        android:textSize="@dimen/middleFont" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/textView12_4"
@@ -1932,7 +2011,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/llOrderOptions_4" />
 
                     <TextView
-                        android:id="@+id/tvPaymentMethod_4"
+                        android:id="@+id/tvPaymentMethod4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
@@ -1964,7 +2043,7 @@
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvPaymentMethod_4" />
+                        app:layout_constraintTop_toBottomOf="@+id/tvPaymentMethod4" />
 
                     <LinearLayout
                         android:id="@+id/llOrderOptions_4"
@@ -1973,7 +2052,7 @@
                         android:layout_marginTop="16dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvCommentTo4">
+                        app:layout_constraintTop_toBottomOf="@id/llCommentTo4">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -2074,17 +2153,27 @@
 
                     </LinearLayout>
 
-
-                    <TextView
-                        android:id="@+id/tvCommentFrom4"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/llCommentFrom4"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:text="Чудный коментарий"
-                        android:textSize="@dimen/middleFont"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/imgCommentFrom4"
-                        app:layout_constraintTop_toBottomOf="@+id/viewCommentFrom4" />
+                        app:layout_constraintTop_toBottomOf="@+id/viewCommentFrom4">
+
+                        <TextView
+                            android:id="@+id/tvCommentFrom4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:inputType="textMultiLine"
+                            android:text="Чудный коментарий Чудный коментарий Чудный коментарий Чудный коментарий Чудный коментарий Чудный коментарий Чудный коментарий Чудный коментарий Чудный коментарий Чудный коментарий Чудный коментарий Чудный коментарий"
+                            android:textSize="@dimen/middleFont" />
+
+                    </LinearLayout>
 
                     <ImageView
                         android:id="@+id/imgCommentFrom4"

@@ -3,6 +3,8 @@ package com.nyt.taxi2.Activities;
 import static com.nyt.taxi2.Utils.UConfig.mHostUrl;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.TimeAnimator;
 import android.animation.ValueAnimator;
 import android.app.NotificationManager;
@@ -24,6 +26,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
@@ -83,7 +86,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -162,6 +167,9 @@ public class ActivityCity extends BaseActivity {
     private LinearLayout llChat2;
     private LinearLayout llNavigator2;
     private LinearLayout llImLate2;
+    private TextView tvArrivalTime2;
+    private TextView tvPaymentMethod2;
+    private TextView tvArrivalText2;
 
     private LinearLayout llBeforeStart;
     private TextView tvAddressFrom3;
@@ -204,7 +212,9 @@ public class ActivityCity extends BaseActivity {
     private Button btnOrderDone;
     private LinearLayout llChat4;
     private LinearLayout llNavigator4;
-    private TextView tvRideCost;
+    private TextView tvRideCost4;
+    private TextView tvWaitTime4;
+    private TextView tvPaymentMethod4;
 
     private ImageView imgOnlineAnim;
     private Button btnAcceptGreen;
@@ -335,6 +345,9 @@ public class ActivityCity extends BaseActivity {
         llChat2 = findViewById(R.id.llChat2);
         llNavigator2 = findViewById(R.id.llNavigator2);
         llImLate2 = findViewById(R.id.llImLate2);
+        tvArrivalTime2 = findViewById(R.id.tvArrivalTime2);
+        tvPaymentMethod2 = findViewById(R.id.tvPaymentMethod2);
+        tvArrivalText2 = findViewById(R.id.txtArrivalTime2);
         imgCommentFrom2.setOnClickListener(animHeightListener);
         tvCommentFromText2.setOnClickListener(animHeightListener);
         imgCommentTo2.setOnClickListener(animHeightListener);
@@ -381,11 +394,13 @@ public class ActivityCity extends BaseActivity {
         viewCommentTo4 = findViewById(R.id.viewCommentTo4);
         tvKm = findViewById(R.id.tvKM);
         tvMin = findViewById(R.id.tvMin);
+        tvWaitTime4 = findViewById(R.id.tvWaitTime4);
         btnEndOrder = findViewById(R.id.btnEndOrder);
         btnOrderDone = findViewById(R.id.btnAllDone);
         llChat4 = findViewById(R.id.llChat4);
-        tvRideCost = findViewById(R.id.tvRideCost4);
+        tvRideCost4 = findViewById(R.id.tvRideCost4);
         llNavigator4 = findViewById(R.id.llNavigator4);
+        tvPaymentMethod4 = findViewById(R.id.tvPaymentMethod4);
         imgCommentFrom4.setOnClickListener(animHeightListener);
         tvCommentFromText4.setOnClickListener(animHeightListener);
         imgCommentTo4.setOnClickListener(animHeightListener);
@@ -457,6 +472,8 @@ public class ActivityCity extends BaseActivity {
         imgDriverProfilePhoto.setOnClickListener(this);
         imgChatSendMessage.setOnClickListener(this);
         imgSelectChatOperator.setOnClickListener(this);
+
+
         authToSocket();
         showNothings();
         if (getIntent().getStringExtra("neworder") != null) {
@@ -1192,10 +1209,14 @@ public class ActivityCity extends BaseActivity {
         llMissOrder.setVisibility(View.VISIBLE);
         llOnPlace.setVisibility(View.VISIBLE);
         j = j.getAsJsonObject("payload");
+
         setStartAndFinishPoints(j);
         mCurrentOrderId = j.get("order_id").getAsInt();
         mWebHash = j.get("hash").getAsString();
         j = j.getAsJsonObject("order");
+        //tvPaymentMethod2.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
+        tvArrivalText2.setText(String.format("%s %s", getString(R.string.OrderOn), ""));
+//        tvArrivalTime2.setText(j.get("order_start_time").getAsString());
 
         int hour = mRouteTime / 60;
         int min = mRouteTime % 60;
@@ -1285,6 +1306,7 @@ public class ActivityCity extends BaseActivity {
         setStartAndFinishPoints(j);
         mCurrentOrderId = j.get("order_id").getAsInt();
         mWebHash = j.get("hash_end").getAsString();
+        tvWaitTime4.setText(UPref.getString("waittime"));
 
         llRide.setVisibility(View.VISIBLE);
         llMissOrder.setVisibility(View.VISIBLE);
@@ -1292,6 +1314,7 @@ public class ActivityCity extends BaseActivity {
 
         j = j.getAsJsonObject("order");
         tvAddressFrom4.setText(j.get("address_from").getAsString().replace("Москва, ", ""));
+        tvRideCost4.setText(j.get("initial_price").getAsString());
         int v;
         if (j.has("full_address_from")) {
             String info = infoFullAddress(j.getAsJsonObject("full_address_from"));
@@ -1304,7 +1327,7 @@ public class ActivityCity extends BaseActivity {
         tvCommentFrom4.setVisibility(v);
         imgCommentFrom4.setVisibility(v);
         viewCommentFrom4.setVisibility(v);
-        animateHeight(tvCommentFrom4, 1);
+        animateHeight(findViewById(R.id.llCommentFrom4), 1);
 
         v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
         tvTo4.setText(j.get("address_to").getAsString().replace("Москва, ", ""));
@@ -1312,7 +1335,7 @@ public class ActivityCity extends BaseActivity {
         tvToText4.setVisibility(v);
         imgTo4.setVisibility(v);
         viewTo4.setVisibility(v);
-        animateHeight(tvCommentTo4, 1);
+        animateHeight(findViewById(R.id.llCommentTo4), 1);
 
         v = View.GONE;
         tvCommentTo4.setText("");
@@ -1382,7 +1405,7 @@ public class ActivityCity extends BaseActivity {
         animateHeight(tvCommentTo4, 1);
 
         tvRideAmount.setText(UText.valueOf(j.get("price").getAsDouble()));
-        tvRideCost.setText(UText.valueOf(j.get("initial_price").getAsDouble()));
+        tvRideCost4.setText(UText.valueOf(j.get("initial_price").getAsDouble()));
         tvKm.setText(UText.valueOf(j.get("distance").getAsDouble()));
 
         btnEndOrder.setVisibility(View.GONE);
@@ -2020,6 +2043,7 @@ public class ActivityCity extends BaseActivity {
                 if (s.startsWith("00:")) {
                     s = s.substring(3, 8);
                 }
+                UPref.setString("waittime", s);
                 tvWaitTime3.setText(s);
             });
         }
@@ -2080,11 +2104,11 @@ public class ActivityCity extends BaseActivity {
                     break;
                 case R.id.imgCommentFrom4:
                 case R.id.tvCommentFromText4:
-                    v = tvCommentFrom4;
+                    v = findViewById(R.id.llCommentFrom4);
                     break;
                 case R.id.imgCommentTo4:
                 case R.id.tvCommentToText4:
-                    v = tvCommentTo4;
+                    v = findViewById(R.id.llCommentTo4);
                     break;
             }
             animateHeight(v, v.getHeight() == 1 ? -1 : 1);
@@ -2093,9 +2117,10 @@ public class ActivityCity extends BaseActivity {
 
     void animateHeight(View v, int value) {
         if (value == -1) {
-            v.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            v.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             value = v.getMeasuredHeight();
         }
+
         ValueAnimator heightAnimator = ValueAnimator.ofInt(value == 1 ? v.getHeight() : 1, value);
         heightAnimator.setDuration(300);
         heightAnimator.setInterpolator(new DecelerateInterpolator());
@@ -2105,7 +2130,14 @@ public class ActivityCity extends BaseActivity {
                 v.getLayoutParams().height = (int) animation.getAnimatedValue();
                 v.requestLayout();
             }
+
         });
+//        heightAnimator.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                v.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+//            }
+//        });
         heightAnimator.start();
     }
 }
