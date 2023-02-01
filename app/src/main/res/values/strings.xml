@@ -62,6 +62,7 @@
     <string name="m">м</string>
     <string name="RIDETIME">Время в пути</string>
     <string name="RIDEDISTANCE">Расстояние</string>
+    <string name="firstcost">Начальная цена</string>
     <string name="CANCEL">НЕТ</string>
     <string name="FINISHRIDE">ЗАВЕРШИТЬ ПОЕЗДКУ?</string>
     <string name="YES">ДА</string>

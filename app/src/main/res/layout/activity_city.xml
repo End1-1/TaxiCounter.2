@@ -22,12 +22,6 @@
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/txtDriverFullName">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@drawable/gradient_line_hor_2"
-                android:orientation="horizontal"></LinearLayout>
-
             <TextView
                 android:id="@+id/tvMiss"
                 android:layout_width="match_parent"
@@ -322,7 +316,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:textSize="18dp"
+            android:textSize="@dimen/middleFont"
             android:textAllCaps="true"
             />
 
@@ -1282,8 +1276,8 @@
                     android:id="@+id/llOrderOptions_3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:paddingTop="48dp"
+                    android:paddingBottom="48dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvCommentTo3">
@@ -1297,7 +1291,6 @@
                         android:id="@+id/llChat3"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:layout_marginTop="32dp"
                         android:background="@drawable/gradient_malina"
                         android:gravity="center"
                         android:orientation="vertical">
@@ -1326,7 +1319,6 @@
                         android:id="@+id/llImLate3"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:layout_marginTop="32dp"
                         android:background="@drawable/gradient_green"
                         android:gravity="center"
                         android:orientation="vertical">
@@ -1359,7 +1351,6 @@
                         android:id="@+id/llNavigtor3"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:layout_marginTop="32dp"
                         android:background="@drawable/gradient_blue"
                         android:gravity="center"
                         android:orientation="vertical">
@@ -1417,28 +1408,22 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:orientation="vertical">
+            android:layout_height="10dp"
+            android:background="@drawable/downmenubg"
+            android:gravity="bottom" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@drawable/downmenubg" />
+        <Button
+            android:id="@+id/btnStartOrder"
+            android:layout_width="match_parent"
+            android:layout_height="74dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/gradient_green_square"
+            android:text="@string/GO"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <Button
-                android:id="@+id/btnStartOrder"
-                android:layout_width="match_parent"
-                android:layout_height="74dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/gradient_green_square"
-                android:text="@string/GO"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -1709,8 +1694,8 @@
                     android:id="@+id/llOrderOptions_2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:paddingTop="48dp"
+                    android:paddingBottom="48dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvCommentTo2">
@@ -1724,7 +1709,6 @@
                         android:id="@+id/llChat2"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:layout_marginTop="32dp"
                         android:background="@drawable/gradient_malina"
                         android:clickable="true"
                         android:gravity="center"
@@ -1755,7 +1739,6 @@
                         android:id="@+id/llImLate2"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:layout_marginTop="32dp"
                         android:background="@drawable/gradient_green"
                         android:clickable="true"
                         android:gravity="center"
@@ -1787,7 +1770,6 @@
                         android:id="@+id/llNavigator2"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:layout_marginTop="32dp"
                         android:background="@drawable/gradient_blue"
                         android:clickable="true"
                         android:gravity="center"
@@ -1877,7 +1859,7 @@
         android:layout_marginBottom="0dp"
         android:background="@drawable/login_down"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tvRideAmount"
@@ -1923,7 +1905,8 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="48dp">
 
                     <TextView
                         android:id="@+id/textView17_4"
@@ -2118,7 +2101,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
-                        android:text="@string/Cost"
+                        android:text="@string/firstcost"
                         android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView12_4" />
@@ -2280,6 +2263,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="2dp"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:padding="10dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -2291,26 +2275,32 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="2dp"
                             android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/textView2"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="@string/km"
-                                android:textAllCaps="true"
-                                android:textSize="@dimen/smallFont"
-                                android:textStyle="bold" />
+                            android:orientation="horizontal">
 
                             <TextView
                                 android:id="@+id/tvKM"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
+                                android:layout_weight="1"
+                                android:gravity="end"
                                 android:text="23.5km"
-                                android:textSize="@dimen/smallFont"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="@dimen/bigFont"
                                 android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textView2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="left"
+                                android:paddingLeft="3dp"
+                                android:text="@string/km"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="@dimen/bigFont"
+                                android:textStyle="bold" />
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -2326,22 +2316,13 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/textView32"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="@string/min"
-                                android:textAllCaps="true"
-                                android:textSize="@dimen/smallFont"
-                                android:textStyle="bold" />
-
-                            <TextView
                                 android:id="@+id/tvMin"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text="15:44"
-                                android:textSize="@dimen/smallFont"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="@dimen/bigFont"
                                 android:textStyle="bold" />
                         </LinearLayout>
                     </LinearLayout>

@@ -485,6 +485,7 @@ public class ActivityCity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        determineDayOrNight();
         imgProfile.setImageBitmap(ProfileActivity.getProfileImage());
         if (getIntent().getBooleanExtra("notificationinfo", false)) {
             mChatMode = 3;
@@ -727,6 +728,7 @@ public class ActivityCity extends BaseActivity {
                         }
                         llGoOnline.setVisibility(View.GONE);
                         imgOnlineAnim.setVisibility(View.VISIBLE);
+                        queryState();
                     }
                 });
                 webQuery.setParameter("ready", Integer.toString(1))
@@ -887,6 +889,7 @@ public class ActivityCity extends BaseActivity {
     }
 
     public void queryState() {
+        determineDayOrNight();
         if (!mQueryStateAllowed) {
             return;
         }
@@ -2061,23 +2064,27 @@ public class ActivityCity extends BaseActivity {
             runOnUiThread(new Runnable() {
               @Override
               public void run() {
-                  Calendar cal = Calendar.getInstance();
-                  int hour = cal.get(Calendar.HOUR_OF_DAY);
-                  imgSun.setImageDrawable(null);
-                  if (hour >=6 && hour < 12) {
-                      tvSun.setText(getString(R.string.GoodsMorning));
-                      imgSun.setBackgroundResource(R.drawable.sunrise);
-                  } else if (hour >= 12 && hour < 19) {
-                      imgSun.setBackgroundResource(R.drawable.sun);
-                      tvSun.setText(getString(R.string.GoodDay));
-                  } else {
-                      imgSun.setBackgroundResource(R.drawable.moon);
-                      tvSun.setText(getString(R.string.GoodEvening));
-                  }
+                  determineDayOrNight();
               }
           });
         }
     };
+
+    private void determineDayOrNight() {
+        Calendar cal = Calendar.getInstance();
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        imgSun.setImageDrawable(null);
+        if (hour >=6 && hour < 12) {
+            tvSun.setText(getString(R.string.GoodsMorning));
+            imgSun.setBackgroundResource(R.drawable.sunrise);
+        } else if (hour >= 12 && hour < 19) {
+            imgSun.setBackgroundResource(R.drawable.sun);
+            tvSun.setText(getString(R.string.GoodDay));
+        } else {
+            imgSun.setBackgroundResource(R.drawable.moon);
+            tvSun.setText(getString(R.string.GoodEvening));
+        }
+    }
 
     View.OnClickListener animHeightListener = new View.OnClickListener() {
         @Override
