@@ -3,10 +3,7 @@ package com.nyt.taxi2.Activities;
 import static com.nyt.taxi2.Utils.UConfig.mHostUrl;
 
 import android.Manifest;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.TimeAnimator;
-import android.animation.ValueAnimator;
 import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -26,8 +23,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -86,9 +81,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -191,7 +184,7 @@ public class ActivityCity extends BaseActivity {
     private LinearLayout llNavigator3;
     private TextView tvWaitTime3;
     private TextView tvPaymentMethod3;
-    private TextView tvArrivalText3;
+    private TextView tvArrivalTime3;
 
     private LinearLayout llRide;
     private TextView tvRideAmount;
@@ -378,7 +371,7 @@ public class ActivityCity extends BaseActivity {
         tvCommentFromText3.setOnClickListener(animHeightListener);
         imgCommentTo3.setOnClickListener(animHeightListener);
         tvCommentToText3.setOnClickListener(animHeightListener);
-        tvArrivalText3 = findViewById(R.id.tvArrivalTime3);
+        tvArrivalTime3 = findViewById(R.id.tvArrivalTime3);
         tvPaymentMethod3 = findViewById(R.id.tvPaymentMethod3);
 
         llRide = findViewById(R.id.llRide);
@@ -1059,6 +1052,7 @@ public class ActivityCity extends BaseActivity {
     }
 
     private void startNewOrder(JsonObject ord) {
+        UPref.setString("waittime", "00:00");
         tvAddressFrom.setText(ord.get("address_from").getAsString());
         tvAddressTo.setText(ord.get("address_to").getAsString());
         tvAddressToComment.setText("");
@@ -1185,6 +1179,8 @@ public class ActivityCity extends BaseActivity {
 
     private void homePage() {
         showNothings();
+        hideDownMenuBackgrounds();
+        llbtnHome.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
         mChatMode = 3;
         UPref.setLong("inplacedate", (long) new Date().getTime());
         clFirstPage.setVisibility(View.VISIBLE);
@@ -1223,11 +1219,11 @@ public class ActivityCity extends BaseActivity {
         j = j.getAsJsonObject("order");
         tvArrivalText2.setText(String.format("%s %s", getString(R.string.OrderOn), ""));
         tvPaymentMethod2.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
-//        tvArrivalTime2.setText(j.get("order_start_time").getAsString());
+        tvArrivalTime2.setText(j.get("order_start_time").getAsString());
 
         int hour = mRouteTime / 60;
         int min = mRouteTime % 60;
-        tvAddressFrom2.setText(j.get("address_from").getAsString().replace("Москва, ", ""));
+        tvAddressFrom2.setText(j.get("address_from").getAsString().replace("Москва, ", "").replace("Moscow, ", ""));
         int v = View.GONE;
         if (j.has("full_address_from")) {
             String info = infoFullAddress(j.getAsJsonObject("full_address_from"));
@@ -1239,11 +1235,10 @@ public class ActivityCity extends BaseActivity {
         tvCommentFromText2.setVisibility(v);
         tvCommentFrom2.setVisibility(v);
         imgCommentFrom2.setVisibility(v);
-        viewCommentFrom2.setVisibility(v);
         //animateHeight(tvCommentFrom2, 1);
 
         v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
-        tvAddressTo2.setText(j.get("address_to").getAsString().replace("Москва, ", ""));
+        tvAddressTo2.setText(j.get("address_to").getAsString().replace("Москва, ", "").replace("Moscow, ", ""));
         tvAddressTo2.setVisibility(v);
         tvAddressToText2.setVisibility(v);
         imgAddressTo2.setVisibility(v);
@@ -1256,7 +1251,6 @@ public class ActivityCity extends BaseActivity {
             tvCommentTo2.setText(Html.fromHtml(info, Html.FROM_HTML_MODE_COMPACT));
         }
         tvCommentToText2.setVisibility(v);
-        viewCommentTo2.setVisibility(v);
         imgCommentTo2.setVisibility(v);
         tvCommentTo2.setVisibility(v);
         //animateHeight(tvCommentTo2, 1);
@@ -1272,10 +1266,10 @@ public class ActivityCity extends BaseActivity {
         llMissOrder.setVisibility(View.VISIBLE);
 
         j = j.getAsJsonObject("order");
-        tvPaymentMethod2.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
-//        tvArrivalTime2.setText(j.get("order_start_time").getAsString());
+        tvPaymentMethod3.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
+        tvArrivalTime3.setText(j.get("order_start_time").getAsString());
 
-        tvAddressFrom3.setText(j.get("address_from").getAsString().replace("Москва, ", ""));
+        tvAddressFrom3.setText(j.get("address_from").getAsString().replace("Москва, ", "").replace("Moscow, ", ""));
         int v;
         if (j.has("full_address_from")) {
             String info = infoFullAddress(j.getAsJsonObject("full_address_from"));
@@ -1291,7 +1285,7 @@ public class ActivityCity extends BaseActivity {
         //animateHeight(tvCommentFrom3, 1);
 
         v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
-        tvTo3.setText(j.get("address_to").getAsString().replace("Москва, ", ""));
+        tvTo3.setText(j.get("address_to").getAsString().replace("Москва, ", "").replace("Moscow, ", ""));
         tvTo3.setVisibility(v);
         tvToText3.setVisibility(v);
         imgTo3.setVisibility(v);
@@ -1304,7 +1298,6 @@ public class ActivityCity extends BaseActivity {
             tvCommentTo3.setText(Html.fromHtml(info, Html.FROM_HTML_MODE_COMPACT));
         }
         tvCommentToText3.setVisibility(v);
-        viewCommentTo3.setVisibility(v);
         imgCommentTo3.setVisibility(v);
         tvCommentTo3.setVisibility(v);
         //animateHeight(tvCommentTo3, 1);
@@ -1323,7 +1316,7 @@ public class ActivityCity extends BaseActivity {
         tvMissOrder.setText(getString(R.string.CANCELORDER));
 
         j = j.getAsJsonObject("order");
-        tvAddressFrom4.setText(j.get("address_from").getAsString().replace("Москва, ", ""));
+        tvAddressFrom4.setText(j.get("address_from").getAsString().replace("Москва, ", "").replace("Moscow, ", ""));
         tvRideCost4.setText(j.get("initial_price").getAsString());
         int v;
         if (j.has("full_address_from")) {
@@ -1340,7 +1333,7 @@ public class ActivityCity extends BaseActivity {
         //animateHeight(findViewById(R.id.llCommentFrom4), 1);
 
         v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
-        tvTo4.setText(j.get("address_to").getAsString().replace("Москва, ", ""));
+        tvTo4.setText(j.get("address_to").getAsString().replace("Москва, ", "").replace("Moscow, ", ""));
         tvTo4.setVisibility(v);
         tvToText4.setVisibility(v);
         imgTo4.setVisibility(v);
@@ -1375,7 +1368,7 @@ public class ActivityCity extends BaseActivity {
 
         j = j.getAsJsonObject("order");
         mCurrentOrderId = j.get("completed_order_id").getAsInt();
-        tvAddressFrom4.setText(j.get("address_from").getAsString().replace("Москва, ", ""));
+        tvAddressFrom4.setText(j.get("address_from").getAsString().replace("Москва, ", "").replace("Moscow, ", ""));
         int v;
         if (j.has("full_address_from")) {
             String info = infoFullAddress(j.getAsJsonObject("full_address_from"));
@@ -1391,7 +1384,7 @@ public class ActivityCity extends BaseActivity {
         //animateHeight(tvCommentFrom4, 1);
 
         v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
-        tvTo4.setText(j.get("address_to").getAsString().replace("Москва, ", ""));
+        tvTo4.setText(j.get("address_to").getAsString().replace("Москва, ", "").replace("Moscow, ", ""));
         tvTo4.setVisibility(v);
         tvToText4.setVisibility(v);
         imgTo4.setVisibility(v);
@@ -2044,6 +2037,9 @@ public class ActivityCity extends BaseActivity {
         @Override
         public void run() {
             ActivityCity.this.runOnUiThread(() -> {
+                if (mDriverState != DriverState.DriverInPlace) {
+                    return;
+                }
                 long starttime = UPref.getLong("inplacedate");
                 long diff = new Date().getTime() - starttime;
                 Date d = new Date(diff);
@@ -2126,28 +2122,32 @@ public class ActivityCity extends BaseActivity {
     };
 
     void animateHeight(View v, int value) {
-        if (value == -1) {
-            v.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            value = v.getMeasuredHeight();
-        }
+        return;
+//        if (value == -1) {
+//            v.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//            value = v.getMeasuredHeight();
+//        }
+//
+//        ValueAnimator heightAnimator = ValueAnimator.ofInt(value == 1 ? v.getHeight() : 1, value);
+//        heightAnimator.setDuration(300);
+//        heightAnimator.setInterpolator(new DecelerateInterpolator());
+//        heightAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                v.getLayoutParams().height = (int) animation.getAnimatedValue();
+//                v.requestLayout();
+//            }
+//
+//        });
 
-        ValueAnimator heightAnimator = ValueAnimator.ofInt(value == 1 ? v.getHeight() : 1, value);
-        heightAnimator.setDuration(300);
-        heightAnimator.setInterpolator(new DecelerateInterpolator());
-        heightAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                v.getLayoutParams().height = (int) animation.getAnimatedValue();
-                v.requestLayout();
-            }
 
-        });
+
 //        heightAnimator.addListener(new AnimatorListenerAdapter() {
 //            @Override
 //            public void onAnimationEnd(Animator animation) {
 //                v.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 //            }
 //        });
-        heightAnimator.start();
+//        heightAnimator.start();
     }
 }

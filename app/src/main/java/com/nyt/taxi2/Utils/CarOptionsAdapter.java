@@ -46,6 +46,7 @@ public class CarOptionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             int i = getAdapterPosition();
             GCarClasses.CarOption f = mCarClasses.options.get(i);
             f.selected = !f.selected;
+            mCarClasses.saveToPref("carclasses");
             notifyDataSetChanged();
             WebToggleCarOption cc = new WebToggleCarOption(f.id, new WebResponse() {
                 @Override
