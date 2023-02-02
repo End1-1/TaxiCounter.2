@@ -41,7 +41,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:orientation="horizontal"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtDriverFullName">
@@ -64,7 +64,6 @@
                     android:id="@+id/imageView16"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:scaleType="fitXY"
                     app:srcCompat="@drawable/stars" />
 
                 <TextView
@@ -595,7 +594,6 @@
                     android:orientation="vertical"
                     android:padding="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -1050,7 +1048,7 @@
                     android:layout_marginEnd="28dp"
                     android:background="@drawable/black_border"
                     android:orientation="vertical"
-                    android:padding="5dp"
+                    android:padding="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">

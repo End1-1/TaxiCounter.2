@@ -94,6 +94,7 @@ public class ActivityCity extends BaseActivity {
     GDriverStatus.Point mStartPoint = null;
     GDriverStatus.Point mFinishPoint = null;
     int mRouteTime = 0;
+    private UDialogSelectChatOperator selectChatOperatorDialog;
 
     private ImageView imgSun;
     private TextView tvSun;
@@ -496,6 +497,15 @@ public class ActivityCity extends BaseActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if (selectChatOperatorDialog != null) {
+            selectChatOperatorDialog.cancel();
+            selectChatOperatorDialog = null;
+        }
+    }
+
+    @Override
     public void onBackPressed() {
 
     }
@@ -697,6 +707,9 @@ public class ActivityCity extends BaseActivity {
                 break;
             }
             case R.id.btnProfile2:
+                if (mDriverState > DriverState.Free) {
+                    return;
+                }
                 hideDownMenuBackgrounds();
                 llbtnProfile.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
                 showProfilePage();
@@ -714,6 +727,9 @@ public class ActivityCity extends BaseActivity {
                 }
                 break;
             case R.id.imgHistory:
+                if (mDriverState > DriverState.Free) {
+                    return;
+                }
                 hideDownMenuBackgrounds();
                 llbtnHistory.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
                 showHistoryPage();
@@ -898,6 +914,7 @@ public class ActivityCity extends BaseActivity {
             t.cancel();
             t = null;
         }
+
         createProgressDialog(R.string.Empty, R.string.Wait);
         WebQuery webQuery = new WebQuery(UConfig.mHostUrl + "/api/driver/real_state", WebQuery.HttpMethod.GET, WebResponse.mResponseDriverOn, new WebResponse() {
             @Override
@@ -1364,9 +1381,7 @@ public class ActivityCity extends BaseActivity {
         setStartAndFinishPoints(j);
 
         mWebHash = j.get("hash_end").getAsString();
-
         llRide.setVisibility(View.VISIBLE);
-        llMissOrder.setVisibility(View.VISIBLE);
         tvMissOrder.setText(getString(R.string.CANCELORDER));
 
         j = j.getAsJsonObject("order");
@@ -1760,12 +1775,14 @@ public class ActivityCity extends BaseActivity {
                     a.name = String.format("%s %s", jo.get("surname").getAsString(), jo.get("name").getAsString());
                     operators.add(a);
                 }
-                new UDialogSelectChatOperator(ActivityCity.this, new UDialogSelectChatOperator.SelectOperator() {
+                selectChatOperatorDialog = new UDialogSelectChatOperator(ActivityCity.this, new UDialogSelectChatOperator.SelectOperator() {
                     @Override
                     public void onClick(int op) {
                         mCurrentChatOperator = op;
+                        selectChatOperatorDialog = null;
                     }
-                }, operators).show();
+                }, operators);
+                selectChatOperatorDialog.show();
             }
         }).request();
     }
@@ -1889,7 +1906,7 @@ public class ActivityCity extends BaseActivity {
                     ((ChatAdapter) rvNotifications.getAdapter()).mChatMessages.add(new ChatMessages(jm.get("sender").getAsInt(),
                             jm.get("message").getAsString(),
                             sdftime.format(d),
-                            jm.get("name").getAsString()));
+                            jm.has("name") ? jm.get("name").getAsString() : ""));
                 }
                 for (int i = 0; i < ja.size(); i++) {
                     JsonObject jm = ja.get(i).getAsJsonObject();
