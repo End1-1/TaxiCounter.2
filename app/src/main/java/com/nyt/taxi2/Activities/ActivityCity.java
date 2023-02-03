@@ -94,6 +94,8 @@ public class ActivityCity extends BaseActivity {
     GDriverStatus.Point mStartPoint = null;
     GDriverStatus.Point mFinishPoint = null;
     int mRouteTime = 0;
+    int mMessagesCount = 0;
+    int mMessagesCounter = 0;
     private UDialogSelectChatOperator selectChatOperatorDialog;
 
     private ImageView imgSun;
@@ -117,7 +119,7 @@ public class ActivityCity extends BaseActivity {
     private LinearLayout llbtnHome;
     private LinearLayout llbtnProfile;
     private LinearLayout llbtnHistory;
-    private LinearLayout llbtnChat;
+    private ConstraintLayout llbtnChat;
     private RecyclerView rvNotifications;
 
     private LinearLayout llNewOrder;
@@ -232,7 +234,7 @@ public class ActivityCity extends BaseActivity {
     private TextView tvDistanceProfile;
     private TextView tvBalanceProfile;
 
-    private int mChatMode = 1;
+    private int mChatMode = 0;
     private LinearLayout llChat;
     private TextView tvChatDispatcher;
     private TextView tvChatInfo;
@@ -489,16 +491,19 @@ public class ActivityCity extends BaseActivity {
         determineDayOrNight();
         imgProfile.setImageBitmap(ProfileActivity.getProfileImage());
         if (getIntent().getBooleanExtra("notificationinfo", false)) {
-            mChatMode = 3;
-            showChatPage();
+            getInfoHistory();
             return;
         }
         btnHome.callOnClick();
+        timerMessages = new Timer();
+        timerMessages.schedule(new MessagesTimerTask(), 500, 500);
+        getMessagesCount();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        timerMessages.cancel();
         if (selectChatOperatorDialog != null) {
             selectChatOperatorDialog.cancel();
             selectChatOperatorDialog = null;
@@ -698,15 +703,18 @@ public class ActivityCity extends BaseActivity {
                         });
                 break;
             case R.id.btnHome:
+                mChatMode = 0;
                 hideDownMenuBackgrounds();
                 llbtnHome.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
                 queryState();
                 break;
             case R.id.btnChat: {
+                mChatMode = 2;
                 showChatPage();
                 break;
             }
             case R.id.btnProfile2:
+                mChatMode = 0;
                 if (mDriverState > DriverState.Free) {
                     return;
                 }
@@ -715,6 +723,7 @@ public class ActivityCity extends BaseActivity {
                 showProfilePage();
                 break;
             case R.id.btnProfile:
+                mChatMode = 0;
                 if (mDriverState > DriverState.Free) {
                     return;
                 }
@@ -727,6 +736,7 @@ public class ActivityCity extends BaseActivity {
                 }
                 break;
             case R.id.imgHistory:
+                mChatMode = 0;
                 if (mDriverState > DriverState.Free) {
                     return;
                 }
@@ -905,6 +915,7 @@ public class ActivityCity extends BaseActivity {
     }
 
     public void queryState() {
+        getMessagesCount();
         determineDayOrNight();
         if (!mQueryStateAllowed) {
             return;
@@ -1037,7 +1048,7 @@ public class ActivityCity extends BaseActivity {
         if (code > 299) {
             mQueryStateAllowed = true;
             if (s.contains("time left")) {
-                return false;
+                return true;
             }
             UDialog.alertError(this, s);
             return false;
@@ -1119,6 +1130,7 @@ public class ActivityCity extends BaseActivity {
             public void onTimeUpdate(TimeAnimator timeAnimator, long totalTime, long deltaTime) {
                 mClipDrawable.setLevel(mCurrentLevel);
                 if (mCurrentLevel < 0) {
+                    mQueryStateAllowed = true;
                     mAnimator.cancel();
                     stopPlay();
                     FileLogger.write(String.format("ORDER REJECTED BY TIMEOUT %d", mCurrentOrderId));
@@ -1201,7 +1213,7 @@ public class ActivityCity extends BaseActivity {
         showNothings();
         hideDownMenuBackgrounds();
         llbtnHome.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
-        mChatMode = 3;
+        mChatMode = 0;
         UPref.setLong("inplacedate", (long) new Date().getTime());
         clFirstPage.setVisibility(View.VISIBLE);
         llRateMoneyScore.setVisibility(View.VISIBLE);
@@ -1229,7 +1241,7 @@ public class ActivityCity extends BaseActivity {
         showNothings();
         llNewOrder.setVisibility(View.GONE);
         llRateMoneyScore.setVisibility(View.GONE);
-        llMissOrder.setVisibility(View.VISIBLE);
+        //llMissOrder.setVisibility(View.VISIBLE);
         llOnPlace.setVisibility(View.VISIBLE);
         j = j.getAsJsonObject("payload");
 
@@ -1283,7 +1295,7 @@ public class ActivityCity extends BaseActivity {
         mCurrentOrderId = j.get("order_id").getAsInt();
         mWebHash = j.get("hash").getAsString();
         llBeforeStart.setVisibility(View.VISIBLE);
-        llMissOrder.setVisibility(View.VISIBLE);
+        //llMissOrder.setVisibility(View.VISIBLE);
 
         j = j.getAsJsonObject("order");
         tvPaymentMethod3.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
@@ -1332,7 +1344,7 @@ public class ActivityCity extends BaseActivity {
         tvWaitTime4.setText(UPref.getString("waittime"));
 
         llRide.setVisibility(View.VISIBLE);
-        llMissOrder.setVisibility(View.VISIBLE);
+        //llMissOrder.setVisibility(View.VISIBLE);
         tvMissOrder.setText(getString(R.string.CANCELORDER));
 
         j = j.getAsJsonObject("order");
@@ -1382,7 +1394,6 @@ public class ActivityCity extends BaseActivity {
 
         mWebHash = j.get("hash_end").getAsString();
         llRide.setVisibility(View.VISIBLE);
-        tvMissOrder.setText(getString(R.string.CANCELORDER));
 
         j = j.getAsJsonObject("order");
         mCurrentOrderId = j.get("completed_order_id").getAsInt();
@@ -1813,6 +1824,24 @@ public class ActivityCity extends BaseActivity {
         imgSelectChatOperator.setVisibility(View.GONE);
     }
 
+    private void getMessagesCount() {
+        mMessagesCount = 0;
+        WebRequest.create("/api/driver/get_unread_messages", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
+            @Override
+            public void httpRespone(int httpReponseCode, String data) {
+                JsonArray ja = JsonParser.parseString(data).getAsJsonObject().getAsJsonArray("messages");
+                mMessagesCount += ja.size();
+                WebRequest.create("/api/driver/get_unread_messages", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
+                    @Override
+                    public void httpRespone(int httpReponseCode, String data) {
+                        JsonArray ja = JsonParser.parseString(data).getAsJsonObject().getAsJsonArray("messages");
+                        mMessagesCount += ja.size();
+                    }
+                }).setParameter("CallCenterDriverChat", "true").request();
+            }
+        }).request();
+    }
+
     private void getDispatcherHistory() {
         llChatSendMessage.setVisibility(View.VISIBLE);
         ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.clear();
@@ -1872,7 +1901,7 @@ public class ActivityCity extends BaseActivity {
         notificationManager.cancelAll();
         //llChatSendMessage.setVisibility(View.GONE);
         ((ChatAdapter) rvNotifications.getAdapter()).mChatMessages.clear();
-        mChatMode = 3;
+        //mChatMode = 3;
         //llChatSendMessage.setVisibility(View.GONE);
         WebRequest.create("/api/driver/get_unread_messages", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
             @Override
@@ -2049,6 +2078,55 @@ public class ActivityCity extends BaseActivity {
             case 3:
                 getInfoHistory();
                 break;
+            default:
+                getMessagesCount();
+                break;
+        }
+    }
+    
+    private Timer timerMessages = new Timer();
+    private class MessagesTimerTask extends TimerTask {
+
+        @Override
+        public void run() {
+            ActivityCity.this.runOnUiThread(() -> {
+                mMessagesCounter++;
+                int color = R.drawable.cyrcle_green;
+                if (mMessagesCounter % 2 == 0) {
+                    color = R.drawable.cyrcle_red;
+                }
+                ((TextView) findViewById(R.id.txtMessages)).setText(String.valueOf(mMessagesCount));
+                findViewById(R.id.txtMessages).setBackground(getDrawable(color));
+                findViewById(R.id.txtMessages).setVisibility(View.GONE);
+                ((TextView) findViewById(R.id.txtMessages2)).setText(String.valueOf(mMessagesCount));
+                findViewById(R.id.txtMessages2).setBackground(getDrawable(color));
+                findViewById(R.id.txtMessages2).setVisibility(View.GONE);
+                ((TextView) findViewById(R.id.txtMessages3)).setText(String.valueOf(mMessagesCount));
+                findViewById(R.id.txtMessages3).setBackground(getDrawable(color));
+                findViewById(R.id.txtMessages3).setVisibility(View.GONE);
+                ((TextView) findViewById(R.id.txtMessages4)).setText(String.valueOf(mMessagesCount));
+                findViewById(R.id.txtMessages4).setBackground(getDrawable(color));
+                findViewById(R.id.txtMessages4).setVisibility(View.GONE);
+
+                int v = mMessagesCount > 0 ? View.VISIBLE : View.GONE;
+                switch (mDriverState) {
+                    case DriverState.None:
+                    case DriverState.Free:
+                        findViewById(R.id.txtMessages).setVisibility(v);
+                        break;
+                    case DriverState.OnWay:
+                        findViewById(R.id.txtMessages2).setVisibility(v);
+                        break;
+                    case DriverState.DriverInPlace:
+                        findViewById(R.id.txtMessages3).setVisibility(v);
+                        break;
+                    case DriverState.DriverInRide:
+                    case DriverState.Rate:
+                        findViewById(R.id.txtMessages4).setVisibility(v);
+                        break;
+                }
+
+            });
         }
     }
 

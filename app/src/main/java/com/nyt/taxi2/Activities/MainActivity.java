@@ -194,7 +194,12 @@ public class MainActivity extends BaseActivity implements
                 if (s == null) {
                     s = "";
                 }
-                UDialog.alertError(MainActivity.this, getString(R.string.SystemError) + "\r\n" + s);
+                JsonObject jo = JsonParser.parseString(s).getAsJsonObject();
+                if (jo.has("message")) {
+                    UDialog.alertError(MainActivity.this, jo.get("message").getAsString());
+                } else {
+                    UDialog.alertError(MainActivity.this, getString(R.string.SystemError) + "\r\n" + s);
+                }
                 if (code == mResponseQueryState) {
                     UPref.setBearerKey("");
                     GDriverStatus ds = new GDriverStatus();

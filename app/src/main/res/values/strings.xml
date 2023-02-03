@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">!YellowDriver</string>
+    <string name="app_name">YellowDriver</string>
     <string name="WelcomeToCounter">Добро пожаловать в Счетчик</string>
     <string name="BeforeStartYouNeedAuth">Для начала работы вам необходимо авторизироваться</string>
     <string name="Login">ВХОД</string>

@@ -521,19 +521,39 @@
                     android:orientation="vertical" />
             </LinearLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/llbtnchat"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="12dp">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/btnChat"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
+                    android:layout_margin="12dp"
                     android:scaleType="fitCenter"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/chat_passive" />
-            </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txtMessages"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/cyrcle_red"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="10"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"
+                    android:translationZ="10dp"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -1293,6 +1313,22 @@
                         android:gravity="center"
                         android:orientation="vertical">
 
+                        <TextView
+                            android:id="@+id/txtMessages3"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="4dp"
+                            android:background="@drawable/cyrcle_red"
+                            android:gravity="center"
+                            android:text="10"
+                            android:textColor="@color/colorWhite"
+                            android:textStyle="bold"
+                            android:translationZ="10dp"
+                            android:visibility="visible"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
                         <ImageView
                             android:layout_width="48dp"
                             android:layout_height="48dp"
@@ -1711,6 +1747,22 @@
                         android:clickable="true"
                         android:gravity="center"
                         android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtMessages2"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="4dp"
+                            android:background="@drawable/cyrcle_red"
+                            android:gravity="center"
+                            android:text="10"
+                            android:textColor="@color/colorWhite"
+                            android:textStyle="bold"
+                            android:translationZ="10dp"
+                            android:visibility="visible"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
                             android:layout_width="48dp"
@@ -2138,6 +2190,22 @@
                             android:background="@drawable/gradient_malina"
                             android:gravity="center"
                             android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txtMessages4"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="end"
+                                android:layout_marginEnd="4dp"
+                                android:background="@drawable/cyrcle_red"
+                                android:gravity="center"
+                                android:text="10"
+                                android:textColor="@color/colorWhite"
+                                android:textStyle="bold"
+                                android:translationZ="10dp"
+                                android:visibility="visible"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <ImageView
                                 android:layout_width="48dp"
