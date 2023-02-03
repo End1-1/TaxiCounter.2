@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.JsonArray;
 import com.nyt.taxi2.Activities.TaxiApp;
 import com.nyt.taxi2.R;
 import com.nyt.taxi2.databinding.ItemOptionBinding;
@@ -16,18 +17,28 @@ import java.util.List;
 
 public class LateOptions extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Integer> mMinutes = new ArrayList();
-    private LateForMinute mLateForMinute;
+    private List<String> mMinutes = new ArrayList();
+    private LateForMinute mLateForMinute = null;
+    private JustOption mJustOption = null;
 
     public interface LateForMinute {
         void lateFor(int min);
     }
 
+    public interface JustOption {
+        void optionSelected(String o);
+    }
+
     public LateOptions(LateForMinute l) {
         mLateForMinute = l;
-        mMinutes.add(10);
-        mMinutes.add(20);
-        mMinutes.add(30);
+        mMinutes.add("10");
+        mMinutes.add("20");
+        mMinutes.add("30");
+    }
+
+    public LateOptions(JustOption l, List<String> m) {
+        mJustOption = l;
+        mMinutes = m;
     }
 
     @NonNull
@@ -59,13 +70,22 @@ public class LateOptions extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
         public void onClick(View v) {
-            int min = mMinutes.get(getAdapterPosition());
-            mLateForMinute.lateFor(min);
+            if (mLateForMinute != null) {
+                int min = Integer.valueOf(mMinutes.get(getAdapterPosition()));
+                mLateForMinute.lateFor(min);
+            } else {
+                mJustOption.optionSelected(mMinutes.get(getAbsoluteAdapterPosition()));
+            }
+
         }
 
         public void onBind(int position) {
-            int min = mMinutes.get(position);
-            bind.name.setText(String.format("%d %s", min, TaxiApp.getContext().getString(R.string.min)));
+            if (mLateForMinute != null) {
+                int min = Integer.valueOf(mMinutes.get(position));
+                bind.name.setText(String.format("%d %s", min, TaxiApp.getContext().getString(R.string.min)));
+            } else {
+                bind.name.setText(mMinutes.get(position));
+            }
         }
     }
 }

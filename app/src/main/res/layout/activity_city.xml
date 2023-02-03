@@ -1034,8 +1034,7 @@
             android:gravity="center"
             android:text="@string/PODACHA"
             android:textAllCaps="true"
-            android:textColor="@color/colorButtonBgYellow"
-            android:textStyle="bold"
+            android:textSize="@dimen/middleFont"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -1046,8 +1045,7 @@
             android:layout_height="2dp"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
-            android:layout_marginBottom="12dp"
-            android:background="@color/colorButtonBgYellow" />
+            android:background="@color/colorGrayLight2" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -1065,6 +1063,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="28dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="28dp"
                     android:background="@drawable/black_border"
                     android:orientation="vertical"
@@ -1450,7 +1449,6 @@
             android:id="@+id/btnStartOrder"
             android:layout_width="match_parent"
             android:layout_height="74dp"
-            android:layout_marginTop="8dp"
             android:background="@drawable/gradient_green_square"
             android:text="@string/GO"
             android:textSize="20sp"
@@ -1480,11 +1478,18 @@
             android:gravity="center"
             android:text="@string/PODACHA"
             android:textAllCaps="true"
-            android:textColor="@color/colorButtonBgYellow"
-            android:textStyle="bold"
+            android:textSize="@dimen/middleFont"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/view175_3"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="@color/colorGrayLight2" />
 
         <ScrollView
             android:layout_width="match_parent"

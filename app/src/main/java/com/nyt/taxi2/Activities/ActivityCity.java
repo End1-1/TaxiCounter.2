@@ -62,6 +62,7 @@ import com.nyt.taxi2.Utils.ProfileMenuAdapter;
 import com.nyt.taxi2.Utils.UConfig;
 import com.nyt.taxi2.Utils.UDialog;
 import com.nyt.taxi2.Utils.UDialogLateOptions;
+import com.nyt.taxi2.Utils.UDialogOrderCancelOptions;
 import com.nyt.taxi2.Utils.UDialogSelectChatOperator;
 import com.nyt.taxi2.Utils.UPref;
 import com.nyt.taxi2.Utils.UText;
@@ -71,6 +72,7 @@ import com.nyt.taxi2.Web.WQFeedback;
 import com.nyt.taxi2.Web.WebInitialInfo;
 import com.nyt.taxi2.Web.WebLogout;
 import com.nyt.taxi2.Web.WebQuery;
+import com.nyt.taxi2.Web.WebRejectByDriver;
 import com.nyt.taxi2.Web.WebResponse;
 
 import java.io.File;
@@ -221,6 +223,7 @@ public class ActivityCity extends BaseActivity {
     private ClipDrawable mClipDrawable;
     private int mCurrentOrderId = 0;
     private String mWebHash = "";
+    private String mCancelHash = "";
     private int mRoadId;
     private int mDriverState = 0;
     private boolean mQueryStateAllowed = true;
@@ -330,7 +333,6 @@ public class ActivityCity extends BaseActivity {
         tvCommentFrom2 = findViewById(R.id.tvCommentFrom2);
         tvCommentFromText2 = findViewById(R.id.tvCommentFromText2);
         imgCommentFrom2 = findViewById(R.id.imgCommentFrom2);
-        viewCommentFrom2 = findViewById(R.id.viewCommentFrom2);
         tvAddressTo2 = findViewById(R.id.tvAddressTo2);
         tvAddressToText2 = findViewById(R.id.tvAddressToText2);
         imgAddressTo2 = findViewById(R.id.imgAddressTo2);
@@ -338,7 +340,6 @@ public class ActivityCity extends BaseActivity {
         tvCommentTo2 = findViewById(R.id.tvCommentTo2);
         tvCommentToText2 = findViewById(R.id.tvCommentToText2);
         imgCommentTo2 = findViewById(R.id.imgCommentTo2);
-        viewCommentTo2 = findViewById(R.id.viewCommentTo2);
         btnGoToClient = findViewById(R.id.btnGoToClient);
         llChat2 = findViewById(R.id.llChat2);
         llNavigator2 = findViewById(R.id.llNavigator2);
@@ -364,7 +365,6 @@ public class ActivityCity extends BaseActivity {
         tvCommentTo3 = findViewById(R.id.tvCommentTo3);
         tvCommentToText3 = findViewById(R.id.tvCommentToText3);
         imgCommentTo3 = findViewById(R.id.imgCommentTo3);
-        viewCommentTo3 = findViewById(R.id.viewCommentTo3);
         btnStartOrder = findViewById(R.id.btnStartOrder);
         llChat3 = findViewById(R.id.llChat3);
         llImLate3 = findViewById(R.id.llImLate3);
@@ -778,15 +778,30 @@ public class ActivityCity extends BaseActivity {
                         if (mAnimator != null) {
                             mAnimator.cancel();
                         }
-                        String link = String.format("%s/api/driver/order_acceptance/%d/%s/0", UConfig.mWebHost, mCurrentOrderId, mWebHash);
-                        WebQuery.create(link, WebQuery.HttpMethod.GET, WebResponse.mResponseOrderAccept_Cancel, new WebResponse() {
-                            @Override
-                            public void webResponse(int code, int webResponse, String s) {
-                                webResponseOK(webResponse, s);
-                                mQueryStateAllowed = true;
-                                queryState();
-                            }
-                        }).request();
+                        createProgressDialog();
+                        WebQuery.create(String.format("%s/api/driver/order_reject_options/%d", mHostUrl, mCurrentOrderId), WebQuery.HttpMethod.GET, 0, new WebResponse() {
+                                    @Override
+                                    public void webResponse(int code, int webResponse, String s) {
+                                        if (!webResponseOK(webResponse, s)) {
+                                            queryState();
+                                            return;
+                                        }
+                                        JsonObject jo = JsonParser.parseString(s).getAsJsonObject();
+                                        JsonArray ja = jo.getAsJsonArray("data");
+                                        new UDialogOrderCancelOptions(ActivityCity.this, new UDialogOrderCancelOptions.OptionSelected() {
+                                            @Override
+                                            public void onClick(String o) {
+                                                WebRejectByDriver.post(mCurrentOrderId, o, "", new WebResponse() {
+                                                    @Override
+                                                    public void webResponse(int code, int webResponse, String s) {
+                                                        mQueryStateAllowed = true;
+                                                        queryState();
+                                                    }
+                                                });
+                                            }
+                                        }, ja).show();
+                                    }
+                                }).request();
                     }
                 });
                 break;
@@ -901,7 +916,16 @@ public class ActivityCity extends BaseActivity {
                                         } else if (httpReponseCode > 299) {
                                             UDialog.alertError(ActivityCity.this, data);
                                         } else {
-
+                                            Intent intent = new Intent("websocket_sender");
+                                            String msg = String.format("{\n" +
+                                                            "\"channel\": \"%s\"," +
+                                                            "\"data\": {\"text\": \"%s\", \"action\":false},\n" +
+                                                            "\"event\": \"client-broadcast-api/driver-dispatcher-chat\"" +
+                                                            "}",
+                                                    WebSocketHttps.channelName(),
+                                                    String.format("%s %d %", getString(R.string.ImLate), min, getString(R.string.min)));
+                                            intent.putExtra("msg", msg);
+                                            LocalBroadcastManager.getInstance(TaxiApp.getContext()).sendBroadcast(intent);
                                         }
                                     }
                                 })
@@ -1096,6 +1120,7 @@ public class ActivityCity extends BaseActivity {
         btnAcceptGreen.setText(getString(R.string.Accept) + " +" + ord.get("rating_accepted").getAsString());
         mCurrentOrderId = ord.get("order_id").getAsInt();
         mWebHash = ord.get("accept_hash").getAsString();
+        mCancelHash = mWebHash;
 
         mQueryStateAllowed = false;
         btnAcceptGreen.setText(String.format("%s (%s)", getString(R.string.ACCEPT), "29"));
@@ -1241,13 +1266,14 @@ public class ActivityCity extends BaseActivity {
         showNothings();
         llNewOrder.setVisibility(View.GONE);
         llRateMoneyScore.setVisibility(View.GONE);
-        //llMissOrder.setVisibility(View.VISIBLE);
+        llMissOrder.setVisibility(View.VISIBLE);
         llOnPlace.setVisibility(View.VISIBLE);
         j = j.getAsJsonObject("payload");
 
         setStartAndFinishPoints(j);
         mCurrentOrderId = j.get("order_id").getAsInt();
         mWebHash = j.get("hash").getAsString();
+        mCancelHash = mWebHash;
         j = j.getAsJsonObject("order");
         tvArrivalText2.setText(String.format("%s %s", getString(R.string.OrderOn), ""));
         tvPaymentMethod2.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
@@ -1294,8 +1320,9 @@ public class ActivityCity extends BaseActivity {
         setStartAndFinishPoints(j);
         mCurrentOrderId = j.get("order_id").getAsInt();
         mWebHash = j.get("hash").getAsString();
+        mCancelHash = mWebHash;
         llBeforeStart.setVisibility(View.VISIBLE);
-        //llMissOrder.setVisibility(View.VISIBLE);
+        llMissOrder.setVisibility(View.VISIBLE);
 
         j = j.getAsJsonObject("order");
         tvPaymentMethod3.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
@@ -1341,10 +1368,11 @@ public class ActivityCity extends BaseActivity {
         setStartAndFinishPoints(j);
         mCurrentOrderId = j.get("order_id").getAsInt();
         mWebHash = j.get("hash_end").getAsString();
+        mCancelHash = mWebHash;
         tvWaitTime4.setText(UPref.getString("waittime"));
 
         llRide.setVisibility(View.VISIBLE);
-        //llMissOrder.setVisibility(View.VISIBLE);
+        llMissOrder.setVisibility(View.VISIBLE);
         tvMissOrder.setText(getString(R.string.CANCELORDER));
 
         j = j.getAsJsonObject("order");
@@ -1879,7 +1907,7 @@ public class ActivityCity extends BaseActivity {
                     jo.addProperty("sender", 2);
                     jo.addProperty("message", jm.get("text").getAsString());
                     jo.addProperty("time",jm.get("created_at").getAsString());
-                    jo.addProperty("name", "");
+                    jo.addProperty("name", String.format("%s %s", jm.get("name").getAsString(), jm.get("surname").getAsString()));
                     currentChatMessages.add(jo);
                 }
                 UPref.setString("dispatcherchat", currentChatMessages.toString());
