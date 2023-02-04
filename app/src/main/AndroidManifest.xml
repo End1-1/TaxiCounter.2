@@ -102,9 +102,6 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".Activities.OrdersHistoryRouteActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".Activities.OrdersHistoryActivity"
             android:screenOrientation="portrait" />
 

@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 33
     defaultConfig {
-        applicationId "com.nyt.taxi2"
+        applicationId "com.nyt.taxi"
         minSdkVersion 26
         targetSdkVersion 33
         versionCode 61
@@ -33,7 +33,7 @@ android {
     lint {
         baseline = file("lint-baseline.xml")
     }
-    namespace 'com.nyt.taxi2'
+    namespace 'com.nyt.taxi'
     //lintOptions {
     //    checkReleaseBuilds false
         // Or, if you prefer, you can continue to check for errors in release builds,
