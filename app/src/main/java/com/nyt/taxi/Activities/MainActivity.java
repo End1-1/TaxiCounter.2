@@ -194,11 +194,16 @@ public class MainActivity extends BaseActivity implements
                 if (s == null) {
                     s = "";
                 }
-                JsonObject jo = JsonParser.parseString(s).getAsJsonObject();
-                if (jo.has("message")) {
-                    UDialog.alertError(MainActivity.this, jo.get("message").getAsString());
-                } else {
-                    UDialog.alertError(MainActivity.this, getString(R.string.SystemError) + "\r\n" + s);
+                JsonObject jo;
+                try {
+                    jo = JsonParser.parseString(s).getAsJsonObject();
+                    if (jo.has("message")) {
+                        UDialog.alertError(MainActivity.this, jo.get("message").getAsString());
+                    } else {
+                        UDialog.alertError(MainActivity.this, getString(R.string.SystemError) + "\r\n" + s);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 if (code == mResponseQueryState) {
                     UPref.setBearerKey("");

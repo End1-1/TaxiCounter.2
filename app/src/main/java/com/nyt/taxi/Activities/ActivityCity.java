@@ -1864,6 +1864,9 @@ public class ActivityCity extends BaseActivity {
         WebRequest.create("/api/driver/get_unread_messages", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
             @Override
             public void httpRespone(int httpReponseCode, String data) {
+                if (httpReponseCode > 299 || httpReponseCode == -1) {
+                    return;
+                }
                 JsonArray ja = JsonParser.parseString(data).getAsJsonObject().getAsJsonArray("messages");
                 mMessagesCount += ja.size();
                 WebRequest.create("/api/driver/get_unread_messages", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
