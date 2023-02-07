@@ -31,18 +31,21 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         TextView tvMsg;
         TextView tvTime;
         ImageView imgProfile;
+        TextView tvName;
 
         public VH(View v) {
             super(v);
             tvMsg = v.findViewById(R.id.msg);
             tvTime = v.findViewById(R.id.time);
             imgProfile = v.findViewById(R.id.imgProfile);
+            tvName = v.findViewById(R.id.name);
         }
 
         public void onBind(int position) {
             ActivityCity.ChatMessages m = mChatMessages.get(position);
             tvMsg.setText(m.msg);
             tvTime.setText(m.time);
+            tvName.setText(m.name);
             switch (m.sender) {
                 case 1:
                     imgProfile.setImageBitmap(ProfileActivity.getProfileImage());

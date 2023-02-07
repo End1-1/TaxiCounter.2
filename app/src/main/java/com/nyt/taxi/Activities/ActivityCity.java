@@ -152,7 +152,6 @@ public class ActivityCity extends BaseActivity {
     private TextView tvCommentFrom2;
     private TextView tvCommentFromText2;
     private ImageView imgCommentFrom2;
-    private View viewCommentFrom2;
     private TextView tvAddressTo2;
     private TextView tvAddressToText2;
     private ImageView imgAddressTo2;
@@ -160,9 +159,8 @@ public class ActivityCity extends BaseActivity {
     private TextView tvCommentTo2;
     private TextView tvCommentToText2;
     private ImageView imgCommentTo2;
-    private View viewCommentTo2;
     private Button btnGoToClient;
-    private LinearLayout llChat2;
+    private ConstraintLayout llChat2;
     private LinearLayout llNavigator2;
     private LinearLayout llImLate2;
     private TextView tvArrivalTime2;
@@ -182,9 +180,8 @@ public class ActivityCity extends BaseActivity {
     private TextView tvCommentTo3;
     private TextView tvCommentToText3;
     private ImageView imgCommentTo3;
-    private View viewCommentTo3;
     private Button btnStartOrder;
-    private LinearLayout llChat3;
+    private ConstraintLayout llChat3;
     private LinearLayout llImLate3;
     private LinearLayout llNavigator3;
     private TextView tvWaitTime3;
@@ -197,7 +194,6 @@ public class ActivityCity extends BaseActivity {
     private TextView tvCommentFrom4;
     private TextView tvCommentFromText4;
     private ImageView imgCommentFrom4;
-    private View viewCommentFrom4;
     private TextView tvTo4;
     private TextView tvToText4;
     private ImageView imgTo4;
@@ -205,12 +201,11 @@ public class ActivityCity extends BaseActivity {
     private TextView tvCommentTo4;
     private TextView tvCommentToText4;
     private ImageView imgCommentTo4;
-    private View viewCommentTo4;
     private TextView tvKm;
     private TextView tvMin;
     private Button btnEndOrder;
     private Button btnOrderDone;
-    private LinearLayout llChat4;
+    private ConstraintLayout llChat4;
     private LinearLayout llNavigator4;
     private TextView tvRideCost4;
     private TextView tvWaitTime4;
@@ -383,7 +378,6 @@ public class ActivityCity extends BaseActivity {
         tvCommentFromText4 = findViewById(R.id.tvCommentFromText4);
         tvCommentFrom4 = findViewById(R.id.tvCommentFrom4);
         imgCommentFrom4 = findViewById(R.id.imgCommentFrom4);
-        viewCommentFrom4 = findViewById(R.id.viewCommentFrom4);
         tvTo4 = findViewById(R.id.tvTo4);
         tvToText4 = findViewById(R.id.tvToText4);
         imgTo4 = findViewById(R.id.imgTo4);
@@ -391,7 +385,6 @@ public class ActivityCity extends BaseActivity {
         tvCommentTo4 = findViewById(R.id.tvCommentTo4);
         tvCommentToText4 = findViewById(R.id.tvCommentToText4);
         imgCommentTo4 = findViewById(R.id.imgCommentTo4);
-        viewCommentTo4 = findViewById(R.id.viewCommentTo4);
         tvKm = findViewById(R.id.tvKM);
         tvMin = findViewById(R.id.tvMin);
         tvWaitTime4 = findViewById(R.id.tvWaitTime4);
@@ -923,7 +916,8 @@ public class ActivityCity extends BaseActivity {
                                                             "\"event\": \"client-broadcast-api/driver-dispatcher-chat\"" +
                                                             "}",
                                                     WebSocketHttps.channelName(),
-                                                    String.format("%s %d %", getString(R.string.ImLate), min, getString(R.string.min)));
+                                                    String.format("%s %d %s", getString(R.string.ImLate), min, getString(R.string.min)));
+                                            chat(1, String.format("%s %d %s", getString(R.string.ImLate), min, getString(R.string.min)), "dispatcherchat", UPref.getString("driver_fullname"));
                                             intent.putExtra("msg", msg);
                                             LocalBroadcastManager.getInstance(TaxiApp.getContext()).sendBroadcast(intent);
                                         }
@@ -1115,6 +1109,9 @@ public class ActivityCity extends BaseActivity {
         tvDistance.setText(ord.get("distance").getAsString() + " " + getString(R.string.km));
         tvRideTime.setText(ord.get("duration").getAsString() + "" + getString(R.string.min));
         tvPaymentMethod.setText(ord.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
+        if (ord.has("company_name")) {
+            tvPaymentMethod.setText(ord.get("company_name").getAsString());
+        }
         tvArrivalText.setText(String.format("%s %s", getString(R.string.OrderOn), ""));
         tvArrivalToClient.setText(ord.get("order_start_time").getAsString());
         btnAcceptGreen.setText(getString(R.string.Accept) + " +" + ord.get("rating_accepted").getAsString());
@@ -1169,8 +1166,8 @@ public class ActivityCity extends BaseActivity {
                     }).request();
                 } else {
                     long sec = totalTime;
-                    if (sec == 0) {
-                        sec = 1;
+                    if (sec < 3000) {
+                        sec = 3000;
                     }
                     mCurrentLevel = (int) (10000 - (sec / 3));
                     btnAcceptGreen.setText(String.format("%s (%s)", getString(R.string.ACCEPT), String.valueOf(30 - (sec / 1000))));
@@ -1277,6 +1274,9 @@ public class ActivityCity extends BaseActivity {
         j = j.getAsJsonObject("order");
         tvArrivalText2.setText(String.format("%s %s", getString(R.string.OrderOn), ""));
         tvPaymentMethod2.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
+        if (j.has("company_name")) {
+            tvPaymentMethod2.setText(j.get("company_name").getAsString());
+        }
         tvArrivalTime2.setText(j.get("order_start_time").getAsString());
 
         int hour = mRouteTime / 60;
@@ -1326,6 +1326,9 @@ public class ActivityCity extends BaseActivity {
 
         j = j.getAsJsonObject("order");
         tvPaymentMethod3.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
+        if (j.has("company_name")) {
+            tvPaymentMethod3.setText(j.get("company_name").getAsString());
+        }
         tvArrivalTime3.setText(j.get("order_start_time").getAsString());
 
         tvAddressFrom3.setText(j.get("address_from").getAsString().replace("Москва, ", "").replace("Moscow, ", ""));
@@ -1376,6 +1379,10 @@ public class ActivityCity extends BaseActivity {
         tvMissOrder.setText(getString(R.string.CANCELORDER));
 
         j = j.getAsJsonObject("order");
+        tvPaymentMethod4.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
+        if (j.has("company_name")) {
+            tvPaymentMethod4.setText(j.get("company_name").getAsString());
+        }
         tvAddressFrom4.setText(j.get("address_from").getAsString().replace("Москва, ", "").replace("Moscow, ", ""));
         tvRideCost4.setText(j.get("initial_price").getAsString());
         int v;
@@ -1389,7 +1396,6 @@ public class ActivityCity extends BaseActivity {
         tvCommentFromText4.setVisibility(v);
         tvCommentFrom4.setVisibility(v);
         imgCommentFrom4.setVisibility(v);
-        viewCommentFrom4.setVisibility(v);
         //animateHeight(findViewById(R.id.llCommentFrom4), 1);
 
         v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
@@ -1408,7 +1414,6 @@ public class ActivityCity extends BaseActivity {
             tvCommentTo4.setText(Html.fromHtml(info, Html.FROM_HTML_MODE_COMPACT));
         }
         tvCommentToText4.setVisibility(v);
-        viewCommentTo4.setVisibility(v);
         imgCommentTo4.setVisibility(v);
         tvCommentTo4.setVisibility(v);
         btnEndOrder.setVisibility(View.VISIBLE);
@@ -1424,6 +1429,10 @@ public class ActivityCity extends BaseActivity {
         llRide.setVisibility(View.VISIBLE);
 
         j = j.getAsJsonObject("order");
+        tvPaymentMethod4.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
+        if (j.has("company_name")) {
+            tvPaymentMethod4.setText(j.get("company_name").getAsString());
+        }
         mCurrentOrderId = j.get("completed_order_id").getAsInt();
         tvAddressFrom4.setText(j.get("address_from").getAsString().replace("Москва, ", "").replace("Moscow, ", ""));
         int v;
@@ -1437,7 +1446,6 @@ public class ActivityCity extends BaseActivity {
         tvCommentFromText4.setVisibility(v);
         tvCommentFrom4.setVisibility(v);
         imgCommentFrom4.setVisibility(v);
-        viewCommentFrom4.setVisibility(v);
         //animateHeight(tvCommentFrom4, 1);
 
         v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
@@ -1459,7 +1467,6 @@ public class ActivityCity extends BaseActivity {
             tvCommentTo4.setText(Html.fromHtml(info, Html.FROM_HTML_MODE_COMPACT));
         }
         tvCommentToText4.setVisibility(v);
-        viewCommentTo4.setVisibility(v);
         imgCommentTo4.setVisibility(v);
         tvCommentTo4.setVisibility(v);
         //animateHeight(tvCommentTo4, 1);
@@ -2097,6 +2104,7 @@ public class ActivityCity extends BaseActivity {
                 getClientHistory();
                 break;
             case 2:
+                mMessagesCount = 0;
                 if (mDriverState < 2) {
                     getOperatorsChat();
                 } else {
