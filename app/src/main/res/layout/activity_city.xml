@@ -293,6 +293,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -578,7 +579,7 @@
         android:layout_marginBottom="0dp"
         android:background="@drawable/login_down"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/textView14"
@@ -740,13 +741,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
                     android:inputType="textMultiLine"
                     android:text="@string/comment"
                     android:textAllCaps="true"
                     app:layout_constraintBottom_toBottomOf="@+id/imgAddressCommentFrom"
-                    app:layout_constraintStart_toEndOf="@+id/imgAddressCommentFrom"
-                    app:layout_constraintTop_toBottomOf="@+id/view17" />
+                    app:layout_constraintStart_toEndOf="@+id/imgAddressCommentFrom" />
 
                 <TextView
                     android:id="@+id/tvAddressFrom"
@@ -811,28 +810,6 @@
                     app:layout_constraintStart_toEndOf="@+id/imgAddressCommentTo"
                     app:layout_constraintTop_toTopOf="@+id/imgAddressCommentTo" />
 
-                <View
-                    android:id="@+id/viewCommentTo"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/colorGrayLight2"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvAddressTo" />
-
-                <View
-                    android:id="@+id/view17"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/colorGrayLight2"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvAddressFrom" />
-
                 <ImageView
                     android:id="@+id/imgAddressCommentTo"
                     android:layout_width="24dp"
@@ -840,7 +817,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/viewCommentTo"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAddressTo"
                     app:srcCompat="@drawable/information" />
 
                 <TextView
@@ -981,7 +958,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view17"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAddressFrom"
                     app:srcCompat="@drawable/information" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -1024,7 +1001,7 @@
         android:layout_marginBottom="0dp"
         android:background="@drawable/login_down"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/textView14_3"
@@ -1488,7 +1465,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="@string/PODACHA"
+            android:text="@string/InPlace"
             android:textAllCaps="true"
             android:textSize="@dimen/middleFont"
             app:layout_constraintEnd_toEndOf="parent"
@@ -1938,7 +1915,7 @@
         android:layout_marginBottom="0dp"
         android:background="@drawable/login_down"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tvRideAmount"
@@ -2225,19 +2202,19 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
 
-                            <ImageView
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                app:srcCompat="@drawable/chat_white" />
+                                <ImageView
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    app:srcCompat="@drawable/chat_white" />
 
-                            <TextView
-                                android:id="@+id/tvCarClass_4"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="@string/CHAT"
-                                android:textColor="@color/colorWhite"
-                                android:textStyle="bold" />
+                                <TextView
+                                    android:id="@+id/tvCarClass_4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="@string/CHAT"
+                                    android:textColor="@color/colorWhite"
+                                    android:textStyle="bold" />
 
                             </LinearLayout>
 
@@ -2249,7 +2226,7 @@
                             android:layout_weight="0.9" />
 
                         <LinearLayout
-                            android:id="@+id/linearLayout5_4"
+                            android:id="@+id/llWaitTime4"
                             android:layout_width="100dp"
                             android:layout_height="100dp"
                             android:layout_marginTop="32dp"
@@ -3111,6 +3088,46 @@
 
         </ScrollView>
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/llNoInternet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/clUp"
+        android:layout_alignTop="@id/clQueryState"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/noinet_bg"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imageView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.25"
+            app:srcCompat="@drawable/nowifi" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="@string/MissingInternet"
+            android:textAllCaps="true"
+            android:textColor="@color/colorWhite"
+            android:textSize="40dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView10" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </RelativeLayout>

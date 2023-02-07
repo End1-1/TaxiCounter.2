@@ -23,9 +23,13 @@ import com.nyt.taxi.R;
 import com.nyt.taxi.Services.WebRequest;
 import com.nyt.taxi.Services.WebSocketHttps;
 import com.nyt.taxi.Utils.OrdersStorage;
+import com.nyt.taxi.Utils.UConfig;
 import com.nyt.taxi.Utils.UDialog;
 import com.nyt.taxi.Utils.UPref;
+import com.nyt.taxi.Utils.UText;
 import com.nyt.taxi.Utils.WebSocketEventReceiver;
+import com.nyt.taxi.Web.WebQuery;
+import com.nyt.taxi.Web.WebResponse;
 
 public class BaseActivity extends AppCompatActivity implements View.OnClickListener, WebSocketEventReceiver.EventListener {
 
@@ -314,9 +318,27 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
+    protected void connectionChanged(boolean v) {
+        if (v) {
+            WebQuery webQuery = new WebQuery(UConfig.mHostOrderReady, WebQuery.HttpMethod.POST, WebResponse.mResponseDriverOn, new WebResponse() {
+                @Override
+                public void webResponse(int code, int webResponse, String s) {
+                    System.out.println(s);
+                }
+            });
+            webQuery.setParameter("ready", Integer.toString(1))
+                    .setParameter("online", "1")
+                    .setParameter("lat", UText.valueOf(UPref.getFloat("last_lat")))
+                    .setParameter("lut", UText.valueOf(UPref.getFloat("last_lon")))
+                    .request();
+        }
+    }
+
     @Override
     public void event(String e) {
-
+         if (e.contains("websocket_connection_changed")) {
+             connectionChanged(WebSocketHttps.WEBSOCKET_CONNECTED);
+         }
     }
 
     WebRequest.HttpResponse mPrepareCommonOrderAccept = new WebRequest.HttpResponse() {

@@ -98,6 +98,7 @@ public class ActivityCity extends BaseActivity {
     int mRouteTime = 0;
     int mMessagesCount = 0;
     int mMessagesCounter = 0;
+    boolean mNoInet = !WebSocketHttps.WEBSOCKET_CONNECTED;
     private UDialogSelectChatOperator selectChatOperatorDialog;
 
     private ImageView imgSun;
@@ -144,7 +145,6 @@ public class ActivityCity extends BaseActivity {
     private TextView tvCommentToText;
     private TextView tvAddressToComment;
     private ImageView imgAddressToComment;
-    private View viewCommentTo;
     private TextView tvArrivalText;
 
     private LinearLayout llOnPlace;
@@ -232,6 +232,8 @@ public class ActivityCity extends BaseActivity {
     private TextView tvDistanceProfile;
     private TextView tvBalanceProfile;
 
+    private ConstraintLayout llNoInet;
+
     private int mChatMode = 0;
     private LinearLayout llChat;
     private TextView tvChatDispatcher;
@@ -310,7 +312,6 @@ public class ActivityCity extends BaseActivity {
         tvArrivalToClient = findViewById(R.id.tvArrivalTime);
         tvAddressCommentFrom = findViewById(R.id.tvAddressCommentFrom);
         imgAddressCommentFrom = findViewById(R.id.imgAddressCommentFrom);
-        viewCommentTo = findViewById(R.id.viewCommentTo);
         btnAcceptGreen = findViewById(R.id.btnAcceptGreen);
         imgAddressTo = findViewById(R.id.imgAddressTo);
         tvAddressToText = findViewById(R.id.tvAddressToText);
@@ -418,6 +419,8 @@ public class ActivityCity extends BaseActivity {
         edChatSendMessage = findViewById(R.id.edChatSendMessage);
         imgChatSendMessage = findViewById(R.id.imgSendChatMessage);
         imgSelectChatOperator = findViewById(R.id.imgSelectOperator);
+
+        llNoInet= findViewById(R.id.llNoInternet);
 
         llDriverInfo = findViewById(R.id.llDriverInfo);
         edDriverName = findViewById(R.id.edDriverName);
@@ -708,7 +711,7 @@ public class ActivityCity extends BaseActivity {
             }
             case R.id.btnProfile2:
                 mChatMode = 0;
-                if (mDriverState > DriverState.Free) {
+                if (mDriverState > DriverState.Free || mNoInet) {
                     return;
                 }
                 hideDownMenuBackgrounds();
@@ -717,7 +720,7 @@ public class ActivityCity extends BaseActivity {
                 break;
             case R.id.btnProfile:
                 mChatMode = 0;
-                if (mDriverState > DriverState.Free) {
+                if (mDriverState > DriverState.Free || mNoInet) {
                     return;
                 }
                 hideDownMenuBackgrounds();
@@ -932,6 +935,14 @@ public class ActivityCity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void connectionChanged(boolean v) {
+        super.connectionChanged(v);
+        mNoInet = !v;
+        showNothings();
+        queryState();
+    }
+
     public void queryState() {
         getMessagesCount();
         determineDayOrNight();
@@ -1068,6 +1079,9 @@ public class ActivityCity extends BaseActivity {
             if (s.contains("time left")) {
                 return true;
             }
+            if (s.contains("to resolve host")) {
+                return false;
+            }
             UDialog.alertError(this, s);
             return false;
         }
@@ -1101,6 +1115,7 @@ public class ActivityCity extends BaseActivity {
     }
 
     private void startNewOrder(JsonObject ord) {
+        mNoInet = false;
         UPref.setString("waittime", "00:00");
         tvAddressFrom.setText(ord.get("address_from").getAsString());
         tvAddressTo.setText(ord.get("address_to").getAsString());
@@ -1108,10 +1123,8 @@ public class ActivityCity extends BaseActivity {
         tvCarClass.setText(ord.get("car_class").getAsString());
         tvDistance.setText(ord.get("distance").getAsString() + " " + getString(R.string.km));
         tvRideTime.setText(ord.get("duration").getAsString() + "" + getString(R.string.min));
-        tvPaymentMethod.setText(ord.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
-        if (ord.has("company_name")) {
-            tvPaymentMethod.setText(ord.get("company_name").getAsString());
-        }
+        tvPaymentMethod.setText(ord.get("cash").getAsBoolean() ? getString(R.string.Cash) : ord.get("company_name").getAsString());
+
         tvArrivalText.setText(String.format("%s %s", getString(R.string.OrderOn), ""));
         tvArrivalToClient.setText(ord.get("order_start_time").getAsString());
         btnAcceptGreen.setText(getString(R.string.Accept) + " +" + ord.get("rating_accepted").getAsString());
@@ -1141,7 +1154,6 @@ public class ActivityCity extends BaseActivity {
         tvAddressToComment.setVisibility(v);
         imgAddressToComment.setVisibility(v);
         tvCommentToText.setVisibility(v);
-        viewCommentTo.setVisibility(v);
         //animateHeight(tvAddressToComment, 1);
 
         LayerDrawable layerDrawable = (LayerDrawable) btnAcceptGreen.getBackground();
@@ -1211,7 +1223,7 @@ public class ActivityCity extends BaseActivity {
         return info;
     }
 
-    private void showNothings() {
+    private boolean showNothings() {
         clFirstPage.setVisibility(View.GONE);
         llDownMenu.setVisibility(View.GONE);
         llMissOrder.setVisibility(View.GONE);
@@ -1229,10 +1241,19 @@ public class ActivityCity extends BaseActivity {
         tvRideAmount.setText("0" + getString(R.string.RubSymbol));
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) clFirstPage.getLayoutParams();
         params.addRule(RelativeLayout.ABOVE, R.id.llDownMenu);
+        if (mNoInet) {
+            llNoInet.setVisibility(View.VISIBLE);
+            return false;
+        } else {
+            llNoInet.setVisibility(View.GONE);
+        }
+        return true;
     }
 
     private void homePage() {
-        showNothings();
+        if (!showNothings()) {
+            return;
+        }
         hideDownMenuBackgrounds();
         llbtnHome.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
         mChatMode = 0;
@@ -1254,13 +1275,17 @@ public class ActivityCity extends BaseActivity {
     }
 
     private void newOrderPage() {
-        showNothings();
+        if (!showNothings()) {
+            return;
+        }
         llMissOrder.setVisibility(View.VISIBLE);
         llNewOrder.setVisibility(View.VISIBLE);
     }
 
     private void afterAcceptPage(JsonObject j) {
-        showNothings();
+        if (!showNothings()) {
+            return;
+        }
         llNewOrder.setVisibility(View.GONE);
         llRateMoneyScore.setVisibility(View.GONE);
         llMissOrder.setVisibility(View.VISIBLE);
@@ -1273,10 +1298,7 @@ public class ActivityCity extends BaseActivity {
         mCancelHash = mWebHash;
         j = j.getAsJsonObject("order");
         tvArrivalText2.setText(String.format("%s %s", getString(R.string.OrderOn), ""));
-        tvPaymentMethod2.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
-        if (j.has("company_name")) {
-            tvPaymentMethod2.setText(j.get("company_name").getAsString());
-        }
+        tvPaymentMethod2.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : j.get("company_name").getAsString());
         tvArrivalTime2.setText(j.get("order_start_time").getAsString());
 
         int hour = mRouteTime / 60;
@@ -1315,7 +1337,9 @@ public class ActivityCity extends BaseActivity {
     }
     
     private void beforeOrderStartPage(JsonObject j) {
-        showNothings();
+        if (!showNothings()) {
+            return;
+        }
         j = j.getAsJsonObject("payload");
         setStartAndFinishPoints(j);
         mCurrentOrderId = j.get("order_id").getAsInt();
@@ -1325,10 +1349,7 @@ public class ActivityCity extends BaseActivity {
         llMissOrder.setVisibility(View.VISIBLE);
 
         j = j.getAsJsonObject("order");
-        tvPaymentMethod3.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
-        if (j.has("company_name")) {
-            tvPaymentMethod3.setText(j.get("company_name").getAsString());
-        }
+        tvPaymentMethod3.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : j.get("company_name").getAsString());
         tvArrivalTime3.setText(j.get("order_start_time").getAsString());
 
         tvAddressFrom3.setText(j.get("address_from").getAsString().replace("Москва, ", "").replace("Moscow, ", ""));
@@ -1366,7 +1387,9 @@ public class ActivityCity extends BaseActivity {
     }
     
     private void ridePage(JsonObject j) {
-        showNothings();
+        if (!showNothings()) {
+            return;
+        }
         j = j.getAsJsonObject("payload");
         setStartAndFinishPoints(j);
         mCurrentOrderId = j.get("order_id").getAsInt();
@@ -1379,10 +1402,7 @@ public class ActivityCity extends BaseActivity {
         tvMissOrder.setText(getString(R.string.CANCELORDER));
 
         j = j.getAsJsonObject("order");
-        tvPaymentMethod4.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
-        if (j.has("company_name")) {
-            tvPaymentMethod4.setText(j.get("company_name").getAsString());
-        }
+        tvPaymentMethod4.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : j.get("company_name").getAsString());
         tvAddressFrom4.setText(j.get("address_from").getAsString().replace("Москва, ", "").replace("Moscow, ", ""));
         tvRideCost4.setText(j.get("initial_price").getAsString());
         int v;
@@ -1421,7 +1441,9 @@ public class ActivityCity extends BaseActivity {
     }
 
     private void lastPage(JsonObject j) {
-        showNothings();
+        if (!showNothings()) {
+            return;
+        }
         j = j.getAsJsonObject("payload");
         setStartAndFinishPoints(j);
 
@@ -1429,10 +1451,7 @@ public class ActivityCity extends BaseActivity {
         llRide.setVisibility(View.VISIBLE);
 
         j = j.getAsJsonObject("order");
-        tvPaymentMethod4.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : getString(R.string.Card));
-        if (j.has("company_name")) {
-            tvPaymentMethod4.setText(j.get("company_name").getAsString());
-        }
+        tvPaymentMethod4.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : j.get("company_name").getAsString());
         mCurrentOrderId = j.get("completed_order_id").getAsInt();
         tvAddressFrom4.setText(j.get("address_from").getAsString().replace("Москва, ", "").replace("Moscow, ", ""));
         int v;
@@ -1477,6 +1496,9 @@ public class ActivityCity extends BaseActivity {
 
         btnEndOrder.setVisibility(View.GONE);
         btnOrderDone.setVisibility(View.VISIBLE);
+        llChat4.setVisibility(View.GONE);
+        llNavigator4.setVisibility(View.GONE);
+        findViewById(R.id.llWaitTime4).setVisibility(View.GONE);
     }
 
     private void showProfilePage() {
@@ -1677,6 +1699,8 @@ public class ActivityCity extends BaseActivity {
             imgProfile.setImageBitmap(ProfileActivity.getProfileImage());
         } else if (e.contains("CallCenterWorkerDriverChat")) {
 
+        } else {
+            super.event(e);
         }
     }
 

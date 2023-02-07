@@ -138,7 +138,7 @@
     <string name="Close">Закрыть</string>
     <string name="Additional">Дополнительно</string>
     <string name="OrderCanceled">Заказ был отменен</string>
-    <string name="MissingInternet">Отсутствует подключение к интернету</string>
+    <string name="MissingInternet">Отсутствует\n подключение \n к интернету</string>
     <string name="LoadMoreHistory">Загрузить ещё</string>
     <string name="YouAreBlocked">Вы заблокированы</string>
     <string name="SelectAdmin">Выберите собеседника</string>

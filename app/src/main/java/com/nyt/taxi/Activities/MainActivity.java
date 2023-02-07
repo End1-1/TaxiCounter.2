@@ -204,6 +204,11 @@ public class MainActivity extends BaseActivity implements
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    if (code == 1 || s.contains("to resolve host")) {
+                        UDialog.alertError(MainActivity.this, getString(R.string.MissingInternet));
+                    } else {
+                        UDialog.alertError(MainActivity.this, s);
+                    }
                 }
                 if (code == mResponseQueryState) {
                     UPref.setBearerKey("");
