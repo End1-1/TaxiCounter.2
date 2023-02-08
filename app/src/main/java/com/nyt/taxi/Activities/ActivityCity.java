@@ -1076,10 +1076,10 @@ public class ActivityCity extends BaseActivity {
         hideProgressDialog();
         if (code > 299) {
             mQueryStateAllowed = true;
-            if (s.contains("time left")) {
+            if (s.contains("time left")  ) {
                 return true;
             }
-            if (s.contains("to resolve host")) {
+            if (s.contains("to resolve host") || s.contains("failed to connect")) {
                 return false;
             }
             UDialog.alertError(this, s);

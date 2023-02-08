@@ -204,7 +204,7 @@ public class MainActivity extends BaseActivity implements
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if (code == 1 || s.contains("to resolve host")) {
+                    if (code == 1 || s.contains("to resolve host") || s.contains("failed to connect")) {
                         UDialog.alertError(MainActivity.this, getString(R.string.MissingInternet));
                     } else {
                         UDialog.alertError(MainActivity.this, s);

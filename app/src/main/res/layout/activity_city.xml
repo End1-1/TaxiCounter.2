@@ -579,7 +579,7 @@
         android:layout_marginBottom="0dp"
         android:background="@drawable/login_down"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/textView14"
@@ -1009,7 +1009,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:gravity="center"
-            android:text="@string/PODACHA"
+            android:text="@string/InPlace"
             android:textAllCaps="true"
             android:textSize="@dimen/middleFont"
             app:layout_constraintEnd_toEndOf="parent"
@@ -1465,7 +1465,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="@string/InPlace"
+            android:text="@string/PODACHA"
             android:textAllCaps="true"
             android:textSize="@dimen/middleFont"
             app:layout_constraintEnd_toEndOf="parent"
