@@ -98,7 +98,6 @@ public class ActivityCity extends BaseActivity {
     int mRouteTime = 0;
     int mMessagesCount = 0;
     int mMessagesCounter = 0;
-    boolean mNoInet = !WebSocketHttps.WEBSOCKET_CONNECTED;
     private UDialogSelectChatOperator selectChatOperatorDialog;
 
     private ImageView imgSun;
@@ -494,6 +493,7 @@ public class ActivityCity extends BaseActivity {
         timerMessages = new Timer();
         timerMessages.schedule(new MessagesTimerTask(), 500, 500);
         getMessagesCount();
+        queryState();
     }
 
     @Override
@@ -711,7 +711,7 @@ public class ActivityCity extends BaseActivity {
             }
             case R.id.btnProfile2:
                 mChatMode = 0;
-                if (mDriverState > DriverState.Free || mNoInet) {
+                if (mDriverState > DriverState.Free || !WebSocketHttps.WEBSOCKET_CONNECTED) {
                     return;
                 }
                 hideDownMenuBackgrounds();
@@ -720,7 +720,7 @@ public class ActivityCity extends BaseActivity {
                 break;
             case R.id.btnProfile:
                 mChatMode = 0;
-                if (mDriverState > DriverState.Free || mNoInet) {
+                if (mDriverState > DriverState.Free || !WebSocketHttps.WEBSOCKET_CONNECTED) {
                     return;
                 }
                 hideDownMenuBackgrounds();
@@ -938,7 +938,6 @@ public class ActivityCity extends BaseActivity {
     @Override
     protected void connectionChanged(boolean v) {
         super.connectionChanged(v);
-        mNoInet = !v;
         showNothings();
         queryState();
     }
@@ -1115,7 +1114,6 @@ public class ActivityCity extends BaseActivity {
     }
 
     private void startNewOrder(JsonObject ord) {
-        mNoInet = false;
         UPref.setString("waittime", "00:00");
         tvAddressFrom.setText(ord.get("address_from").getAsString());
         tvAddressTo.setText(ord.get("address_to").getAsString());
@@ -1241,7 +1239,7 @@ public class ActivityCity extends BaseActivity {
         tvRideAmount.setText("0" + getString(R.string.RubSymbol));
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) clFirstPage.getLayoutParams();
         params.addRule(RelativeLayout.ABOVE, R.id.llDownMenu);
-        if (mNoInet) {
+        if (!WebSocketHttps.WEBSOCKET_CONNECTED) {
             llNoInet.setVisibility(View.VISIBLE);
             return false;
         } else {
