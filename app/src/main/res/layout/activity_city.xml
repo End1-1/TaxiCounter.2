@@ -35,10 +35,10 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/llRateMoneyScore"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:orientation="horizontal"
             android:visibility="visible"
@@ -47,18 +47,15 @@
             app:layout_constraintTop_toBottomOf="@+id/txtDriverFullName">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/llRating"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1.25"
-                android:gravity="center_horizontal"></LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/llRatingLine"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/imageView16"
@@ -85,10 +82,14 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.2"
-                android:gravity="center_horizontal">
+                android:id="@+id/llRatingLine"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:gravity="center_horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/llBalance"
+                app:layout_constraintStart_toEndOf="@id/llRating"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
                     android:layout_width="2dp"
@@ -98,11 +99,15 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/llBalance"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/llBalanceLine"
+                app:layout_constraintStart_toEndOf="@id/llRatingLine"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/imageView17"
@@ -128,10 +133,14 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.2"
-                android:gravity="center_horizontal">
+                android:id="@+id/llBalanceLine"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:gravity="center_horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/llScore"
+                app:layout_constraintStart_toEndOf="@id/llBalance"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
                     android:layout_width="2dp"
@@ -141,12 +150,15 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/llScore"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/llBalanceLine"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/imageView18"
@@ -170,13 +182,7 @@
                     android:textSize="@dimen/middleFont"
                     android:textStyle="bold" />
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.25"
-                android:gravity="center_horizontal"></LinearLayout>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
             android:id="@+id/imgSun"
@@ -187,21 +193,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/sun" />
-
-        <!--
-        <Switch
-            android:id="@+id/swOnline"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:checked="true"
-            android:switchMinWidth="56dp"
-            android:textOff="OFF"
-            android:textOn="ON"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-            -->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout5"
@@ -834,7 +825,7 @@
                     app:layout_constraintStart_toEndOf="@+id/imgAddressCommentTo"
                     app:layout_constraintTop_toBottomOf="@+id/imgAddressCommentTo" />
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/llOrderOptions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -845,18 +836,16 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvAddressCommentTo">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_weight="0.9" />
-
-                    <LinearLayout
-                        android:id="@+id/linearLayout3"
+                        android:id="@+id/llOO1_1"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:layout_marginTop="32dp"
                         android:background="@drawable/gradient_malina"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/llOO1_2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <ImageView
                             android:layout_width="48dp"
@@ -874,18 +863,16 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.9" />
-
-                    <LinearLayout
-                        android:id="@+id/linearLayout5"
+                        android:id="@+id/llOO1_2"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:layout_marginTop="32dp"
                         android:background="@drawable/gradient_green"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/llOO1_3"
+                        app:layout_constraintStart_toEndOf="@id/llOO1_1"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <ImageView
                             android:layout_width="48dp"
@@ -903,17 +890,16 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.9" />
-
-                    <LinearLayout
+                        android:id="@+id/llOO1_3"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:layout_marginTop="32dp"
                         android:background="@drawable/gradient_blue"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/llOO1_2"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <ImageView
                             android:layout_width="48dp"
@@ -930,12 +916,7 @@
                             android:textStyle="bold" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_weight="0.9" />
-
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:id="@+id/tvAddressCommentFrom"
@@ -1457,7 +1438,7 @@
         android:layout_marginBottom="0dp"
         android:background="@drawable/login_down"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/textView14_2"
@@ -1718,7 +1699,7 @@
                     app:layout_constraintStart_toEndOf="@+id/imgCommentTo2"
                     app:layout_constraintTop_toBottomOf="@+id/imgCommentTo2" />
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/llOrderOptions_2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -1728,10 +1709,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvCommentTo2">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.9" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/llChat2"
@@ -1740,7 +1717,11 @@
                         android:background="@drawable/gradient_malina"
                         android:clickable="true"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/llImLate2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
                             android:id="@+id/txtMessages2"
@@ -1787,18 +1768,17 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.9" />
-
-                    <LinearLayout
                         android:id="@+id/llImLate2"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:background="@drawable/gradient_green"
                         android:clickable="true"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/llNavigator2"
+                        app:layout_constraintStart_toEndOf="@id/llChat2"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <ImageView
                             android:layout_width="48dp"
@@ -1818,18 +1798,17 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.9" />
-
-                    <LinearLayout
                         android:id="@+id/llNavigator2"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:background="@drawable/gradient_blue"
                         android:clickable="true"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/llImLate2"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <ImageView
                             android:layout_width="48dp"
@@ -1848,12 +1827,7 @@
                             android:textStyle="bold" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.9" />
-
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:id="@+id/tvCommentFrom2"

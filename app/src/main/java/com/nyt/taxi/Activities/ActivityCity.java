@@ -110,7 +110,7 @@ public class ActivityCity extends BaseActivity {
     private ImageView btnProfile2;
     private LinearLayout llGoOnline;
     private CardView btnProfile;
-    private LinearLayout llRateMoneyScore;
+    private ConstraintLayout llRateMoneyScore;
     private TextView tvScore;
     private TextView tvBalance;
     private TextView tvRate;
@@ -145,6 +145,7 @@ public class ActivityCity extends BaseActivity {
     private TextView tvAddressToComment;
     private ImageView imgAddressToComment;
     private TextView tvArrivalText;
+    private ConstraintLayout llOrderOptions;
 
     private LinearLayout llOnPlace;
     private TextView tvAddressFrom2;
@@ -165,6 +166,7 @@ public class ActivityCity extends BaseActivity {
     private TextView tvArrivalTime2;
     private TextView tvPaymentMethod2;
     private TextView tvArrivalText2;
+    private ConstraintLayout llOrderOptions2;
 
     private LinearLayout llBeforeStart;
     private TextView tvAddressFrom3;
@@ -311,6 +313,7 @@ public class ActivityCity extends BaseActivity {
         tvArrivalToClient = findViewById(R.id.tvArrivalTime);
         tvAddressCommentFrom = findViewById(R.id.tvAddressCommentFrom);
         imgAddressCommentFrom = findViewById(R.id.imgAddressCommentFrom);
+        llOrderOptions = findViewById(R.id.llOrderOptions);
         btnAcceptGreen = findViewById(R.id.btnAcceptGreen);
         imgAddressTo = findViewById(R.id.imgAddressTo);
         tvAddressToText = findViewById(R.id.tvAddressToText);
@@ -339,6 +342,7 @@ public class ActivityCity extends BaseActivity {
         llChat2 = findViewById(R.id.llChat2);
         llNavigator2 = findViewById(R.id.llNavigator2);
         llImLate2 = findViewById(R.id.llImLate2);
+        llOrderOptions2 = findViewById(R.id.llOrderOptions_2);
         tvArrivalTime2 = findViewById(R.id.tvArrivalTime2);
         tvPaymentMethod2 = findViewById(R.id.tvPaymentMethod2);
         tvArrivalText2 = findViewById(R.id.txtArrivalTime2);
@@ -467,7 +471,6 @@ public class ActivityCity extends BaseActivity {
         imgDriverProfilePhoto.setOnClickListener(this);
         imgChatSendMessage.setOnClickListener(this);
         imgSelectChatOperator.setOnClickListener(this);
-
 
         authToSocket();
         showNothings();
@@ -1227,6 +1230,8 @@ public class ActivityCity extends BaseActivity {
         llMissOrder.setVisibility(View.GONE);
         llRateMoneyScore.setVisibility(View.GONE);
         llNewOrder.setVisibility(View.GONE);
+        llOrderOptions.setVisibility(View.GONE);
+        llOrderOptions2.setVisibility(View.GONE);
         llOnPlace.setVisibility(View.GONE);
         llBeforeStart.setVisibility(View.GONE);
         llRide.setVisibility(View.GONE);
@@ -1278,6 +1283,7 @@ public class ActivityCity extends BaseActivity {
         }
         llMissOrder.setVisibility(View.GONE);
         llNewOrder.setVisibility(View.VISIBLE);
+        llOrderOptions.setVisibility(View.VISIBLE);
     }
 
     private void afterAcceptPage(JsonObject j) {
@@ -1288,6 +1294,7 @@ public class ActivityCity extends BaseActivity {
         llRateMoneyScore.setVisibility(View.GONE);
         llMissOrder.setVisibility(View.VISIBLE);
         llOnPlace.setVisibility(View.VISIBLE);
+        llOrderOptions2.setVisibility(View.VISIBLE);
         j = j.getAsJsonObject("payload");
 
         setStartAndFinishPoints(j);
