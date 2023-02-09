@@ -1276,7 +1276,7 @@ public class ActivityCity extends BaseActivity {
         if (!showNothings()) {
             return;
         }
-        llMissOrder.setVisibility(View.VISIBLE);
+        llMissOrder.setVisibility(View.GONE);
         llNewOrder.setVisibility(View.VISIBLE);
     }
 
@@ -1435,6 +1435,7 @@ public class ActivityCity extends BaseActivity {
         imgCommentTo4.setVisibility(v);
         tvCommentTo4.setVisibility(v);
         btnEndOrder.setVisibility(View.VISIBLE);
+        btnEndOrder.setEnabled(true);
         btnOrderDone.setVisibility(View.GONE);
     }
 
