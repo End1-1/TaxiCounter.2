@@ -188,6 +188,7 @@ public class ActivityCity extends BaseActivity {
     private TextView tvWaitTime3;
     private TextView tvPaymentMethod3;
     private TextView tvArrivalTime3;
+    private ConstraintLayout llOrderOptions3;
 
     private LinearLayout llRide;
     private TextView tvRideAmount;
@@ -211,6 +212,7 @@ public class ActivityCity extends BaseActivity {
     private TextView tvRideCost4;
     private TextView tvWaitTime4;
     private TextView tvPaymentMethod4;
+    private ConstraintLayout llOrderOptions4;
 
     private ImageView imgOnlineAnim;
     private Button btnAcceptGreen;
@@ -369,6 +371,7 @@ public class ActivityCity extends BaseActivity {
         llImLate3 = findViewById(R.id.llImLate3);
         llNavigator3 = findViewById(R.id.llNavigtor3);
         tvWaitTime3 = findViewById(R.id.tvWaitTime3);
+        llOrderOptions3 = findViewById(R.id.llOrderOptions_3);
         imgCommentFrom3.setOnClickListener(animHeightListener);
         tvCommentFromText3.setOnClickListener(animHeightListener);
         imgCommentTo3.setOnClickListener(animHeightListener);
@@ -389,6 +392,7 @@ public class ActivityCity extends BaseActivity {
         tvCommentTo4 = findViewById(R.id.tvCommentTo4);
         tvCommentToText4 = findViewById(R.id.tvCommentToText4);
         imgCommentTo4 = findViewById(R.id.imgCommentTo4);
+        llOrderOptions4 = findViewById(R.id.llOrderOptions_4);
         tvKm = findViewById(R.id.tvKM);
         tvMin = findViewById(R.id.tvMin);
         tvWaitTime4 = findViewById(R.id.tvWaitTime4);
@@ -1232,6 +1236,8 @@ public class ActivityCity extends BaseActivity {
         llNewOrder.setVisibility(View.GONE);
         llOrderOptions.setVisibility(View.GONE);
         llOrderOptions2.setVisibility(View.GONE);
+        llOrderOptions3.setVisibility(View.GONE);
+        llOrderOptions4.setVisibility(View.GONE);
         llOnPlace.setVisibility(View.GONE);
         llBeforeStart.setVisibility(View.GONE);
         llRide.setVisibility(View.GONE);
@@ -1352,6 +1358,7 @@ public class ActivityCity extends BaseActivity {
         mCancelHash = mWebHash;
         llBeforeStart.setVisibility(View.VISIBLE);
         llMissOrder.setVisibility(View.VISIBLE);
+        llOrderOptions3.setVisibility(View.VISIBLE);
 
         j = j.getAsJsonObject("order");
         tvPaymentMethod3.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : j.get("company_name").getAsString());
@@ -1405,6 +1412,7 @@ public class ActivityCity extends BaseActivity {
         llRide.setVisibility(View.VISIBLE);
         llMissOrder.setVisibility(View.VISIBLE);
         tvMissOrder.setText(getString(R.string.CANCELORDER));
+        llOrderOptions4.setVisibility(View.VISIBLE);
 
         j = j.getAsJsonObject("order");
         tvPaymentMethod4.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : j.get("company_name").getAsString());
@@ -1502,9 +1510,6 @@ public class ActivityCity extends BaseActivity {
 
         btnEndOrder.setVisibility(View.GONE);
         btnOrderDone.setVisibility(View.VISIBLE);
-        llChat4.setVisibility(View.GONE);
-        llNavigator4.setVisibility(View.GONE);
-        findViewById(R.id.llWaitTime4).setVisibility(View.GONE);
     }
 
     private void showProfilePage() {

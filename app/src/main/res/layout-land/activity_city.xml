@@ -19,16 +19,297 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <LinearLayout
+            android:id="@+id/llMissOrder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvMiss"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_marginRight="18dp"
+                android:layout_marginBottom="16dp"
+                android:gravity="right"
+                android:text="@string/MISS"
+                android:textAllCaps="true" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/llOrderOptions_4"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llMissOrder">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/llChat4"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/gradient_malina"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/llWaitTime4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/txtMessages4"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/cyrcle_red"
+                    android:gravity="center"
+                    android:text="10"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"
+                    android:translationZ="10dp"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        app:srcCompat="@drawable/chat_white" />
+
+                    <TextView
+                        android:id="@+id/tvCarClass_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/CHAT"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/llWaitTime4"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/gradient_green"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/llNavigator4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llChat4">
+
+                <TextView
+                    android:id="@+id/tvWaitTime4"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:gravity="center"
+                    android:text="00:00"
+                    android:textColor="@color/colorWhite" />
+
+                <TextView
+                    android:id="@+id/tvDistance_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/WAITTIME"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llNavigator4"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/gradient_blue"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llWaitTime4">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:srcCompat="@drawable/fromto" />
+
+                <TextView
+                    android:id="@+id/tvRideTime_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/Navigator"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/llOrderOptions_3"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llMissOrder">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/llChat3"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/gradient_malina"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/llImLate3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/txtMessages3"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/cyrcle_red"
+                    android:gravity="center"
+                    android:text="10"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"
+                    android:translationZ="10dp"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        app:srcCompat="@drawable/chat_white" />
+
+                    <TextView
+                        android:id="@+id/tvCarClass_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/CHAT"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/llImLate3"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/gradient_green"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/llNavigtor3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/llChat3">
+
+                <TextView
+                    android:id="@+id/tvWaitTime3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="00:00"
+                    android:textColor="@color/colorWhite" />
+
+                <TextView
+                    android:id="@+id/tvDistance_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/WAITTIME"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llNavigtor3"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/gradient_blue"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llImLate3">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:srcCompat="@drawable/fromto" />
+
+                <TextView
+                    android:id="@+id/tvRideTime_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/Navigator"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/llOrderOptions_2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:paddingTop="48dp"
-            android:paddingBottom="48dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/llMissOrder">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/llChat2"
@@ -71,8 +352,8 @@
 
                     <ImageView
                         android:id="@+id/i2"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         app:srcCompat="@drawable/chat_white" />
 
                     <TextView
@@ -272,35 +553,11 @@
             android:id="@+id/llOrderOptions"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:paddingBottom="32dp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <LinearLayout
-                android:id="@+id/llMissOrder"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/tvMiss"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginRight="18dp"
-                    android:layout_marginBottom="16dp"
-                    android:gravity="right"
-                    android:text="@string/MISS"
-                    android:textAllCaps="true" />
-
-            </LinearLayout>
+            app:layout_constraintTop_toBottomOf="@id/llMissOrder">
 
             <LinearLayout
                 android:id="@+id/llOO1_1"
@@ -1090,8 +1347,11 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="28dp"
                         android:background="@drawable/black_border"
-                        android:orientation="vertical"
-                        android:padding="15dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="5dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
@@ -1099,21 +1359,24 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="5dp"
+                            android:layout_weight="1"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
                             android:textAllCaps="true">
 
                             <TextView
                                 android:id="@+id/txtArrivalTime3"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:text="@string/OrderOn"
                                 android:textAllCaps="true"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1" />
 
                             <ImageView
                                 android:id="@+id/imageView3"
@@ -1136,29 +1399,40 @@
 
                         </LinearLayout>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginLeft="4dp"
-                            android:layout_marginEnd="4dp"
-                            android:layout_marginBottom="5dp"
-                            android:background="@color/colorButtonBgYellow" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:gravity="center_horizontal">
+
+                            <LinearLayout
+                                android:layout_width="2dp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/gradient_line_vert"
+                                android:orientation="vertical" />
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:text="@string/PaymentMethod"
                                 android:textAllCaps="true"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/llOrderOptions" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1" />
 
                             <TextView
                                 android:id="@+id/tvPaymentMethod3"
@@ -1313,140 +1587,6 @@
                         app:layout_constraintStart_toEndOf="@+id/imgCommentTo3"
                         app:layout_constraintTop_toBottomOf="@+id/imgCommentTo3" />
 
-                    <LinearLayout
-                        android:id="@+id/llOrderOptions_3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="48dp"
-                        android:paddingBottom="48dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvCommentTo3">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.9" />
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/llChat3"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:background="@drawable/gradient_malina"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/txtMessages3"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_gravity="end"
-                                android:layout_marginTop="4dp"
-                                android:layout_marginEnd="4dp"
-                                android:background="@drawable/cyrcle_red"
-                                android:gravity="center"
-                                android:text="10"
-                                android:textColor="@color/colorWhite"
-                                android:textStyle="bold"
-                                android:translationZ="10dp"
-                                android:visibility="visible"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <ImageView
-                                    android:layout_width="48dp"
-                                    android:layout_height="48dp"
-                                    app:srcCompat="@drawable/chat_white" />
-
-                                <TextView
-                                    android:id="@+id/tvCarClass_3"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:text="@string/CHAT"
-                                    android:textColor="@color/colorWhite"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.9" />
-
-                        <LinearLayout
-                            android:id="@+id/llImLate3"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:background="@drawable/gradient_green"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/tvWaitTime3"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="00:00"
-                                android:textColor="@color/colorWhite" />
-
-                            <TextView
-                                android:id="@+id/tvDistance_3"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="@string/WAITTIME"
-                                android:textAllCaps="true"
-                                android:textColor="@color/colorWhite"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.9" />
-
-                        <LinearLayout
-                            android:id="@+id/llNavigtor3"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:background="@drawable/gradient_blue"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                app:srcCompat="@drawable/fromto" />
-
-                            <TextView
-                                android:id="@+id/tvRideTime_3"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="@string/Navigator"
-                                android:textAllCaps="true"
-                                android:textColor="@color/colorWhite"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.9" />
-
-                    </LinearLayout>
-
                     <TextView
                         android:id="@+id/tvCommentFrom3"
                         android:layout_width="0dp"
@@ -1504,7 +1644,7 @@
             android:layout_marginBottom="0dp"
             android:background="@drawable/login_down"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/textView14_2"
@@ -1547,10 +1687,10 @@
                         android:layout_marginEnd="28dp"
                         android:background="@drawable/yellow_border"
                         android:orientation="horizontal"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:paddingRight="10dp"
                         android:paddingLeft="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="5dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
@@ -1572,7 +1712,7 @@
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_weight="1"/>
+                                android:layout_weight="1" />
 
                             <ImageView
                                 android:id="@+id/imageView2"
@@ -1593,7 +1733,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/tvPaymentMethod" />
 
-                    </LinearLayout>
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -1613,6 +1753,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -1626,7 +1767,7 @@
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"/>
+                                android:layout_weight="1" />
 
                             <TextView
                                 android:id="@+id/tvPaymentMethod2"
@@ -2038,23 +2179,22 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:layout_marginTop="24dp"
+                            android:layout_marginTop="8dp"
                             android:text="@string/PaymentMethod"
                             android:textSize="18sp"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/llOrderOptions_4" />
+                            app:layout_constraintTop_toBottomOf="@+id/llCommentTo4" />
 
                         <TextView
                             android:id="@+id/tvPaymentMethod4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp"
                             android:layout_marginEnd="24dp"
                             android:text="@string/Cash"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/llOrderOptions_4" />
+                            app:layout_constraintTop_toTopOf="@+id/textView12_4" />
 
                         <TextView
                             android:id="@+id/textView23_4"
@@ -2065,7 +2205,7 @@
                             android:text="@string/firstcost"
                             android:textSize="18sp"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView12_4" />
+                            app:layout_constraintTop_toBottomOf="@id/tvPaymentMethod4" />
 
                         <TextView
                             android:id="@+id/tvRideCost4"
@@ -2078,143 +2218,6 @@
                             android:textStyle="bold"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tvPaymentMethod4" />
-
-                        <LinearLayout
-                            android:id="@+id/llOrderOptions_4"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/llCommentTo4">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.9" />
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:id="@+id/llChat4"
-                                android:layout_width="100dp"
-                                android:layout_height="100dp"
-                                android:layout_marginTop="32dp"
-                                android:background="@drawable/gradient_malina"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/txtMessages4"
-                                    android:layout_width="30dp"
-                                    android:layout_height="30dp"
-                                    android:layout_gravity="end"
-                                    android:layout_marginTop="4dp"
-                                    android:layout_marginEnd="4dp"
-                                    android:background="@drawable/cyrcle_red"
-                                    android:gravity="center"
-                                    android:text="10"
-                                    android:textColor="@color/colorWhite"
-                                    android:textStyle="bold"
-                                    android:translationZ="10dp"
-                                    android:visibility="visible"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent">
-
-                                    <ImageView
-                                        android:layout_width="48dp"
-                                        android:layout_height="48dp"
-                                        app:srcCompat="@drawable/chat_white" />
-
-                                    <TextView
-                                        android:id="@+id/tvCarClass_4"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:gravity="center"
-                                        android:text="@string/CHAT"
-                                        android:textColor="@color/colorWhite"
-                                        android:textStyle="bold" />
-
-                                </LinearLayout>
-
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.9" />
-
-                            <LinearLayout
-                                android:id="@+id/llWaitTime4"
-                                android:layout_width="100dp"
-                                android:layout_height="100dp"
-                                android:layout_marginTop="32dp"
-                                android:background="@drawable/gradient_green"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/tvWaitTime4"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="48dp"
-                                    android:gravity="center"
-                                    android:text="00:00"
-                                    android:textColor="@color/colorWhite" />
-
-                                <TextView
-                                    android:id="@+id/tvDistance_4"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:text="@string/WAITTIME"
-                                    android:textAllCaps="true"
-                                    android:textColor="@color/colorWhite"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.9" />
-
-                            <LinearLayout
-                                android:id="@+id/llNavigator4"
-                                android:layout_width="100dp"
-                                android:layout_height="100dp"
-                                android:layout_marginTop="32dp"
-                                android:background="@drawable/gradient_blue"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-                                <ImageView
-                                    android:layout_width="48dp"
-                                    android:layout_height="48dp"
-                                    app:srcCompat="@drawable/fromto" />
-
-                                <TextView
-                                    android:id="@+id/tvRideTime_4"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:text="@string/Navigator"
-                                    android:textAllCaps="true"
-                                    android:textColor="@color/colorWhite"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.9" />
-
-                        </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/llCommentFrom4"
