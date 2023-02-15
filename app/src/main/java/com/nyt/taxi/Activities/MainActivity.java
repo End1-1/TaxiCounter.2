@@ -232,6 +232,11 @@ public class MainActivity extends BaseActivity implements
                             cc.setSelected();
                             cc.saveToPref("carclasses");
                             JSONObject jcar = jdriver.getJSONObject("car");
+                            if (UPref.getInt("driver_id") != jdriver.getInt("driver_id")) {
+                                UPref.setString("chatadmin", "[]");
+                                UPref.setString("chat", "[]");
+                                UPref.setString("dispatcherchat", "[]");
+                            }
                             UPref.setInt("driver_id", jdriver.getInt("driver_id"));
                             UPref.setString("driver_nickname", jdriver.getString("driver_nickname"));
                             UPref.setString("driver_phone", jdriver.getString("driver_phone"));

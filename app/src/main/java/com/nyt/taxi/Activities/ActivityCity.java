@@ -83,7 +83,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -98,6 +100,7 @@ public class ActivityCity extends BaseActivity {
     int mRouteTime = 0;
     int mMessagesCount = 0;
     int mMessagesCounter = 0;
+    static Map<String, Long> totalTimes = new HashMap();
     private UDialogSelectChatOperator selectChatOperatorDialog;
 
     private ImageView imgSun;
@@ -478,10 +481,6 @@ public class ActivityCity extends BaseActivity {
 
         authToSocket();
         showNothings();
-        if (getIntent().getStringExtra("neworder") != null) {
-            startNewOrder(JsonParser.parseString(getIntent().getStringExtra("neworder")).getAsJsonObject());
-        }
-
         imgOnlineAnim.setBackgroundResource(R.drawable.online_anim);
         ((AnimationDrawable) imgOnlineAnim.getBackground()).start();
         new Timer().schedule(ttIconOfDay, 10000);
@@ -491,6 +490,15 @@ public class ActivityCity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         determineDayOrNight();
+        if (getIntent().getStringExtra("neworder") != null || !UPref.getString("neworder").isEmpty()) {
+            if (getIntent().getStringExtra("neworder") != null && !getIntent().getStringExtra("neworder").isEmpty()) {
+                UPref.setString("neworder", getIntent().getStringExtra("neworder"));
+            }
+            if (!UPref.getString("neworder").isEmpty()) {
+                startNewOrder(JsonParser.parseString(UPref.getString("neworder")).getAsJsonObject());
+            }
+            return;
+        }
         imgProfile.setImageBitmap(ProfileActivity.getProfileImage());
         if (getIntent().getBooleanExtra("notificationinfo", false)) {
             getInfoHistory();
@@ -511,6 +519,15 @@ public class ActivityCity extends BaseActivity {
             selectChatOperatorDialog.cancel();
             selectChatOperatorDialog = null;
         }
+        if (mAnimator != null) {
+            mAnimator.cancel();
+        }
+        if (!UPref.getBoolean("deny_clear_order")) {
+            UPref.setBoolean("deny_clear_order", false);
+            UPref.setString("neworder", "");
+            getIntent().putExtra("neworder", "");
+            totalTimes.clear();
+        }
     }
 
     @Override
@@ -521,6 +538,10 @@ public class ActivityCity extends BaseActivity {
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        if (!UPref.getString("neworder").isEmpty()) {
+            playSound(0);
+            UPref.setBoolean("deny_clear_order", true);
+        }
     }
 
     @Override
@@ -841,12 +862,14 @@ public class ActivityCity extends BaseActivity {
                 break;
             }
             case R.id.btnStartOrder:
+                findViewById(R.id.btnStartOrder).setEnabled(false);
                 String link = String.format("%s/api/driver/order_on_start/%d/%s", UConfig.mWebHost, mCurrentOrderId, mWebHash);
                 WebQuery.create(link, WebQuery.HttpMethod.GET, WebResponse.mResponseStartOrder, new WebResponse() {
                     @Override
                     public void webResponse(int code, int webResponse, String s) {
                         webResponseOK(webResponse, s);
                         queryState();
+                        findViewById(R.id.btnStartOrder).setEnabled(true);
                     }
                 }).request();
                 break;
@@ -865,6 +888,7 @@ public class ActivityCity extends BaseActivity {
                             @Override
                             public void webResponse(int code, int webResponse, String s) {
                                 if (!webResponseOK(webResponse, s)) {
+                                    btnEndOrder.setEnabled(true);
                                     return;
                                 }
                                 new WQAssessment(mCurrentOrderId, 5, new WebResponse() {
@@ -884,11 +908,13 @@ public class ActivityCity extends BaseActivity {
                 });
                 break;
             case R.id.btnAllDone:
+                findViewById(R.id.btnAllDone).setEnabled(false);
                 WQFeedback feedback = new WQFeedback(mCurrentOrderId, 5, 1, "", "0", new WebResponse() {
                     @Override
                     public void webResponse(int code, int webResponse, String s) {
                         webResponseOK(webResponse, s);
                         queryState();
+                        findViewById(R.id.btnAllDone).setEnabled(true);
                     }
                 });
                 feedback.request();
@@ -949,6 +975,7 @@ public class ActivityCity extends BaseActivity {
         queryState();
     }
 
+    @Override
     public void queryState() {
         getMessagesCount();
         determineDayOrNight();
@@ -1172,6 +1199,9 @@ public class ActivityCity extends BaseActivity {
                     mQueryStateAllowed = true;
                     mAnimator.cancel();
                     stopPlay();
+                    UPref.setBoolean("deny_clear_order", false);
+                    UPref.setString("neworder", "");
+                    getIntent().putExtra("neworder", "");
                     FileLogger.write(String.format("ORDER REJECTED BY TIMEOUT %d", mCurrentOrderId));
                     String link = String.format("%s/api/driver/order_acceptance/%d/%s/0", UConfig.mWebHost, mCurrentOrderId, mWebHash);
                     WebQuery.create(link, WebQuery.HttpMethod.GET, WebResponse.mResponseOrderAccept_Cancel, new WebResponse() {
@@ -1182,7 +1212,12 @@ public class ActivityCity extends BaseActivity {
                         }
                     }).request();
                 } else {
-                    long sec = totalTime;
+                    long tt = 0;
+                    totalTimes.put(this.toString(), totalTime);
+                    for (Map.Entry<String, Long> e: totalTimes.entrySet()) {
+                        tt += e.getValue();
+                    }
+                    long sec = tt;
                     if (sec < 3000) {
                         sec = 3000;
                     }
@@ -2187,16 +2222,20 @@ public class ActivityCity extends BaseActivity {
                     case DriverState.None:
                     case DriverState.Free:
                         findViewById(R.id.txtMessages).setVisibility(v);
+                        ((TextView) findViewById(R.id.txtMessages)).setText(String.valueOf(mMessagesCount));
                         break;
                     case DriverState.OnWay:
                         findViewById(R.id.txtMessages2).setVisibility(v);
+                        ((TextView) findViewById(R.id.txtMessages2)).setText(String.valueOf(mMessagesCount));
                         break;
                     case DriverState.DriverInPlace:
                         findViewById(R.id.txtMessages3).setVisibility(v);
+                        ((TextView) findViewById(R.id.txtMessages3)).setText(String.valueOf(mMessagesCount));
                         break;
                     case DriverState.DriverInRide:
                     case DriverState.Rate:
                         findViewById(R.id.txtMessages4).setVisibility(v);
+                        ((TextView) findViewById(R.id.txtMessages4)).setText(String.valueOf(mMessagesCount));
                         break;
                 }
 

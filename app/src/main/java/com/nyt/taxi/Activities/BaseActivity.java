@@ -318,6 +318,10 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
+    protected void queryState() {
+
+    }
+
     protected void connectionChanged(boolean v) {
         if (v) {
             WebQuery webQuery = new WebQuery(UConfig.mHostOrderReady, WebQuery.HttpMethod.POST, WebResponse.mResponseDriverOn, new WebResponse() {
@@ -402,6 +406,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
                 UDialog.alertError(BaseActivity.this, data);
             } else {
                 refreshCommonOrder(1,"0");
+                queryState();
             }
         }
     };

@@ -76,8 +76,7 @@
                     android:text="10"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold"
-                    android:translationZ="10dp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -206,8 +205,7 @@
                     android:text="10"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold"
-                    android:translationZ="10dp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -336,8 +334,7 @@
                     android:text="10"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold"
-                    android:translationZ="10dp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -934,8 +931,7 @@
                         android:text="10"
                         android:textColor="@color/colorWhite"
                         android:textStyle="bold"
-                        android:translationZ="10dp"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -2567,11 +2563,15 @@
                             android:textSize="@dimen/middleFont"
                             android:textStyle="bold" />
 
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvCarOption"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="#f7f8fa" />
+                        </RelativeLayout>
 
                         <View
                             android:layout_width="match_parent"

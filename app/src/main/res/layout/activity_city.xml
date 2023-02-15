@@ -540,8 +540,7 @@
                     android:text="10"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold"
-                    android:translationZ="10dp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -1281,7 +1280,6 @@
                             android:text="10"
                             android:textColor="@color/colorWhite"
                             android:textStyle="bold"
-                            android:translationZ="10dp"
                             android:visibility="visible"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -1727,7 +1725,6 @@
                             android:text="10"
                             android:textColor="@color/colorWhite"
                             android:textStyle="bold"
-                            android:translationZ="10dp"
                             android:visibility="visible"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -1881,7 +1878,7 @@
         android:layout_marginBottom="0dp"
         android:background="@drawable/login_down"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tvRideAmount"
@@ -2152,7 +2149,6 @@
                                 android:text="10"
                                 android:textColor="@color/colorWhite"
                                 android:textStyle="bold"
-                                android:translationZ="10dp"
                                 android:visibility="visible"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -2606,12 +2602,16 @@
                         android:layout_marginTop="2dp"
                         android:background="@color/colorFioletBlack" />
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvProfileMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/marginStandardLeftRight"
                         android:layout_marginRight="@dimen/marginStandardLeftRight" />
+                    </RelativeLayout>
 
                     <View
                         android:id="@+id/view5"
