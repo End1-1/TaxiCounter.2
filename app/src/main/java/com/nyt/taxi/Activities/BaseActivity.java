@@ -181,6 +181,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
             }
             if (intent.getBooleanExtra("commonorderevent", false)) {
                 String data = intent.getStringExtra("data");
+                UPref.setString("commonorderevent", data);
                 JsonObject jord = JsonParser.parseString(data).getAsJsonObject();
                 if (jord.get("status").getAsString().equals("create")) {
                     if (jord.get("preorder").getAsInt() == 0) {
@@ -193,11 +194,15 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
                                 new DialogInterface() {
                                     @Override
                                     public void cancel() {
-
+                                        UPref.setString("commonorderevent", "");
+                                        UPref.setInt("commonordereventtimeout", 0);
+                                        queryState();
                                     }
 
                                     @Override
                                     public void dismiss() {
+                                        UPref.setString("commonorderevent", "");
+                                        UPref.setInt("commonordereventtimeout", 0);
                                         WebRequest.create("/api/driver/prepare_common_order", WebRequest.HttpMethod.POST, mPrepareCommonOrderAccept2)
                                                 .setParameter("order_id", String.valueOf(jord.getAsJsonObject("order").get("order_id").getAsInt()))
                                                 .request();

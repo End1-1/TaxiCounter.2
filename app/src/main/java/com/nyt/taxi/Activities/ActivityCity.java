@@ -508,6 +508,13 @@ public class ActivityCity extends BaseActivity {
         timerMessages = new Timer();
         timerMessages.schedule(new MessagesTimerTask(), 500, 500);
         getMessagesCount();
+        if (!UPref.getString("commonorderevent").isEmpty()) {
+            Intent msgIntent = new Intent("event_listener");
+            msgIntent.putExtra("commonorderevent", true);
+            msgIntent.putExtra("data", UPref.getString("commonorderevent"));
+            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(msgIntent);
+            return;
+        }
         queryState();
     }
 
@@ -538,6 +545,10 @@ public class ActivityCity extends BaseActivity {
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        if (mPreorderDialog != null) {
+            mPreorderDialog.cancel();
+            mPreorderDialog = null;
+        }
         if (!UPref.getString("neworder").isEmpty()) {
             playSound(0);
             UPref.setBoolean("deny_clear_order", true);
@@ -1115,6 +1126,10 @@ public class ActivityCity extends BaseActivity {
             if (s.contains("to resolve host") || s.contains("failed to connect")) {
                 return false;
             }
+            if (s.contains("message")) {
+                JsonObject jo = JsonParser.parseString(s).getAsJsonObject();
+                s = jo.get("message").getAsString();
+            }
             UDialog.alertError(this, s);
             return false;
         }
@@ -1331,6 +1346,7 @@ public class ActivityCity extends BaseActivity {
         if (!showNothings()) {
             return;
         }
+        UPref.setString("neworder", "");
         llNewOrder.setVisibility(View.GONE);
         llRateMoneyScore.setVisibility(View.GONE);
         llMissOrder.setVisibility(View.VISIBLE);

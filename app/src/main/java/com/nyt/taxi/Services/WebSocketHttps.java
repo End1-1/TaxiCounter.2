@@ -452,6 +452,7 @@ public class WebSocketHttps extends Service {
 
                         }
                         Intent msgIntent = new Intent("event_listener");
+                        UPref.setInt("commonordereventtimeout", 0);
                         msgIntent.putExtra("commonorderevent", true);
                         msgIntent.putExtra("data", jpo.get("data").getAsString());
                         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(msgIntent);
@@ -871,6 +872,8 @@ public class WebSocketHttps extends Service {
                 ComponentName componentInfo = taskInfo.get(0).topActivity;
                 componentInfo.getPackageName();
                 Intent msgIntent = new Intent("event_listener");
+                msgIntent.putExtra("commonorderevent", true);
+                UPref.setInt("commonordereventtimeout", 0);
                 msgIntent.putExtra("commonorderevent", true);
                 JsonObject jcheckForPayloadWord = JsonParser.parseString(d).getAsJsonObject();
                 if (jcheckForPayloadWord != null) {

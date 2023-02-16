@@ -87,11 +87,11 @@ public class UDialog extends Dialog implements View.OnClickListener{
         }
         v = findViewById(R.id.msgTime);
         if (v != null) {
-            ((TextView) v).setText(mTime + " " + getContext().getString(R.string.min));
+            ((TextView) v).setText(mTime);
         }
         v = findViewById(R.id.msgDistance);
         if (v != null) {
-            ((TextView) v).setText(mDistance + " " + getContext().getString(R.string.km));
+            ((TextView) v).setText(mDistance);
         }
         ((TextView) findViewById(R.id.msg)).setText(mText);
         ((Button) findViewById(R.id.btn_yes)).setText(mYes);
@@ -122,6 +122,7 @@ public class UDialog extends Dialog implements View.OnClickListener{
             @Override
             public void run() {
                 mTimeout--;
+                UPref.setInt("commonordereventtimeout", mTimeout);
                 if (mTimeoutView != null) {
                     Runnable task = () -> {
                         if (mTimeoutView.getVisibility() != View.VISIBLE) {
@@ -134,10 +135,21 @@ public class UDialog extends Dialog implements View.OnClickListener{
                 if (mTimeout < 1) {
                     if (btnYes != null) {
                         OrdersStorage.addNewOrder(mOrderId);
-                        mTimeoutView.setText("-");
-                        Runnable task = () -> btnYes.setVisibility(View.GONE);
+
+                        Runnable task = new Runnable() {
+                            @Override
+                            public void run() {
+                                btnYes.setVisibility(View.GONE) ;
+                                mTimeoutView.setText("-");
+                            }
+                        };
                         new Handler(Looper.getMainLooper()).post(task);
+                        UPref.setString("commonorderevent", "");
+                        UPref.setInt("commonordereventtimeout", 0);
                         cancel();
+                    }
+                    if (getOwnerActivity() != null) {
+                        UDialog.this.cancel();
                     }
                     //dismiss();
                 }
@@ -214,7 +226,7 @@ public class UDialog extends Dialog implements View.OnClickListener{
         uDialog.mOrderId = orderid;
         uDialog.setDialogInterface(okClick);
         uDialog.show();
-        uDialog.setTimeout(UPref.getBoolean("debug") ? 20 : 110);
+        uDialog.setTimeout(UPref.getBoolean("debug") ? 20 : UPref.getInt("commonordereventtimeout") <= 0 ? 110 : UPref.getInt("commonordereventtimeout"));
         return uDialog;
     }
 
