@@ -1279,6 +1279,8 @@ public class ActivityCity extends BaseActivity {
     }
 
     private boolean showNothings() {
+        btnProfile2.setImageAlpha(100);
+        btnHistory.setImageAlpha(100);
         clFirstPage.setVisibility(View.GONE);
         llDownMenu.setVisibility(View.GONE);
         llMissOrder.setVisibility(View.GONE);
@@ -1313,6 +1315,8 @@ public class ActivityCity extends BaseActivity {
         if (!showNothings()) {
             return;
         }
+        btnProfile2.setImageAlpha(100);
+        btnHistory.setImageAlpha(100);
         hideDownMenuBackgrounds();
         llbtnHome.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
         mChatMode = 0;
@@ -1346,6 +1350,8 @@ public class ActivityCity extends BaseActivity {
         if (!showNothings()) {
             return;
         }
+        btnProfile2.setImageAlpha(30);
+        btnHistory.setImageAlpha(30);
         UPref.setString("neworder", "");
         llNewOrder.setVisibility(View.GONE);
         llRateMoneyScore.setVisibility(View.GONE);
@@ -1402,6 +1408,8 @@ public class ActivityCity extends BaseActivity {
         if (!showNothings()) {
             return;
         }
+        btnProfile2.setImageAlpha(30);
+        btnHistory.setImageAlpha(30);
         j = j.getAsJsonObject("payload");
         setStartAndFinishPoints(j);
         mCurrentOrderId = j.get("order_id").getAsInt();
@@ -1453,6 +1461,8 @@ public class ActivityCity extends BaseActivity {
         if (!showNothings()) {
             return;
         }
+        btnProfile2.setImageAlpha(30);
+        btnHistory.setImageAlpha(30);
         j = j.getAsJsonObject("payload");
         setStartAndFinishPoints(j);
         mCurrentOrderId = j.get("order_id").getAsInt();
@@ -1509,6 +1519,8 @@ public class ActivityCity extends BaseActivity {
         if (!showNothings()) {
             return;
         }
+        btnProfile2.setImageAlpha(30);
+        btnHistory.setImageAlpha(30);
         j = j.getAsJsonObject("payload");
         setStartAndFinishPoints(j);
 

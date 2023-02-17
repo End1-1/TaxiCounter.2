@@ -1332,7 +1332,8 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:paddingBottom="40dp">
 
 
                     <LinearLayout
@@ -1640,7 +1641,7 @@
             android:layout_marginBottom="0dp"
             android:background="@drawable/login_down"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/textView14_2"
@@ -1672,7 +1673,8 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:paddingBottom="40dp">
 
                     <LinearLayout
                         android:id="@+id/llSuperInfo2"
@@ -2010,7 +2012,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:paddingBottom="40dp">
 
                 <ScrollView
                     android:layout_width="match_parent"
