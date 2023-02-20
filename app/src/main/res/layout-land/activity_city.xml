@@ -1641,7 +1641,7 @@
             android:layout_marginBottom="0dp"
             android:background="@drawable/login_down"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/textView14_2"

@@ -496,8 +496,8 @@ public class ActivityCity extends BaseActivity {
             }
             if (!UPref.getString("neworder").isEmpty()) {
                 startNewOrder(JsonParser.parseString(UPref.getString("neworder")).getAsJsonObject());
+                return;
             }
-            return;
         }
         imgProfile.setImageBitmap(ProfileActivity.getProfileImage());
         if (getIntent().getBooleanExtra("notificationinfo", false)) {
@@ -520,6 +520,11 @@ public class ActivityCity extends BaseActivity {
 
     @Override
     protected void onPause() {
+        if (mPreorderDialog != null) {
+            mPreorderDialog.mCanceled = true;
+            mPreorderDialog.cancel();
+            mPreorderDialog = null;
+        }
         super.onPause();
         timerMessages.cancel();
         if (selectChatOperatorDialog != null) {
@@ -540,6 +545,16 @@ public class ActivityCity extends BaseActivity {
     @Override
     public void onBackPressed() {
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        if (mPreorderDialog != null) {
+            mPreorderDialog.mCanceled = true;
+            mPreorderDialog.cancel();
+            mPreorderDialog = null;
+        }
+        super.onSaveInstanceState(outState);
     }
 
     @Override

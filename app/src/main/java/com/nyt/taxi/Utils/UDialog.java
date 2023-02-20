@@ -34,6 +34,7 @@ public class UDialog extends Dialog implements View.OnClickListener{
     TextView mTimeoutView;
     Button btnYes;
     ImageView imgClose;
+    public boolean mCanceled = false;
 
     public UDialog(Context context, String msg, int resId) {
         super(context);
@@ -121,6 +122,10 @@ public class UDialog extends Dialog implements View.OnClickListener{
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
+                if (mCanceled) {
+                    cancel();
+                    return;
+                }
                 mTimeout--;
                 UPref.setInt("commonordereventtimeout", mTimeout);
                 if (mTimeoutView != null) {
@@ -148,9 +153,10 @@ public class UDialog extends Dialog implements View.OnClickListener{
                         UPref.setInt("commonordereventtimeout", 0);
                         cancel();
                     }
-                    if (getOwnerActivity() != null) {
-                        UDialog.this.cancel();
-                    }
+                    Runnable task = () -> {
+                        findViewById(R.id.btn_no).callOnClick();
+                    };
+                    new Handler(Looper.getMainLooper()).post(task);
                     //dismiss();
                 }
             }
