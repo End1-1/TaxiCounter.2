@@ -153,10 +153,10 @@ public class UDialog extends Dialog implements View.OnClickListener{
                         UPref.setInt("commonordereventtimeout", 0);
                         cancel();
                     }
-                    Runnable task = () -> {
-                        findViewById(R.id.btn_no).callOnClick();
-                    };
-                    new Handler(Looper.getMainLooper()).post(task);
+//                    Runnable task = () -> {
+//                        findViewById(R.id.btn_no).callOnClick();
+//                    };
+//                    new Handler(Looper.getMainLooper()).post(task);
                     //dismiss();
                 }
             }
