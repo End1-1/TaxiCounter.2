@@ -1600,6 +1600,8 @@ public class ActivityCity extends BaseActivity {
 
     private void showProfilePage() {
         showNothings();
+        btnProfile2.setImageAlpha(500);
+        btnHistory.setImageAlpha(500);
         createProgressDialog();
         new WebInitialInfo(new WebResponse() {
             @Override
@@ -1637,6 +1639,8 @@ public class ActivityCity extends BaseActivity {
         hideDownMenuBackgrounds();
         llbtnChat.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
         showNothings();
+        btnProfile2.setImageAlpha(500);
+        btnHistory.setImageAlpha(500);
         switch (mChatMode) {
             case 1:
                 tvChatPassanger.callOnClick();
@@ -1659,6 +1663,8 @@ public class ActivityCity extends BaseActivity {
 
     public void showDriverInfo() {
         showNothings();
+        btnProfile2.setImageAlpha(500);
+        btnHistory.setImageAlpha(500);
         createProgressDialog();
         WebRequest.create("/api/driver/driver_info", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
             @Override
