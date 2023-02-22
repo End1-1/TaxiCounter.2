@@ -68,11 +68,10 @@
         <activity
             android:name=".Activities.ActivityCity"
             android:exported="false"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:configChanges="orientation"
             android:showWhenLocked="true"
             android:turnScreenOn="true"
-            android:screenOrientation="fullUser"
-            android:windowSoftInputMode="adjustResize">
+            android:screenOrientation="fullUser">
         </activity>
         <activity
             android:name=".Activities.NotificationActivity"

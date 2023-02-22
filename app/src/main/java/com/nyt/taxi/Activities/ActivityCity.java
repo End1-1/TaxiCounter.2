@@ -94,6 +94,7 @@ public class ActivityCity extends BaseActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_CAMERA = 2;
+    static int mAnimatorCounter = 0;
 
     GDriverStatus.Point mStartPoint = null;
     GDriverStatus.Point mFinishPoint = null;
@@ -525,7 +526,6 @@ public class ActivityCity extends BaseActivity {
             mPreorderDialog.cancel();
             mPreorderDialog = null;
         }
-        super.onPause();
         timerMessages.cancel();
         if (selectChatOperatorDialog != null) {
             selectChatOperatorDialog.cancel();
@@ -533,13 +533,10 @@ public class ActivityCity extends BaseActivity {
         }
         if (mAnimator != null) {
             mAnimator.cancel();
+            mCurrentLevel = 10000;
+            stopPlay();
         }
-        if (!UPref.getBoolean("deny_clear_order")) {
-            UPref.setBoolean("deny_clear_order", false);
-            UPref.setString("neworder", "");
-            getIntent().putExtra("neworder", "");
-            totalTimes.clear();
-        }
+        super.onPause();
     }
 
     @Override
@@ -560,10 +557,10 @@ public class ActivityCity extends BaseActivity {
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (mPreorderDialog != null) {
-            mPreorderDialog.cancel();
-            mPreorderDialog = null;
-        }
+//        if (mPreorderDialog != null) {
+//            mPreorderDialog.cancel();
+//            mPreorderDialog = null;
+//        }
         if (!UPref.getString("neworder").isEmpty()) {
             playSound(0);
             UPref.setBoolean("deny_clear_order", true);
@@ -1005,6 +1002,7 @@ public class ActivityCity extends BaseActivity {
     public void queryState() {
         getMessagesCount();
         determineDayOrNight();
+        totalTimes.clear();
         if (!mQueryStateAllowed) {
             return;
         }
@@ -1220,12 +1218,21 @@ public class ActivityCity extends BaseActivity {
 
         LayerDrawable layerDrawable = (LayerDrawable) btnAcceptGreen.getBackground();
         mClipDrawable = (ClipDrawable) layerDrawable.findDrawableByLayerId(R.id.clip_drawable);
+
+
         mAnimator = new TimeAnimator();
         mAnimator.setTimeListener(new TimeAnimator.TimeListener() {
+
+            int animCounter = ++mAnimatorCounter;
             @Override
             public void onTimeUpdate(TimeAnimator timeAnimator, long totalTime, long deltaTime) {
+                if (animCounter != mAnimatorCounter) {
+                    timeAnimator.cancel();
+                    return;
+                }
                 mClipDrawable.setLevel(mCurrentLevel);
                 if (mCurrentLevel < 0) {
+                    System.out.println("ANIMAATOR" + this.toString());
                     mQueryStateAllowed = true;
                     mAnimator.cancel();
                     stopPlay();
@@ -1242,6 +1249,7 @@ public class ActivityCity extends BaseActivity {
                         }
                     }).request();
                 } else {
+                    System.out.println("ANIMAATOR" + this.toString());
                     long tt = 0;
                     totalTimes.put(this.toString(), totalTime);
                     for (Map.Entry<String, Long> e: totalTimes.entrySet()) {
@@ -1330,8 +1338,8 @@ public class ActivityCity extends BaseActivity {
         if (!showNothings()) {
             return;
         }
-        btnProfile2.setImageAlpha(100);
-        btnHistory.setImageAlpha(100);
+        btnProfile2.setImageAlpha(500);
+        btnHistory.setImageAlpha(500);
         hideDownMenuBackgrounds();
         llbtnHome.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
         mChatMode = 0;
@@ -1618,6 +1626,8 @@ public class ActivityCity extends BaseActivity {
                 llProfile.setVisibility(View.VISIBLE);
                 llRateMoneyScore.setVisibility(View.VISIBLE);
                 llDownMenu.setVisibility(View.VISIBLE);
+                btnProfile2.setImageAlpha(500);
+                btnHistory.setImageAlpha(500);
             }
         }).request();
 
@@ -1696,6 +1706,8 @@ public class ActivityCity extends BaseActivity {
         mHistoryOrderAdapter.notifyDataSetChanged();
         llHistory.setVisibility(View.VISIBLE);
         llDownMenu.setVisibility(View.VISIBLE);
+        btnProfile2.setImageAlpha(500);
+        btnHistory.setImageAlpha(500);
         getOrdersOfHistory();
     }
 

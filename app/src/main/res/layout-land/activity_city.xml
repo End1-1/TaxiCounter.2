@@ -2012,8 +2012,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="40dp">
+                android:layout_height="match_parent">
 
                 <ScrollView
                     android:layout_width="match_parent"
@@ -2326,7 +2325,7 @@
                 <LinearLayout
                     android:id="@+id/llEndOrderButtons"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
@@ -2569,11 +2568,12 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rvCarOption"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="#f7f8fa" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rvCarOption"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#f7f8fa" />
                         </RelativeLayout>
 
                         <View
@@ -2809,7 +2809,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
+                                android:layout_marginStart="32dp"
                                 android:layout_marginTop="16dp"
                                 android:text="@string/nickname"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -2817,9 +2817,9 @@
 
                             <EditText
                                 android:id="@+id/edDriverNick"
-                                android:layout_width="wrap_content"
+                                android:layout_width="300dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
+                                android:layout_marginEnd="32dp"
                                 android:ems="10"
                                 android:enabled="false"
                                 android:inputType="textPersonName"
@@ -2835,7 +2835,7 @@
                                 android:id="@+id/textView5"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
+                                android:layout_marginStart="32dp"
                                 android:layout_marginTop="16dp"
                                 android:text="@string/name"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -2843,9 +2843,9 @@
 
                             <EditText
                                 android:id="@+id/edDriverName"
-                                android:layout_width="wrap_content"
+                                android:layout_width="300dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
+                                android:layout_marginEnd="32dp"
                                 android:ems="10"
                                 android:inputType="textPersonName"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -2860,7 +2860,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
+                                android:layout_marginStart="32dp"
                                 android:layout_marginTop="16dp"
                                 android:text="@string/surname"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -2868,9 +2868,9 @@
 
                             <EditText
                                 android:id="@+id/edDriverSurname"
-                                android:layout_width="wrap_content"
+                                android:layout_width="300dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
+                                android:layout_marginEnd="32dp"
                                 android:ems="10"
                                 android:inputType="textPersonName"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -2885,7 +2885,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
+                                android:layout_marginStart="32dp"
                                 android:layout_marginTop="16dp"
                                 android:text="@string/patronymic_name"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -2893,9 +2893,9 @@
 
                             <EditText
                                 android:id="@+id/edPatronik"
-                                android:layout_width="wrap_content"
+                                android:layout_width="300dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
+                                android:layout_marginEnd="32dp"
                                 android:ems="10"
                                 android:inputType="textPersonName"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -2911,7 +2911,7 @@
                                 android:id="@+id/textView6"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
+                                android:layout_marginStart="32dp"
                                 android:layout_marginTop="16dp"
                                 android:text="@string/phone_number"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -2919,9 +2919,9 @@
 
                             <EditText
                                 android:id="@+id/edPhoneNumber"
-                                android:layout_width="wrap_content"
+                                android:layout_width="300dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
+                                android:layout_marginEnd="32dp"
                                 android:ems="10"
                                 android:inputType="textPersonName"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -2936,7 +2936,7 @@
                                 android:id="@+id/textView7"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
+                                android:layout_marginStart="32dp"
                                 android:layout_marginTop="16dp"
                                 android:text="@string/email"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -2944,10 +2944,10 @@
 
                             <EditText
                                 android:id="@+id/edEmail"
-                                android:layout_width="wrap_content"
+                                android:layout_width="300dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:layout_marginEnd="8dp"
+                                android:layout_marginEnd="32dp"
                                 android:ems="10"
                                 android:inputType="textPersonName"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -2958,6 +2958,8 @@
                             android:id="@+id/btnSaveDriverInfo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/gradient_green"
                             android:text="@string/Update" />
 
                     </LinearLayout>

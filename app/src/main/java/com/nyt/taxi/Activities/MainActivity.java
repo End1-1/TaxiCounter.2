@@ -332,8 +332,10 @@ public class MainActivity extends BaseActivity implements
         switch (ds.state) {
             case DriverState.Free:
                 if (ds.is_ready) {
-                    intent = new Intent(this, ActivityCity.class);
+                    intent = new Intent(getApplicationContext(), ActivityCity.class);
+                    intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
+                    finish();
                 }
                 break;
             case DriverState.AcceptOrder:
@@ -342,7 +344,9 @@ public class MainActivity extends BaseActivity implements
             case DriverState.DriverInRide:
             case DriverState.Rate: {
                 intent = new Intent(this, ActivityCity.class);
+                intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
+                finish();
                 break;
             }
         }
