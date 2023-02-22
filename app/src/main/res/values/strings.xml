@@ -128,6 +128,7 @@
     <string name="DistanceToClient">Расстояние до клиента</string>
     <string name="TimeToClient">Время в пути</string>
     <string name="Cash">Наличные</string>
+    <string name="NoCash">Безнал</string>
     <string name="Card">Кредитной картой</string>
     <string name="Payment">Оплата</string>
     <string name="CarClass">Класс машины</string>
@@ -153,6 +154,7 @@
     <string name="ConfirmOrder">Взять заказ?</string>
     <string name="StartOrder">Взять предварительный заказ?</string>
     <string name="StartCommonOrder">Начать срочный заказ?</string>
+    <string name="Company">Компания</string>
     <string name="AcceptOrder">Взять заказ?</string>
     <string name="CancelPreorderQuestion">Отменить предварительный заказ?</string>
     <string name="ACTIVEPREORDERS">ПРИНЯТЫЕ</string>
