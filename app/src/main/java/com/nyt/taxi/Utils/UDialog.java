@@ -3,6 +3,8 @@ package com.nyt.taxi.Utils;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -71,6 +73,9 @@ public class UDialog extends Dialog implements View.OnClickListener{
         mTime = time;
         mDistance = distance;
         mPreorder = preorder;
+        if (mPreorder) {
+            getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
     }
 
     public void onCreate(Bundle saveInstanceState) {
@@ -111,6 +116,7 @@ public class UDialog extends Dialog implements View.OnClickListener{
         if (imgClose != null) {
             imgClose.setOnClickListener(this);
         }
+
     }
 
     public void setDialogInterface(DialogInterface d) {
@@ -229,6 +235,7 @@ public class UDialog extends Dialog implements View.OnClickListener{
 
     public static UDialog alertDialogCommonOrder(Context context, String message, String time, String distance, int orderid, DialogInterface okClick) {
         UDialog uDialog = new UDialog(context, message, time, distance);
+        uDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         uDialog.mOrderId = orderid;
         uDialog.setDialogInterface(okClick);
         uDialog.show();

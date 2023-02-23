@@ -3,9 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/gray_round_border"
+    android:background="@color/transparent"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/gray_round_border">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,9 +39,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="10dp">
 
         <ImageView
             android:paddingLeft="10dp"
@@ -56,28 +61,27 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
             android:layout_margin="10dp"
-            android:padding="40dp"
+            android:padding="30dp"
             android:background="@drawable/gray_round_border" >
 
             <TextView
                 android:id="@+id/msgDistance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
                 android:text="12 km"
                 android:gravity="center"
-                android:textSize="36sp" />
+                android:textSize="34sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -89,10 +93,10 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:padding="40dp"
+            android:padding="30dp"
             android:layout_margin="10dp"
             android:background="@drawable/gray_round_border"
             android:orientation="vertical">
@@ -101,10 +105,9 @@
                 android:id="@+id/msgTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
                 android:text="16:55"
                 android:gravity="center"
-                android:textSize="36sp" />
+                android:textSize="34sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -118,7 +121,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center">
 
@@ -126,7 +129,7 @@
             android:id="@+id/btn_yes"
             android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_margin="10dp"
             android:layout_marginLeft="32dp"
             android:layout_weight="1"
@@ -138,14 +141,11 @@
         <Button
             android:id="@+id/btn_no"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:layout_marginRight="32dp"
-            android:layout_weight="1"
             android:background="@null"
             android:text="@string/NO"
             android:textSize="@dimen/bigFont" />
-
+    </LinearLayout>
     </LinearLayout>
 </LinearLayout>

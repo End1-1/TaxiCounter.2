@@ -428,6 +428,8 @@ public class WebSocketHttps extends Service {
                         }
 
                         jord = jord.getJSONObject("order");
+                        UPref.setInt("orderstartid", jord.getInt("order_id"));
+                        UPref.setLong("orderstarttime", new Date().getTime());
                         Intent intent = new Intent(WebSocketHttps.this, ActivityCity.class);
                         intent.putExtra("neworder", jord.toString());
                         intent.setAction(Intent.ACTION_VIEW);

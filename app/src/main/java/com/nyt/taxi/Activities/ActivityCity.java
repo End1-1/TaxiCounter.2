@@ -228,7 +228,7 @@ public class ActivityCity extends BaseActivity {
     private String mWebHash = "";
     private String mCancelHash = "";
     private int mRoadId;
-    private int mDriverState = 0;
+    private int mDriverState = -1;
     private boolean mQueryStateAllowed = true;
     private int mCurrentChatOperator = 0;
 
@@ -1100,6 +1100,7 @@ public class ActivityCity extends BaseActivity {
                         break;
 
                 }
+                getMessagesCount();
             }
         });
         webQuery.request();
@@ -1180,6 +1181,18 @@ public class ActivityCity extends BaseActivity {
     }
 
     private void startNewOrder(JsonObject ord) {
+        int orderid = UPref.getInt("orderstartid");
+        if (orderid > 0) {
+            long startdate = UPref.getLong("orderstarttime");
+            long currentdate = new Date().getTime();
+            System.out.println(currentdate - startdate);
+            if (currentdate - startdate > 30000) {
+                UPref.setString("neworder", "");
+                getIntent().putExtra("neworder", "");
+                queryState();
+                return;
+            }
+        }
         UPref.setString("waittime", "00:00");
         tvAddressFrom.setText(ord.get("address_from").getAsString());
         tvAddressTo.setText(ord.get("address_to").getAsString());
@@ -1196,7 +1209,7 @@ public class ActivityCity extends BaseActivity {
             findViewById(R.id.llCompany1).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.tvCompanyName1)).setText(ord.get("company_name").getAsString());
         }
-        tvPaymentMethod.setText(ord.get("cash").getAsBoolean() ? getString(R.string.Cash) : ord.get("company_name").getAsString());
+        //tvPaymentMethod.setText(ord.get("cash").getAsBoolean() ? getString(R.string.Cash) : ord.get("company_name").getAsString());
 
         tvArrivalText.setText(String.format("%s %s", getString(R.string.OrderOn), ""));
         tvArrivalToClient.setText(ord.get("order_start_time").getAsString());
@@ -1684,8 +1697,13 @@ public class ActivityCity extends BaseActivity {
         hideDownMenuBackgrounds();
         llbtnChat.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
         showNothings();
-        btnProfile2.setImageAlpha(500);
-        btnHistory.setImageAlpha(500);
+        if (mDriverState < 2) {
+            btnProfile2.setImageAlpha(500);
+            btnHistory.setImageAlpha(500);
+        } else {
+            btnProfile2.setImageAlpha(30);
+            btnHistory.setImageAlpha(30);
+        }
         switch (mChatMode) {
             case 1:
                 tvChatPassanger.callOnClick();
@@ -2036,24 +2054,30 @@ public class ActivityCity extends BaseActivity {
     }
 
     private void getMessagesCount() {
+        if (mDriverState ==  -1) {
+            return;
+        }
         mMessagesCount = 0;
-        WebRequest.create("/api/driver/get_unread_messages", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
-            @Override
-            public void httpRespone(int httpReponseCode, String data) {
-                if (httpReponseCode > 299 || httpReponseCode == -1) {
-                    return;
-                }
-                JsonArray ja = JsonParser.parseString(data).getAsJsonObject().getAsJsonArray("messages");
-                mMessagesCount += ja.size();
-                WebRequest.create("/api/driver/get_unread_messages", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
-                    @Override
-                    public void httpRespone(int httpReponseCode, String data) {
-                        JsonArray ja = JsonParser.parseString(data).getAsJsonObject().getAsJsonArray("messages");
-                        mMessagesCount += ja.size();
+        if (mDriverState > 1) {
+            WebRequest.create("/api/driver/get_unread_messages", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
+                @Override
+                public void httpRespone(int httpReponseCode, String data) {
+                    if (httpReponseCode > 299 || httpReponseCode == -1) {
+                        return;
                     }
-                }).setParameter("CallCenterDriverChat", "true").request();
-            }
-        }).request();
+                    JsonArray ja = JsonParser.parseString(data).getAsJsonObject().getAsJsonArray("messages");
+                    mMessagesCount += ja.size();
+                }
+            }).request();
+        } else {
+            WebRequest.create("/api/driver/get_unread_messages", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
+                @Override
+                public void httpRespone(int httpReponseCode, String data) {
+                    JsonArray ja = JsonParser.parseString(data).getAsJsonObject().getAsJsonArray("messages");
+                    mMessagesCount += ja.size();
+                }
+            }).setParameter("CallCenterDriverChat", "true").request();
+        }
     }
 
     private void getDispatcherHistory() {
