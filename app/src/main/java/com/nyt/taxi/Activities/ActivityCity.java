@@ -1187,6 +1187,15 @@ public class ActivityCity extends BaseActivity {
         tvCarClass.setText(ord.get("car_class").getAsString());
         tvDistance.setText(ord.get("distance").getAsString() + " " + getString(R.string.km));
         tvRideTime.setText(ord.get("duration").getAsString() + "" + getString(R.string.min));
+
+        if (ord.get("cash").getAsBoolean()) {
+            tvPaymentMethod.setText(getString(R.string.Cash));
+            findViewById(R.id.llCompany1).setVisibility(View.GONE);
+        } else {
+            tvPaymentMethod.setText(getString(R.string.NoCash));
+            findViewById(R.id.llCompany1).setVisibility(View.VISIBLE);
+            ((TextView) findViewById(R.id.tvCompanyName1)).setText(ord.get("company_name").getAsString());
+        }
         tvPaymentMethod.setText(ord.get("cash").getAsBoolean() ? getString(R.string.Cash) : ord.get("company_name").getAsString());
 
         tvArrivalText.setText(String.format("%s %s", getString(R.string.OrderOn), ""));

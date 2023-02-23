@@ -198,7 +198,7 @@
     <ImageView
         android:id="@+id/imageView14"
         android:layout_width="wrap_content"
-        android:layout_height="250dp"
+        android:layout_height="200dp"
         android:background="@drawable/login_bg" />
 
 </RelativeLayout>

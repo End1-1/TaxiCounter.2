@@ -152,15 +152,6 @@
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/mTxtPrivacyPolicy"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:text="@string/privacypolicy"
-                    android:textStyle="bold" />
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -172,10 +163,12 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="32dp"
                         android:layout_marginRight="32dp"
+                        android:layout_marginBottom="8dp"
                         android:background="@drawable/btn_real_yellow"
                         android:text="@string/Login"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/bigFont"
+                        app:layout_constraintBottom_toTopOf="@id/mTxtPrivacyPolicy"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -184,20 +177,33 @@
                         android:id="@+id/txtServer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="8dp"
                         android:text="Server"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/txtVersion" />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                     <TextView
                         android:id="@+id/txtVersion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
+                        android:layout_marginEnd="705dp"
                         android:text="Version"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+
+                    <TextView
+                        android:id="@+id/mTxtPrivacyPolicy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_marginBottom="8dp"
+                        android:gravity="center"
+                        android:text="@string/privacypolicy"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        tools:layout_editor_absoluteX="8dp" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
