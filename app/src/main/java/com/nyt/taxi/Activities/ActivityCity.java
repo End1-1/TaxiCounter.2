@@ -958,7 +958,7 @@ public class ActivityCity extends BaseActivity {
                 openYandexNavigator();
                 break;
             case R.id.llImLate2:
-            case R.id.llImLate3:
+            //case R.id.llImLate3:
                 new UDialogLateOptions(this, new UDialogLateOptions.LateOptionSelected() {
                     @Override
                     public void onClick(int min) {
@@ -1189,8 +1189,12 @@ public class ActivityCity extends BaseActivity {
             if (currentdate - startdate > 30000) {
                 UPref.setString("neworder", "");
                 getIntent().putExtra("neworder", "");
+                mQueryStateAllowed = true;
                 queryState();
                 return;
+            } else {
+                totalTimes.clear();
+                totalTimes.put(this.toString(), currentdate - startdate);
             }
         }
         UPref.setString("waittime", "00:00");

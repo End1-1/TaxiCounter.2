@@ -984,7 +984,8 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:paddingBottom="30dp">
 
                     <LinearLayout
                         android:id="@+id/llSuperInfo"
@@ -2319,6 +2320,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginEnd="24dp"
+                                    android:layout_marginTop="8dp"
                                     android:text="@string/Cash"
                                     android:textSize="18sp"
                                     android:textStyle="bold" />
@@ -2326,9 +2328,25 @@
                             </LinearLayout>
 
                             <LinearLayout
-                                android:id="@+id/llCompany4"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:id="@+id/llCompany4"
+                                android:visibility="gone">
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:layout_marginStart="13dp"
+                                android:layout_marginTop="3dp"
+                                android:layout_marginEnd="13dp"
+                                android:layout_marginBottom="3dp"
+                                android:background="@color/colorYellow" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -2355,6 +2373,16 @@
                                     android:textStyle="bold" />
 
                             </LinearLayout>
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:layout_marginStart="13dp"
+                                android:layout_marginTop="3dp"
+                                android:layout_marginEnd="13dp"
+                                android:layout_marginBottom="3dp"
+                                android:background="@color/colorYellow" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -2387,6 +2415,8 @@
                                     android:textSize="18sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
+
+
 
                         </LinearLayout>
 

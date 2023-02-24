@@ -304,18 +304,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="@string/Notifications"
+            android:textAllCaps="true"
+            android:textSize="@dimen/middleFont"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textSize="@dimen/middleFont"
-            android:textAllCaps="true"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/sepviewheight"
-            android:layout_marginTop="4dp"
             android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="4dp"
             android:background="@color/colorGrayLight2"
             app:layout_constraintTop_toBottomOf="@id/textView4"
@@ -407,8 +406,8 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp"
         android:background="@color/transparent"
-        android:translationZ="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:translationZ="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -418,11 +417,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/transparent"
             android:orientation="horizontal"
             android:paddingLeft="15dp"
             android:paddingTop="20dp"
             android:paddingRight="15dp"
-            android:background="@color/transparent"
             android:paddingBottom="20dp">
 
             <LinearLayout
@@ -2204,34 +2203,57 @@
                         <LinearLayout
                             android:id="@+id/llCompany4"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="24dp"
-                                android:layout_marginTop="12dp"
-                                android:text="@string/Company"
-                                android:textSize="18sp"
-                                android:textStyle="bold" />
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
                             <View
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1" />
+                                android:layout_height="2dp"
+                                android:layout_marginStart="13dp"
+                                android:layout_marginTop="3dp"
+                                android:layout_marginEnd="13dp"
+                                android:layout_marginBottom="3dp"
+                                android:background="@color/colorYellow" />
 
-                            <TextView
-                                android:id="@+id/tvCompanyName4"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
-                                android:layout_marginEnd="24dp"
-                                android:text="@string/Company"
-                                android:textSize="18sp"
-                                android:textStyle="bold" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
 
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="24dp"
+                                    android:layout_marginTop="12dp"
+                                    android:text="@string/Company"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
 
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1" />
+
+                                <TextView
+                                    android:id="@+id/tvCompanyName4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="12dp"
+                                    android:layout_marginEnd="24dp"
+                                    android:text="@string/Company"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
                         </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginStart="13dp"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginEnd="13dp"
+                            android:layout_marginBottom="3dp"
+                            android:background="@color/colorYellow" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -3177,8 +3199,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvOrdersHistory"

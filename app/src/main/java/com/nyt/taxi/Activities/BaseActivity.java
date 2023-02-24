@@ -61,6 +61,10 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     protected void onPause() {
         super.onPause();
         mCanCreateProgressDialog = false;
+        if (mPreorderDialog != null) {
+            mPreorderDialog.cancel();
+            mPreorderDialog = null;
+        }
     }
 
     @Override
