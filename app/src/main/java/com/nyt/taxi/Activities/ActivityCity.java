@@ -2057,7 +2057,6 @@ public class ActivityCity extends BaseActivity {
         if (mDriverState ==  -1) {
             return;
         }
-        mMessagesCount = 0;
         if (mDriverState > 1) {
             WebRequest.create("/api/driver/get_unread_messages", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
                 @Override
@@ -2066,7 +2065,7 @@ public class ActivityCity extends BaseActivity {
                         return;
                     }
                     JsonArray ja = JsonParser.parseString(data).getAsJsonObject().getAsJsonArray("messages");
-                    mMessagesCount += ja.size();
+                    mMessagesCount = ja.size();
                 }
             }).request();
         } else {
@@ -2074,7 +2073,7 @@ public class ActivityCity extends BaseActivity {
                 @Override
                 public void httpRespone(int httpReponseCode, String data) {
                     JsonArray ja = JsonParser.parseString(data).getAsJsonObject().getAsJsonArray("messages");
-                    mMessagesCount += ja.size();
+                    mMessagesCount = ja.size();
                 }
             }).setParameter("CallCenterDriverChat", "true").request();
         }
