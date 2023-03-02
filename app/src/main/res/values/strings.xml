@@ -63,11 +63,13 @@
     <string name="RIDETIME">Время в пути</string>
     <string name="RIDEDISTANCE">Расстояние</string>
     <string name="firstcost">Начальная цена</string>
-    <string name="CANCEL">НЕТ</string>
+    <string name="CANCEL">Отменить</string>
     <string name="FINISHRIDE">ЗАВЕРШИТЬ ПОЕЗДКУ?</string>
     <string name="YES">ДА</string>
     <string name="IWillThink">Я подумаю</string>
     <string name="NO">НЕТ</string>
+    <string name="OpenNavigator">Открыть навигатор</string>
+    <string name="YandexNavigator">Яндекс навигатор</string>
     <string name="COUNTED">Начислено</string>
     <string name="WAITTIME">Ожидание</string>
     <string name="PAUSERIDE">ОЖИДАНИЕ?</string>

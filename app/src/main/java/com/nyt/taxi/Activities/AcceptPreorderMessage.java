@@ -59,7 +59,7 @@ public class AcceptPreorderMessage extends com.nyt.taxi.Activities.BaseActivity 
     public void onClick(View v) {
         Intent msgIntent = new Intent("websocket_sender");
         switch (v.getId()) {
-            case R.id.btn_yes:
+            case R.id.btnClose:
                 msgIntent.putExtra("msg", String.format("{\"data\":{\"accept\":true, \"driver_id\":%d, \"order_id\":%d},\"event\": \"client-broadcast-api/preorder-accept\",\"channel\": \"%s\"}", UPref.getInt("driver_id"), mOrderId, WebSocketHttps.channelName()));
                 LocalBroadcastManager.getInstance(AcceptPreorderMessage.this).sendBroadcast(msgIntent);
                 playSound(0);

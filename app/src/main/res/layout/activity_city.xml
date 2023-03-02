@@ -1318,7 +1318,7 @@
                         android:id="@+id/llChat3"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:background="@drawable/gradient_malina"
+                        android:background="@drawable/gradient_blue"
                         android:gravity="center"
                         android:orientation="vertical"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -1376,7 +1376,7 @@
                         android:gravity="center"
                         android:orientation="vertical"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/llNavigtor3"
+                        app:layout_constraintEnd_toStartOf="@+id/llCancelOrder3"
                         app:layout_constraintStart_toEndOf="@id/llChat3"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -1400,10 +1400,10 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/llNavigtor3"
+                        android:id="@+id/llCancelOrder3"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:background="@drawable/gradient_blue"
+                        android:background="@drawable/gradient_malina"
                         android:gravity="center"
                         android:orientation="vertical"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -1414,14 +1414,14 @@
                         <ImageView
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            app:srcCompat="@drawable/fromto" />
+                            app:srcCompat="@drawable/cancel3" />
 
                         <TextView
                             android:id="@+id/tvRideTime_3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="@string/Navigator"
+                            android:text="@string/CANCEL"
                             android:textAllCaps="true"
                             android:textColor="@color/colorWhite"
                             android:textStyle="bold" />
@@ -1492,7 +1492,6 @@
             android:id="@+id/textView14_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:gravity="center"
             android:text="@string/PODACHA"
             android:textAllCaps="true"
@@ -1659,6 +1658,11 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView17_2" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"></LinearLayout>
+
                 <TextView
                     android:id="@+id/tvCommentFromText2"
                     android:layout_width="wrap_content"
@@ -1791,7 +1795,7 @@
                         android:id="@+id/llChat2"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:background="@drawable/gradient_malina"
+                        android:background="@drawable/gradient_blue"
                         android:clickable="true"
                         android:gravity="center"
                         android:orientation="vertical"
@@ -1852,7 +1856,7 @@
                         android:gravity="center"
                         android:orientation="vertical"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/llNavigator2"
+                        app:layout_constraintEnd_toStartOf="@+id/llCancelOrder2"
                         app:layout_constraintStart_toEndOf="@id/llChat2"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -1874,10 +1878,10 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/llNavigator2"
+                        android:id="@+id/llCancelOrder2"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:background="@drawable/gradient_blue"
+                        android:background="@drawable/gradient_malina"
                         android:clickable="true"
                         android:gravity="center"
                         android:orientation="vertical"
@@ -1889,14 +1893,14 @@
                         <ImageView
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            app:srcCompat="@drawable/fromto" />
+                            app:srcCompat="@drawable/cancel3" />
 
                         <TextView
                             android:id="@+id/tvRideTime_2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="@string/Navigator"
+                            android:text="@string/CANCEL"
                             android:textAllCaps="true"
                             android:textColor="@color/colorWhite"
                             android:textSize="12dp"
@@ -2302,7 +2306,7 @@
                             android:id="@+id/llChat4"
                             android:layout_width="100dp"
                             android:layout_height="100dp"
-                            android:background="@drawable/gradient_malina"
+                            android:background="@drawable/gradient_blue"
                             android:gravity="center"
                             android:orientation="vertical"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -2361,7 +2365,7 @@
                             android:gravity="center"
                             android:orientation="vertical"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@id/llNavigator4"
+                            app:layout_constraintEnd_toStartOf="@id/llCancelOrder4"
                             app:layout_constraintStart_toEndOf="@id/llChat4"
                             app:layout_constraintTop_toTopOf="parent">
 
@@ -2385,10 +2389,10 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/llNavigator4"
+                            android:id="@+id/llCancelOrder4"
                             android:layout_width="100dp"
                             android:layout_height="100dp"
-                            android:background="@drawable/gradient_blue"
+                            android:background="@drawable/gradient_malina"
                             android:gravity="center"
                             android:orientation="vertical"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -2399,14 +2403,14 @@
                             <ImageView
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
-                                app:srcCompat="@drawable/fromto" />
+                                app:srcCompat="@drawable/cancel3" />
 
                             <TextView
                                 android:id="@+id/tvRideTime_4"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="@string/Navigator"
+                                android:text="@string/CANCEL"
                                 android:textAllCaps="true"
                                 android:textColor="@color/colorWhite"
                                 android:textStyle="bold" />

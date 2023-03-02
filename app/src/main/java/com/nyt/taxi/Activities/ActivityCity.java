@@ -166,7 +166,7 @@ public class ActivityCity extends BaseActivity {
     private ImageView imgCommentTo2;
     private Button btnGoToClient;
     private ConstraintLayout llChat2;
-    private LinearLayout llNavigator2;
+    private LinearLayout llCancelOrder2;
     private LinearLayout llImLate2;
     private TextView tvArrivalTime2;
     private TextView tvPaymentMethod2;
@@ -189,7 +189,7 @@ public class ActivityCity extends BaseActivity {
     private Button btnStartOrder;
     private ConstraintLayout llChat3;
     private LinearLayout llImLate3;
-    private LinearLayout llNavigator3;
+    private LinearLayout llCancelOrder3;
     private TextView tvWaitTime3;
     private TextView tvPaymentMethod3;
     private TextView tvArrivalTime3;
@@ -213,7 +213,7 @@ public class ActivityCity extends BaseActivity {
     private Button btnEndOrder;
     private Button btnOrderDone;
     private ConstraintLayout llChat4;
-    private LinearLayout llNavigator4;
+    private LinearLayout llCancelOrder4;
     private TextView tvRideCost4;
     private TextView tvWaitTime4;
     private TextView tvPaymentMethod4;
@@ -267,6 +267,7 @@ public class ActivityCity extends BaseActivity {
     private HistoryOfOrders mHistoryOrderAdapter = new HistoryOfOrders(this);
     private LinearLayout llHistory;
     private RecyclerView rvOrdersHistory;
+    private ConstraintLayout clUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -348,7 +349,7 @@ public class ActivityCity extends BaseActivity {
         imgCommentTo2 = findViewById(R.id.imgCommentTo2);
         btnGoToClient = findViewById(R.id.btnGoToClient);
         llChat2 = findViewById(R.id.llChat2);
-        llNavigator2 = findViewById(R.id.llNavigator2);
+        llCancelOrder2 = findViewById(R.id.llCancelOrder2);
         llImLate2 = findViewById(R.id.llImLate2);
         llOrderOptions2 = findViewById(R.id.llOrderOptions_2);
         tvArrivalTime2 = findViewById(R.id.tvArrivalTime2);
@@ -375,7 +376,7 @@ public class ActivityCity extends BaseActivity {
         btnStartOrder = findViewById(R.id.btnStartOrder);
         llChat3 = findViewById(R.id.llChat3);
         llImLate3 = findViewById(R.id.llImLate3);
-        llNavigator3 = findViewById(R.id.llNavigtor3);
+        llCancelOrder3 = findViewById(R.id.llCancelOrder3);
         tvWaitTime3 = findViewById(R.id.tvWaitTime3);
         llOrderOptions3 = findViewById(R.id.llOrderOptions_3);
         imgCommentFrom3.setOnClickListener(animHeightListener);
@@ -406,7 +407,7 @@ public class ActivityCity extends BaseActivity {
         btnOrderDone = findViewById(R.id.btnAllDone);
         llChat4 = findViewById(R.id.llChat4);
         tvRideCost4 = findViewById(R.id.tvRideCost4);
-        llNavigator4 = findViewById(R.id.llNavigator4);
+        llCancelOrder4 = findViewById(R.id.llCancelOrder4);
         tvPaymentMethod4 = findViewById(R.id.tvPaymentMethod4);
         imgCommentFrom4.setOnClickListener(animHeightListener);
         tvCommentFromText4.setOnClickListener(animHeightListener);
@@ -432,6 +433,7 @@ public class ActivityCity extends BaseActivity {
         edChatSendMessage = findViewById(R.id.edChatSendMessage);
         imgChatSendMessage = findViewById(R.id.imgSendChatMessage);
         imgSelectChatOperator = findViewById(R.id.imgSelectOperator);
+        clUp = findViewById(R.id.clUp);
 
         llNoInet= findViewById(R.id.llNoInternet);
 
@@ -462,12 +464,12 @@ public class ActivityCity extends BaseActivity {
         btnEndOrder.setOnClickListener(this);
         btnOrderDone.setOnClickListener(this);
         llChat2.setOnClickListener(this);
-        llNavigator2.setOnClickListener(this);
+        llCancelOrder2.setOnClickListener(this);
         llImLate2.setOnClickListener(this);
         llChat3.setOnClickListener(this);
-        llNavigator3.setOnClickListener(this);
+        llCancelOrder3.setOnClickListener(this);
         llChat4.setOnClickListener(this);
-        llNavigator4.setOnClickListener(this);
+        llCancelOrder4.setOnClickListener(this);
         llImLate3.setOnClickListener(this);
         btnCloseApp.setOnClickListener(this);
         btnGoOffline.setOnClickListener(this);
@@ -481,6 +483,23 @@ public class ActivityCity extends BaseActivity {
         imgDriverProfilePhoto.setOnClickListener(this);
         imgChatSendMessage.setOnClickListener(this);
         imgSelectChatOperator.setOnClickListener(this);
+
+        tvAddressFrom.setOnClickListener(navClickListener);
+        tvAddressCommentFrom.setOnClickListener(navClickListener);
+        tvAddressTo.setOnClickListener(navClickListener);
+        tvAddressToComment.setOnClickListener(navClickListener);
+        tvAddressFrom2.setOnClickListener(navClickListener);
+        tvCommentFrom2.setOnClickListener(navClickListener);
+        tvAddressTo2.setOnClickListener(navClickListener);
+        tvCommentTo2.setOnClickListener(navClickListener);
+        tvAddressFrom3.setOnClickListener(navClickListener);
+        tvCommentFrom3.setOnClickListener(navClickListener);
+        tvTo3.setOnClickListener(navClickListener);
+        tvCommentTo3.setOnClickListener(navClickListener);
+        tvAddressFrom4.setOnClickListener(navClickListener);
+        tvCommentFrom4.setOnClickListener(navClickListener);
+        tvTo4.setOnClickListener(navClickListener);
+        tvCommentTo4.setOnClickListener(navClickListener);
 
         authToSocket();
         showNothings();
@@ -952,10 +971,10 @@ public class ActivityCity extends BaseActivity {
                 mChatMode = 2;
                 showChatPage();
                 break;
-            case R.id.llNavigator2:
-            case R.id.llNavigtor3:
-            case R.id.llNavigator4:
-                openYandexNavigator();
+            case R.id.llCancelOrder2:
+            case R.id.llCancelOrder3:
+            case R.id.llCancelOrder4:
+                tvMissOrder.callOnClick();
                 break;
             case R.id.llImLate2:
             //case R.id.llImLate3:
@@ -994,6 +1013,26 @@ public class ActivityCity extends BaseActivity {
                 break;
         }
     }
+
+    View.OnClickListener navClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (mFinishPoint == null) {
+                return;
+            }
+            new UDialog(ActivityCity.this, mStartPoint, mFinishPoint, new DialogInterface() {
+                @Override
+                public void cancel() {
+
+                }
+
+                @Override
+                public void dismiss() {
+                    openYandexNavigator();
+                }
+            }).show();
+        }
+    };
 
     @Override
     protected void connectionChanged(boolean v) {
@@ -1111,7 +1150,7 @@ public class ActivityCity extends BaseActivity {
                     GOrderDayInfo orderDayInfo = GOrderDayInfo.parse(s, GOrderDayInfo.class);
                     tvRate.setText(UText.valueOf(orderDayInfo.assessment));
                     tvScore.setText(String.valueOf(orderDayInfo.rating));
-                    tvBalance.setText(UText.valueOf(orderDayInfo.days_cost));
+                    tvBalance.setText(UText.valueOfShort(orderDayInfo.days_cost));
                 }
             }
         }).request();
@@ -1334,6 +1373,7 @@ public class ActivityCity extends BaseActivity {
     private boolean showNothings() {
         btnProfile2.setImageAlpha(100);
         btnHistory.setImageAlpha(100);
+        clUp.setVisibility(View.GONE);
         clFirstPage.setVisibility(View.GONE);
         llDownMenu.setVisibility(View.GONE);
         llMissOrder.setVisibility(View.GONE);
@@ -1375,6 +1415,7 @@ public class ActivityCity extends BaseActivity {
         mChatMode = 0;
         UPref.setLong("inplacedate", (long) new Date().getTime());
         clFirstPage.setVisibility(View.VISIBLE);
+        clUp.setVisibility(View.VISIBLE);
         llRateMoneyScore.setVisibility(View.VISIBLE);
         llDownMenu.setVisibility(View.VISIBLE);
         createProgressDialog();

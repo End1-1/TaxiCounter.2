@@ -38,7 +38,7 @@ public class UDialogSelectChatOperator extends Dialog implements View.OnClickLis
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setCancelable(false);
         setContentView(mResId);
-        View v = findViewById(R.id.btn_yes);
+        View v = findViewById(R.id.btnClose);
         if (v != null) {
             v.setOnClickListener(this);
         }
@@ -56,7 +56,7 @@ public class UDialogSelectChatOperator extends Dialog implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_yes:
+            case R.id.btnClose:
                 dismiss();
                 break;
         }

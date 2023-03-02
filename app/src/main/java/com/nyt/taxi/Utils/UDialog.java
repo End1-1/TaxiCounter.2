@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.nyt.taxi.Model.GDriverStatus;
 import com.nyt.taxi.R;
 
 import java.util.Timer;
@@ -37,6 +38,8 @@ public class UDialog extends Dialog implements View.OnClickListener{
     Button btnYes;
     ImageView imgClose;
     public boolean mCanceled = false;
+    GDriverStatus.Point mStartPoint = null;
+    GDriverStatus.Point mFinishPoint = null;
 
     public UDialog(Context context, String msg, int resId) {
         super(context);
@@ -78,12 +81,20 @@ public class UDialog extends Dialog implements View.OnClickListener{
         }
     }
 
+    public UDialog(Context context, GDriverStatus.Point start, GDriverStatus.Point end, DialogInterface d) {
+        super(context);
+        mResId = R.layout.dialog_navigator;
+        mStartPoint = start;
+        mFinishPoint = end;
+        mDialogInterface = d;
+    }
+
     public void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setCancelable(false);
         setContentView(mResId);
-        View v = findViewById(R.id.btn_yes);
+        View v = findViewById(R.id.btnClose);
         if (v != null) {
             v.setOnClickListener(this);
         }
@@ -99,8 +110,10 @@ public class UDialog extends Dialog implements View.OnClickListener{
         if (v != null) {
             ((TextView) v).setText(mDistance);
         }
-        ((TextView) findViewById(R.id.msg)).setText(mText);
-        ((Button) findViewById(R.id.btn_yes)).setText(mYes);
+        if (findViewById(R.id.msg) != null) {
+            ((TextView) findViewById(R.id.msg)).setText(mText);
+        }
+        ((Button) findViewById(R.id.btnClose)).setText(mYes);
         if (findViewById(R.id.btn_no) != null) {
             ((Button) findViewById(R.id.btn_no)).setText(mNo);
         }
@@ -111,12 +124,24 @@ public class UDialog extends Dialog implements View.OnClickListener{
         if (mTimeoutView != null) {
             mTimeoutView.setVisibility(View.GONE);
         }
-        btnYes = findViewById(R.id.btn_yes);
+        btnYes = findViewById(R.id.btnClose);
         imgClose = findViewById(R.id.imgClose);
         if (imgClose != null) {
             imgClose.setOnClickListener(this);
         }
 
+
+        if (mResId == R.layout.dialog_navigator) {
+            if (mFinishPoint == null || mFinishPoint.lat < 1) {
+                findViewById(R.id.txtViewError).setVisibility(View.VISIBLE);
+                //findViewById(R.id.llOpenNavigator).setVisibility(View.GONE);
+            } else {
+
+            }
+            ((Button) findViewById(R.id.btnClose)).setText(R.string.Close);
+            findViewById(R.id.llOpenNavigator).setOnClickListener(this);
+        }
+        findViewById(R.id.btnClose).setOnClickListener(this);
     }
 
     public void setDialogInterface(DialogInterface d) {
@@ -254,13 +279,22 @@ public class UDialog extends Dialog implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_yes:
+            case R.id.btnClose:
+                if (mStartPoint != null) {
+                    mDialogInterface.cancel();
+                    dismiss();
+                    return;
+                }
                 if (mDialogInterface != null) {
                     mDialogInterface.dismiss();
                     dismiss();
                 } else {
                     dismiss();
                 }
+                break;
+            case R.id.llOpenNavigator:
+                mDialogInterface.dismiss();
+                dismiss();
                 break;
             case R.id.btn_no:
                 if (mDialogInterface != null) {

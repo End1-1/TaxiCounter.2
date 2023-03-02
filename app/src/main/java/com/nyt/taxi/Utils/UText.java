@@ -11,11 +11,14 @@ public class UText {
 
     private static DecimalFormatSymbols decimalFormatSymbols;
     private static DecimalFormat decimalFormat;
+    private static DecimalFormat decimalShort;
 
     public static void init() {
         decimalFormatSymbols = new DecimalFormatSymbols(Locale.getDefault());
         decimalFormatSymbols.setDecimalSeparator('.');
         decimalFormat = new DecimalFormat("#.#####");
+        decimalFormat.setDecimalFormatSymbols(decimalFormatSymbols);
+        decimalFormat = new DecimalFormat("#");
         decimalFormat.setDecimalFormatSymbols(decimalFormatSymbols);
     }
 
@@ -26,6 +29,10 @@ public class UText {
     public static String valueOf(double d) {
         String s = decimalFormat.format(d);
         return s;
+    }
+
+    public static String valueOfShort(double d) {
+        return decimalShort.format(d);
     }
 
     public static String valueOf(int d) {
