@@ -18,8 +18,8 @@ public class UText {
         decimalFormatSymbols.setDecimalSeparator('.');
         decimalFormat = new DecimalFormat("#.#####");
         decimalFormat.setDecimalFormatSymbols(decimalFormatSymbols);
-        decimalFormat = new DecimalFormat("#");
-        decimalFormat.setDecimalFormatSymbols(decimalFormatSymbols);
+        decimalShort = new DecimalFormat("#");
+        decimalShort.setDecimalFormatSymbols(decimalFormatSymbols);
     }
 
     public static String strLocation(GDriverStatus.Point p) {

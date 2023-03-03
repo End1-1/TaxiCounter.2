@@ -518,6 +518,7 @@ public class ActivityCity extends BaseActivity {
             }
             if (!UPref.getString("neworder").isEmpty()) {
                 startNewOrder(JsonParser.parseString(UPref.getString("neworder")).getAsJsonObject());
+                startChatTimer();
                 return;
             }
         }
@@ -527,16 +528,7 @@ public class ActivityCity extends BaseActivity {
             return;
         }
         btnHome.callOnClick();
-        timerMessages = new Timer();
-        timerMessages.schedule(new MessagesTimerTask(), 500, 500);
-        getMessagesCount();
-        if (!UPref.getString("commonorderevent").isEmpty()) {
-            Intent msgIntent = new Intent("event_listener");
-            msgIntent.putExtra("commonorderevent", true);
-            msgIntent.putExtra("data", UPref.getString("commonorderevent"));
-            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(msgIntent);
-            return;
-        }
+        startChatTimer();
         queryState();
     }
 
@@ -2364,6 +2356,19 @@ public class ActivityCity extends BaseActivity {
             default:
                 getMessagesCount();
                 break;
+        }
+    }
+
+    private void startChatTimer() {
+        timerMessages = new Timer();
+        timerMessages.schedule(new MessagesTimerTask(), 500, 500);
+        getMessagesCount();
+        if (!UPref.getString("commonorderevent").isEmpty()) {
+            Intent msgIntent = new Intent("event_listener");
+            msgIntent.putExtra("commonorderevent", true);
+            msgIntent.putExtra("data", UPref.getString("commonorderevent"));
+            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(msgIntent);
+            return;
         }
     }
     
