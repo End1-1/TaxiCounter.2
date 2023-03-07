@@ -97,8 +97,8 @@ public class ActivityCity extends BaseActivity {
     static final int REQUEST_CAMERA = 2;
     static int mAnimatorCounter = 0;
 
-    GDriverStatus.Point mStartPoint = null;
-    GDriverStatus.Point mFinishPoint = null;
+    GDriverStatus.Point mDestinationPoint = null;
+    GDriverStatus.Point mSourcePoint = null;
     int mRouteTime = 0;
     int mMessagesCount = 0;
     int mMessagesCounter = 0;
@@ -1009,10 +1009,50 @@ public class ActivityCity extends BaseActivity {
     View.OnClickListener navClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (mFinishPoint == null) {
+            int routeTo = 0;
+            switch (view.getId()) {
+            case R.id.tvAddressCommentFrom:
+            case R.id.tvCommentFromText:
+            case R.id.tvAddressFrom:
+            case R.id.tvCommentFrom2:
+            case R.id.tvCommentFromText2:
+            case R.id.tvAddressFrom2:
+            case R.id.tvCommentFrom3:
+            case R.id.tvCommentFromText3:
+            case R.id.tvAddressFrom3:
+                routeTo = 1;
+                break;
+            case R.id.tvAddressCommentTo:
+            case R.id.tvCommentToText:
+            case R.id.tvAddressTo:
+            case R.id.tvCommentTo2:
+            case R.id.tvCommentToText2:
+            case R.id.tvAddressTo2:
+            case R.id.tvTo3:
+            case R.id.tvCommentTo3:
+            case R.id.tvCommentToText3:
+            case R.id.tvCommentTo4:
+            case R.id.tvCommentToText4:
+            case R.id.tvTo4:
+                routeTo = 2;
+            break;
+            }
+
+            GDriverStatus.Point point = null;
+            switch (routeTo) {
+            case 1:
+                point = mSourcePoint;
+                break;
+            case 2:
+                point = mDestinationPoint;
+                break;
+
+            }
+            if (point == null) {
                 return;
             }
-            new UDialog(ActivityCity.this, mStartPoint, mFinishPoint, new DialogInterface() {
+            GDriverStatus.Point finalPoint = point;
+            new UDialog(ActivityCity.this, mSourcePoint, mDestinationPoint, new DialogInterface() {
                 @Override
                 public void cancel() {
 
@@ -1020,7 +1060,7 @@ public class ActivityCity extends BaseActivity {
 
                 @Override
                 public void dismiss() {
-                    openYandexNavigator();
+                    openYandexNavigator(finalPoint);
                 }
             }).show();
         }
@@ -1856,8 +1896,18 @@ public class ActivityCity extends BaseActivity {
     }
 
     private void setStartAndFinishPoints(JsonObject j) {
-        mStartPoint = null;
-        mFinishPoint = null;
+        mDestinationPoint = null;
+        mSourcePoint = null;
+        try {
+            JsonObject jfrom = j.getAsJsonObject("order").getAsJsonObject("from_coordinates");
+            JsonObject jto = j.getAsJsonObject("order").getAsJsonObject("to_coordinates");
+            if (jfrom != null) {
+                mDestinationPoint = new GDriverStatus.Point(jto.get("lat").getAsDouble(), jto.get("lut").getAsDouble());
+                mSourcePoint = new GDriverStatus.Point(jfrom.get("lat").getAsDouble(), jfrom.get("lut").getAsDouble());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (!j.has("routes")) {
             return;
         }
@@ -1867,17 +1917,10 @@ public class ActivityCity extends BaseActivity {
         }
         JsonObject jr = ja.get(0).getAsJsonObject();
         mRouteTime = jr.get("duration").getAsInt();
-        JsonArray jp = jr.getAsJsonArray("points");
-        if (jp.size() == 0) {
-            return;
-        }
-        mStartPoint = new GDriverStatus.Point(jp.get(0).getAsJsonObject().get("lat").getAsDouble(), jp.get(0).getAsJsonObject().get("lut").getAsDouble());
-        int last = jp.size() - 1;
-        mFinishPoint = new GDriverStatus.Point(jp.get(last).getAsJsonObject().get("lat").getAsDouble(), jp.get(last).getAsJsonObject().get("lut").getAsDouble());
     }
 
-    private void openYandexNavigator() {
-        if (mFinishPoint == null || mStartPoint == null) {
+    private void openYandexNavigator(GDriverStatus.Point destination) {
+        if (destination == null) {
             UDialog.alertError(this, R.string.FinishPointMustBeSet);
             return;
         }
@@ -1889,7 +1932,7 @@ public class ActivityCity extends BaseActivity {
         List<ResolveInfo> activities = packageManager.queryIntentActivities(intent, 0);
         boolean isIntentSafe = activities.size() > 0;
         if (isIntentSafe) {
-            YandexNavigator.buildRoute(this, UPref.lastPoint().lat, UPref.lastPoint().lat, mFinishPoint.lat, mFinishPoint.lut);
+            YandexNavigator.buildRoute(this, UPref.lastPoint().lat, UPref.lastPoint().lut, destination.lat, destination.lut);
         } else {
             intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("market://details?id=ru.yandex.yandexnavi"));
