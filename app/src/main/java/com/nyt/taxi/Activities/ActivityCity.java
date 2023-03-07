@@ -774,19 +774,19 @@ public class ActivityCity extends BaseActivity {
                 break;
             }
             case R.id.btnProfile2:
-                mChatMode = 0;
                 if (mDriverState > DriverState.Free || !WebSocketHttps.WEBSOCKET_CONNECTED) {
                     return;
                 }
+                mChatMode = 0;
                 hideDownMenuBackgrounds();
                 llbtnProfile.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
                 showProfilePage();
                 break;
             case R.id.btnProfile:
-                mChatMode = 0;
                 if (mDriverState > DriverState.Free || !WebSocketHttps.WEBSOCKET_CONNECTED) {
                     return;
                 }
+                mChatMode = 0;
                 hideDownMenuBackgrounds();
                 llbtnProfile.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
                 if (llProfile.getVisibility() == View.GONE) {
@@ -796,10 +796,10 @@ public class ActivityCity extends BaseActivity {
                 }
                 break;
             case R.id.imgHistory:
-                mChatMode = 0;
                 if (mDriverState > DriverState.Free) {
                     return;
                 }
+                mChatMode = 0;
                 hideDownMenuBackgrounds();
                 llbtnHistory.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
                 showHistoryPage();
@@ -1441,7 +1441,7 @@ public class ActivityCity extends BaseActivity {
         UPref.setString("neworder", "");
         llNewOrder.setVisibility(View.GONE);
         llRateMoneyScore.setVisibility(View.GONE);
-        llMissOrder.setVisibility(View.VISIBLE);
+        //llMissOrder.setVisibility(View.VISIBLE);
         llOnPlace.setVisibility(View.VISIBLE);
         llOrderOptions2.setVisibility(View.VISIBLE);
         j = j.getAsJsonObject("payload");
@@ -1509,7 +1509,7 @@ public class ActivityCity extends BaseActivity {
         mWebHash = j.get("hash").getAsString();
         mCancelHash = mWebHash;
         llBeforeStart.setVisibility(View.VISIBLE);
-        llMissOrder.setVisibility(View.VISIBLE);
+        //llMissOrder.setVisibility(View.VISIBLE);
         llOrderOptions3.setVisibility(View.VISIBLE);
 
         j = j.getAsJsonObject("order");
@@ -1572,7 +1572,7 @@ public class ActivityCity extends BaseActivity {
         tvWaitTime4.setText(UPref.getString("waittime"));
 
         llRide.setVisibility(View.VISIBLE);
-        llMissOrder.setVisibility(View.VISIBLE);
+        //llMissOrder.setVisibility(View.VISIBLE);
         tvMissOrder.setText(getString(R.string.CANCELORDER));
         llOrderOptions4.setVisibility(View.VISIBLE);
 
@@ -1740,6 +1740,22 @@ public class ActivityCity extends BaseActivity {
         } else {
             btnProfile2.setImageAlpha(30);
             btnHistory.setImageAlpha(30);
+        }
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            switch (mDriverState) {
+                case DriverState.AcceptOrder:
+                    llOrderOptions.setVisibility(View.VISIBLE);
+                    break;
+                case DriverState.OnWay:
+                    llOrderOptions2.setVisibility(View.VISIBLE);
+                    break;
+                case DriverState.DriverInPlace:
+                    llOrderOptions3.setVisibility(View.VISIBLE);
+                    break;
+                case DriverState.DriverInRide:
+                    llOrderOptions4.setVisibility(View.VISIBLE);
+                    break;
+            }
         }
         switch (mChatMode) {
             case 1:
