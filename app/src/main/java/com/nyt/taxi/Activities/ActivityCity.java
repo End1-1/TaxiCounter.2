@@ -1889,7 +1889,7 @@ public class ActivityCity extends BaseActivity {
         List<ResolveInfo> activities = packageManager.queryIntentActivities(intent, 0);
         boolean isIntentSafe = activities.size() > 0;
         if (isIntentSafe) {
-            YandexNavigator.buildRoute(this, mStartPoint.lat, mStartPoint.lut, mFinishPoint.lat, mFinishPoint.lut);
+            YandexNavigator.buildRoute(this, UPref.lastPoint().lat, UPref.lastPoint().lat, mFinishPoint.lat, mFinishPoint.lut);
         } else {
             intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("market://details?id=ru.yandex.yandexnavi"));
