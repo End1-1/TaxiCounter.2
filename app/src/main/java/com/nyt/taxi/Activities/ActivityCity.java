@@ -1373,6 +1373,9 @@ public class ActivityCity extends BaseActivity {
     }
 
     private String infoFullAddress(JsonObject jinfo) {
+        if (jinfo == null) {
+            return "";
+        }
         String info = "";
         if (jinfo.has("frame")) {
             if (!jinfo.get("frame").isJsonNull()) {
