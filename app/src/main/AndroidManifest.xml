@@ -67,6 +67,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Activities.ActivityCity"
+
             android:exported="false"
             android:configChanges="orientation"
             android:showWhenLocked="true"
