@@ -597,7 +597,7 @@ public class ActivityCity extends BaseActivity {
                 }
                 switch (mChatMode) {
                     case 1: {
-                        chat(1, edChatSendMessage.getText().toString(), "chat", UPref.getString("driver_fullname"));
+                        chat(1, edChatSendMessage.getText().toString(), "clientchat", UPref.getString("driver_fullname"));
                         Intent intent = new Intent("websocket_sender");
                         String msg = String.format("{\n" +
                                         "\"channel\": \"%s\"," +
@@ -880,6 +880,7 @@ public class ActivityCity extends BaseActivity {
                     mAnimator.cancel();
                 }
                 UPref.setString("chat", "[]");
+                UPref.setString("clientchat", "[]");
                 UPref.setString("dispatcherchat", "[]");
                 createProgressDialog(R.string.Empty, R.string.QueryExecution);
                 String acceptLink = String.format("%s/api/driver/order_acceptance/%d/%s/1", UConfig.mWebHost, mCurrentOrderId, mWebHash);
@@ -2237,6 +2238,60 @@ public class ActivityCity extends BaseActivity {
         }).request();
     }
 
+    private void getClientChat() {
+        llChatSendMessage.setVisibility(View.VISIBLE);
+        ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.clear();
+        mChatMode = 1;
+        llChatSendMessage.setVisibility(View.VISIBLE);
+        imgSelectChatOperator.setVisibility(View.VISIBLE);
+        WebRequest.create("/api/driver/get_unread_messages", WebRequest.HttpMethod.GET, new WebRequest.HttpResponse() {
+            @Override
+            public void httpRespone(int httpReponseCode, String data) {
+                JsonArray ja = JsonParser.parseString(data).getAsJsonObject().getAsJsonArray("messages");
+                String ids = "";
+                String chat = UPref.getString("clientchat");
+                if (chat.isEmpty()) {
+                    chat = "[]";
+                }
+                JsonArray currentChatMessages = JsonParser.parseString(chat).getAsJsonArray();
+                for (int i = 0; i < currentChatMessages.size(); i++) {
+                    JsonObject jm = currentChatMessages.get(i).getAsJsonObject();
+                    ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(jm.get("sender").getAsInt(),
+                            jm.get("message").getAsString(),
+                            jm.get("time").getAsString(),
+                            jm.get("name").getAsString()));
+                }
+                for (int i = 0; i < ja.size(); i++) {
+                    JsonObject jm = ja.get(i).getAsJsonObject();
+                    if (!ids.isEmpty()) {
+                        ids += ",";
+                    }
+                    ids += jm.get("order_conversation_talk_id").getAsString();
+                    ((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.add(new ChatMessages(2, jm.get("message").getAsString(),
+                            jm.get("created_at").getAsString(),
+                            "" /* driver name when available */));
+
+                    JsonObject jo = new JsonObject();
+                    jo.addProperty("sender", 2);
+                    jo.addProperty("message", jm.get("message").getAsString());
+                    jo.addProperty("time",jm.get("created_at").getAsString());
+                    jo.addProperty("name", String.format("%s", getString(R.string.Close)));
+                    currentChatMessages.add(jo);
+                }
+                UPref.setString("clientchat", currentChatMessages.toString());
+                ids = "{\"ids\":[" + ids + "]}";
+                rvChatMessages.getAdapter().notifyDataSetChanged();
+                rvChatMessages.scrollToPosition(((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.size() - 1);
+                WebRequest.create("/api/driver/message_read", WebRequest.HttpMethod.POST, new WebRequest.HttpResponse() {
+                    @Override
+                    public void httpRespone(int httpReponseCode, String data) {
+                        System.out.println(data);
+                    }
+                }).setBody(ids).request();
+            }
+        }).setParameter("clientDriverConversation", "").request();
+    }
+
     private void getInfoHistory() {
         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
@@ -2407,7 +2462,7 @@ public class ActivityCity extends BaseActivity {
     protected void chatWithWorker(String msg, String date, int msgId) {
         switch (mChatMode) {
             case 1:
-                getClientHistory();
+                getClientChat();
                 break;
             case 2:
                 mMessagesCount = 0;
@@ -2415,6 +2470,7 @@ public class ActivityCity extends BaseActivity {
                     getOperatorsChat();
                 } else {
                     getDispatcherHistory();
+
                 }
                 break;
             case 3:

@@ -157,6 +157,10 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         public void onReceive(Context context, Intent intent) {
             if (intent.getBooleanExtra("OrderUpdated", false)) {
                 orderUpdated();
+            } else if (intent.getBooleanExtra("BroadwayClientTalk", false)) {
+                JsonObject jo = JsonParser.parseString(intent.getStringExtra("data")).getAsJsonObject();
+                chatWithWorker(jo.get("message").getAsString(), "", 0);
+                return;
             } else if (intent.getBooleanExtra("CallCenterWorkerDriverChat", false)) {
                 JsonObject jo = JsonParser.parseString(intent.getStringExtra("data")).getAsJsonObject();
                 chatWithWorker(jo.get("text").getAsString(), jo.get("created_at").getAsString(), jo.get("worker_driver_chat_id").getAsInt());

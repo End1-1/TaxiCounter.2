@@ -409,8 +409,13 @@ public class WebSocketHttps extends Service {
                     Log.d("LOGGIN IN", "SUBSCRIBED TO CHANNEL");
                 } else {
                     FileLogger.write(s);
-                    if (s.contains("Src\\Broadcasting\\Broadcast\\Driver\\BroadwayClientTalk")) {
-
+                    if (s.contains("BroadwayClientTalk")) {
+                        JsonObject jb = JsonParser.parseString(s).getAsJsonObject();
+                        Intent broadwayTalk = new Intent("event_listener");
+                        broadwayTalk.putExtra("BroadwayClientTalk", true);
+                        broadwayTalk.putExtra("data", jb.get("data").getAsString());
+                        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(broadwayTalk);
+                        playSound(R.raw.chat);
                     } else if (s.contains("RegularOrder")) {
                         FileLogger.write(s);
                         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
