@@ -1275,8 +1275,8 @@ public class ActivityCity extends BaseActivity {
             }
         }
         UPref.setString("waittime", "00:00");
-        tvAddressFrom.setText(ord.get("address_from").getAsString());
-        tvAddressTo.setText(ord.get("address_to").getAsString());
+        tvAddressFrom.setText(ord.get("address_from").getAsString().replace("Москва, ", "").replace("Moscow, ", "").replace("Russia, ", "").replace("Россия, ", ""));
+        tvAddressTo.setText(ord.get("address_to").getAsString().replace("Москва, ", "").replace("Moscow, ", "").replace("Russia, ", "").replace("Россия, ", ""));
         tvAddressToComment.setText("");
         tvCarClass.setText(ord.get("car_class").getAsString());
         tvDistance.setText(ord.get("distance").getAsString() + " " + getString(R.string.km));
@@ -1513,7 +1513,7 @@ public class ActivityCity extends BaseActivity {
 
         int hour = mRouteTime / 60;
         int min = mRouteTime % 60;
-        tvAddressFrom2.setText(j.get("address_from").getAsString().replace("Москва, ", "").replace("Moscow, ", ""));
+        tvAddressFrom2.setText(j.get("address_from").getAsString().replace("Москва, ", "").replace("Moscow, ", "").replace("Russia, ", "").replace("Россия, ", ""));
         int v = View.GONE;
         if (j.has("full_address_from")) {
             String info = infoFullAddress(j.getAsJsonObject("full_address_from"));
@@ -1528,7 +1528,7 @@ public class ActivityCity extends BaseActivity {
         //animateHeight(tvCommentFrom2, 1);
 
         v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
-        tvAddressTo2.setText(j.get("address_to").getAsString().replace("Москва, ", "").replace("Moscow, ", ""));
+        tvAddressTo2.setText(j.get("address_to").getAsString().replace("Москва, ", "").replace("Moscow, ", "").replace("Russia, ", "").replace("Россия, ", ""));
         tvAddressTo2.setVisibility(v);
         tvAddressToText2.setVisibility(v);
         imgAddressTo2.setVisibility(v);
@@ -1573,7 +1573,7 @@ public class ActivityCity extends BaseActivity {
 
         tvArrivalTime3.setText(j.get("order_start_time").getAsString());
 
-        tvAddressFrom3.setText(j.get("address_from").getAsString().replace("Москва, ", "").replace("Moscow, ", ""));
+        tvAddressFrom3.setText(j.get("address_from").getAsString().replace("Москва, ", "").replace("Moscow, ", "").replace("Russia, ", "").replace("Россия, ", ""));
         int v;
         if (j.has("full_address_from")) {
             String info = infoFullAddress(j.getAsJsonObject("full_address_from"));
@@ -1589,7 +1589,7 @@ public class ActivityCity extends BaseActivity {
         //animateHeight(tvCommentFrom3, 1);
 
         v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
-        tvTo3.setText(j.get("address_to").getAsString().replace("Москва, ", "").replace("Moscow, ", ""));
+        tvTo3.setText(j.get("address_to").getAsString().replace("Москва, ", "").replace("Moscow, ", "").replace("Russia, ", "").replace("Россия, ", ""));
         tvTo3.setVisibility(v);
         tvToText3.setVisibility(v);
         imgTo3.setVisibility(v);
@@ -1636,7 +1636,7 @@ public class ActivityCity extends BaseActivity {
         }
 
         //tvPaymentMethod4.setText(j.get("cash").getAsBoolean() ? getString(R.string.Cash) : j.get("company_name").getAsString());
-        tvAddressFrom4.setText(j.get("address_from").getAsString().replace("Москва, ", "").replace("Moscow, ", ""));
+        tvAddressFrom4.setText(j.get("address_from").getAsString().replace("Москва, ", "").replace("Moscow, ", "").replace("Russia, ", "").replace("Россия, ", ""));
         tvRideCost4.setText(j.get("initial_price").getAsString());
         int v;
         if (j.has("full_address_from")) {
@@ -1652,7 +1652,7 @@ public class ActivityCity extends BaseActivity {
         //animateHeight(findViewById(R.id.llCommentFrom4), 1);
 
         v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
-        tvTo4.setText(j.get("address_to").getAsString().replace("Москва, ", "").replace("Moscow, ", ""));
+        tvTo4.setText(j.get("address_to").getAsString().replace("Москва, ", "").replace("Moscow, ", "").replace("Russia, ", "").replace("Россия, ", ""));
         tvTo4.setVisibility(v);
         tvToText4.setVisibility(v);
         imgTo4.setVisibility(v);
@@ -1697,7 +1697,7 @@ public class ActivityCity extends BaseActivity {
         }
 
         mCurrentOrderId = j.get("completed_order_id").getAsInt();
-        tvAddressFrom4.setText(j.get("address_from").getAsString().replace("Москва, ", "").replace("Moscow, ", ""));
+        tvAddressFrom4.setText(j.get("address_from").getAsString().replace("Москва, ", "").replace("Moscow, ", "").replace("Russia, ", "").replace("Россия, ", ""));
         int v;
         if (j.has("full_address_from")) {
             String info = infoFullAddress(j.getAsJsonObject("full_address_from"));
@@ -1712,7 +1712,7 @@ public class ActivityCity extends BaseActivity {
         //animateHeight(tvCommentFrom4, 1);
 
         v = j.get("address_to").getAsString().isEmpty() ? View.GONE : View.VISIBLE;
-        tvTo4.setText(j.get("address_to").getAsString().replace("Москва, ", "").replace("Moscow, ", ""));
+        tvTo4.setText(j.get("address_to").getAsString().replace("Москва, ", "").replace("Moscow, ", "").replace("Russia, ", "").replace("Россия, ", ""));
         tvTo4.setVisibility(v);
         tvToText4.setVisibility(v);
         imgTo4.setVisibility(v);
@@ -2279,7 +2279,7 @@ public class ActivityCity extends BaseActivity {
                     currentChatMessages.add(jo);
                 }
                 UPref.setString("clientchat", currentChatMessages.toString());
-                ids = "{\"ids\":[" + ids + "]}";
+                ids = "{\"ids\":[" + ids + "], \"clientDriverConversation\":\"true\"}";
                 rvChatMessages.getAdapter().notifyDataSetChanged();
                 rvChatMessages.scrollToPosition(((ChatAdapter) rvChatMessages.getAdapter()).mChatMessages.size() - 1);
                 WebRequest.create("/api/driver/message_read", WebRequest.HttpMethod.POST, new WebRequest.HttpResponse() {

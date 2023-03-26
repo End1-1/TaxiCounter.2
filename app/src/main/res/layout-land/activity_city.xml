@@ -2766,7 +2766,8 @@
                             android:layout_marginLeft="8dp"
                             android:text="@string/CarOptions"
                             android:textSize="@dimen/middleFont"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:visibility="gone"/>
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -2776,7 +2777,8 @@
                                 android:id="@+id/rvCarOption"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="#f7f8fa" />
+                                android:background="#f7f8fa"
+                                android:visibility="gone"/>
                         </RelativeLayout>
 
                         <androidx.recyclerview.widget.RecyclerView

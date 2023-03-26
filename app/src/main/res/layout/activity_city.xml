@@ -8,6 +8,7 @@
     android:keepScreenOn="true"
     tools:context=".Activities.ActivityCity">
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clUp"
         android:layout_width="match_parent"
@@ -2764,13 +2765,15 @@
                         android:layout_marginLeft="8dp"
                         android:text="@string/CarOptions"
                         android:textSize="@dimen/middleFont"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="gone" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvCarOption"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#f7f8fa" />
+                        android:background="#f7f8fa"
+                        android:visibility="gone" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
