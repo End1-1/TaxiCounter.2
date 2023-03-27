@@ -554,6 +554,9 @@ public class ActivityCity extends BaseActivity {
             mCurrentLevel = 10000;
             stopPlay();
         }
+        if (t != null) {
+            t.cancel();
+        }
         super.onPause();
     }
 
