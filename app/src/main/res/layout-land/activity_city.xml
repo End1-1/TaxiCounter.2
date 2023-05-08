@@ -2082,6 +2082,31 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llWaitForPrice"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/clUp"
+            android:layout_alignTop="@id/clQueryState"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:background="@drawable/login_down"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <pl.droidsonroids.gif.GifImageView
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/loading_animation"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/llRide"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -2805,6 +2830,16 @@
                             android:layout_marginBottom="8dp"
                             android:gravity="center"
                             android:text="0.0.64" />
+
+                        <Button
+                            android:id="@+id/btnGoOnline"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginRight="30dp"
+                            android:background="@drawable/gradient_green"
+                            android:text="@string/Online"
+                            android:textColor="@color/colorWhite" />
 
                         <Button
                             android:id="@+id/btnGoOffline"

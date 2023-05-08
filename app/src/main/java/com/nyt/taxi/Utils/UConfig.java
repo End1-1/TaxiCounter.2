@@ -7,9 +7,10 @@
 
         public static List<String> hosts = Arrays.asList("192.168.0.110", "192.168.0.106", "192.168.0.116", "192.168.0.112", "ayction.ru", "test.nyt.ru", "newyellowtaxi.com");
         public static String host() {
+//            return "newyellowtaxi.com";
             if (UPref.getString("mhost").isEmpty()) {
-                //return "newyellowtaxi.com";
-                return "ayction.ru";
+                return "newyellowtaxi.com";
+                //return "ayction.ru";
             }
             return UPref.getString("mhost");
         }

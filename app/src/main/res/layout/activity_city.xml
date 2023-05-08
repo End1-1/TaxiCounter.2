@@ -1960,6 +1960,31 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llWaitForPrice"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/clUp"
+        android:layout_alignTop="@id/clQueryState"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/login_down"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <pl.droidsonroids.gif.GifImageView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/loading_animation"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/llRide"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -2597,22 +2622,13 @@
             android:layout_marginRight="8dp"
             android:background="@color/colorGrayLight2" />
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/llEndOrderButtons"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -2785,7 +2801,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/marginStandardLeftRight"
-                            android:layout_marginRight="@dimen/marginStandardLeftRight" />
+                            android:layout_marginRight="@dimen/marginStandardLeftRight"
+                            android:visibility="gone" />
                     </RelativeLayout>
 
                     <TextView
@@ -2803,6 +2820,22 @@
                         android:layout_height="@dimen/sepviewheight"
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="10dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/btnGoOnline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp"
+                        android:background="@drawable/gradient_green"
+                        android:text="@string/Online"
+                        android:textColor="@color/colorWhite" />
 
                     <Button
                         android:id="@+id/btnGoOffline"
@@ -2840,9 +2873,7 @@
 
                 </LinearLayout>
 
-
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
     </LinearLayout>
 
     <LinearLayout

@@ -239,6 +239,7 @@ public class ActivityCity extends BaseActivity {
     private LinearLayout llProfile;
     private Button btnCloseApp;
     private Button btnGoOffline;
+    private Button btnGoOnline;
     private RecyclerView rvProfileMenu;
     private RecyclerView rvCarOptions;
     private TextView tvDistanceProfile;
@@ -268,6 +269,9 @@ public class ActivityCity extends BaseActivity {
     private Button btnSaveDriverInfo;
 
     private int mCurrentSkip = 0;
+    private boolean mCanPressFinish = true;
+
+    private LinearLayout llWaitForPriceData;
     private HistoryOfOrders mHistoryOrderAdapter = new HistoryOfOrders(this);
     private LinearLayout llHistory;
     private RecyclerView rvOrdersHistory;
@@ -310,6 +314,8 @@ public class ActivityCity extends BaseActivity {
         rvNotifications = findViewById(R.id.rvNotifications);
         rvNotifications.setLayoutManager(new LinearLayoutManager(this));
         rvNotifications.setAdapter( new ChatAdapter(this));
+
+        llWaitForPriceData = findViewById(R.id.llWaitForPrice);
 
         llNewOrder = findViewById(R.id.llNewOrder);
         llMissOrder = findViewById(R.id.llMissOrder);
@@ -422,6 +428,7 @@ public class ActivityCity extends BaseActivity {
         llProfile = findViewById(R.id.llProfile);
         btnCloseApp = findViewById(R.id.btnCloseApp);
         btnGoOffline = findViewById(R.id.btnGoOffline);
+        btnGoOnline = findViewById(R.id.btnGoOnline);
         rvProfileMenu = findViewById(R.id.rvProfileMenu);
         rvCarOptions = findViewById(R.id.rvCarOption);
         tvDistanceProfile = findViewById(R.id.tvDistanceProfile);
@@ -478,6 +485,7 @@ public class ActivityCity extends BaseActivity {
         llImLate3.setOnClickListener(this);
         btnCloseApp.setOnClickListener(this);
         btnGoOffline.setOnClickListener(this);
+        btnGoOnline.setOnClickListener(this);
         tvChatDispatcher.setOnClickListener(this);
         tvChatInfo.setOnClickListener(this);
         tvChatPassanger.setOnClickListener(this);
@@ -731,7 +739,8 @@ public class ActivityCity extends BaseActivity {
                                                 if (!webResponseOK(httpReponseCode, data)) {
                                                     return;
                                                 }
-                                                queryState();
+                                                findViewById(R.id.btnGoOffline).setVisibility(View.GONE);
+                                                findViewById(R.id.btnGoOnline).setVisibility(View.VISIBLE);
                                             }
                                         })
                                         .setParameter("ready", Integer.toString(0))
@@ -740,6 +749,23 @@ public class ActivityCity extends BaseActivity {
                                         .request();
                             }
                         });
+                break;
+            case R.id.btnGoOnline:
+                createProgressDialog(R.string.Empty, R.string.Wait);
+                new WebQuery(UConfig.mHostOrderReady, WebQuery.HttpMethod.POST, WebResponse.mResponseDriverOn, new WebResponse() {
+                    @Override
+                    public void webResponse(int code, int webResponse, String s) {
+                        if (!webResponseOK(webResponse, s)) {
+                            return;
+                        }
+                        llGoOnline.setVisibility(View.GONE);
+                        imgOnlineAnim.setVisibility(View.VISIBLE);
+                        queryState();
+                    }}).setParameter("ready", Integer.toString(1))
+                        .setParameter("online", "1")
+                        .setParameter("lat", UText.valueOf(UPref.getFloat("last_lat")))
+                        .setParameter("lut", UText.valueOf(UPref.getFloat("last_lon")))
+                        .request();
                 break;
             case R.id.btnCloseApp:
                 UDialog.alertDialogWithButtonTitles(this, R.string.Empty,
@@ -821,6 +847,7 @@ public class ActivityCity extends BaseActivity {
                             return;
                         }
                         llGoOnline.setVisibility(View.GONE);
+
                         imgOnlineAnim.setVisibility(View.VISIBLE);
                         queryState();
                     }
@@ -875,6 +902,7 @@ public class ActivityCity extends BaseActivity {
                 break;
             }
             case R.id.btnAcceptGreen:{
+                findViewById(R.id.btnAcceptGreen).setEnabled(false);
                 mQueryStateAllowed = true;
                 UPref.setString("neworder", "");
                 getIntent().putExtra("neworder", "");
@@ -897,6 +925,7 @@ public class ActivityCity extends BaseActivity {
                 break;
             }
             case R.id.btnGoToClient: {
+                findViewById(R.id.btnGoToClient).setEnabled(false);
                 UPref.setLong("inplacedate", (long) new Date().getTime());
                 String link = String.format("%s/api/driver/order_in_place/%d/%s", UConfig.mWebHost, mCurrentOrderId, mWebHash);
                 WebQuery.create(link, WebQuery.HttpMethod.GET, WebResponse.mResponseInPlace, new WebResponse() {
@@ -1108,6 +1137,7 @@ public class ActivityCity extends BaseActivity {
                 UPref.setBoolean("is_ready", g.is_ready);
                 llGoOnline.setVisibility(g.is_ready ? View.GONE : View.VISIBLE);
                 btnGoOffline.setVisibility(g.is_ready ? View.VISIBLE : View.GONE);
+                btnGoOnline.setVisibility(g.is_ready ? View.GONE : View.VISIBLE);
                 if (g.is_ready) {
                     imgOnlineAnim.setVisibility(View.VISIBLE);
                     WebQuery webQuery = new WebQuery(UConfig.mHostOrderReady, WebQuery.HttpMethod.POST, WebResponse.mResponseDriverOn, new WebResponse() {
@@ -1172,6 +1202,7 @@ public class ActivityCity extends BaseActivity {
                         break;
                     case DriverState.DriverInRide:
                         tvMissOrder.setText(getString(R.string.CANCELORDER));
+                        mCanPressFinish = false;
                         ridePage(jdata);
                         break;
                     case DriverState.Rate:
@@ -1208,10 +1239,6 @@ public class ActivityCity extends BaseActivity {
         if (UPref.getBoolean("update_photo")) {
             updatePhoto();
         }
-//        WebRequest.create("/api/driver/commons", WebRequest.HttpMethod.GET, mCommonOrderData).request();
-//        WebRequest.create("/api/driver/commons_armor", WebRequest.HttpMethod.GET, mArmorOrderData).request();
-//        checkNotifications();
-//        checkChatAdmin();
     }
 
     private boolean webResponseOK(int code, String s) {
@@ -1222,6 +1249,9 @@ public class ActivityCity extends BaseActivity {
                 return true;
             }
             if (s.contains("to resolve host") || s.contains("failed to connect")) {
+                return false;
+            }
+            if (s.contains("ssl=0x")) {
                 return false;
             }
             if (s.contains("message")) {
@@ -1437,10 +1467,12 @@ public class ActivityCity extends BaseActivity {
         tvKm.setText("0");
         tvMin.setText("00:00");
         tvRideAmount.setText("0" + getString(R.string.RubSymbol));
+        llWaitForPriceData.setVisibility(View.GONE);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) clFirstPage.getLayoutParams();
         params.addRule(RelativeLayout.ABOVE, R.id.llDownMenu);
         if (!WebSocketHttps.WEBSOCKET_CONNECTED) {
             llNoInet.setVisibility(View.VISIBLE);
+            mCanPressFinish = false;
             return false;
         } else {
             llNoInet.setVisibility(View.GONE);
@@ -1493,6 +1525,7 @@ public class ActivityCity extends BaseActivity {
         UPref.setString("neworder", "");
         llNewOrder.setVisibility(View.GONE);
         llRateMoneyScore.setVisibility(View.GONE);
+        findViewById(R.id.btnGoToClient).setEnabled(true);
         //llMissOrder.setVisibility(View.VISIBLE);
         llOnPlace.setVisibility(View.VISIBLE);
         llOrderOptions2.setVisibility(View.VISIBLE);
@@ -1525,6 +1558,7 @@ public class ActivityCity extends BaseActivity {
         } else {
             v = View.GONE;
         }
+
         tvCommentFromText2.setVisibility(v);
         tvCommentFrom2.setVisibility(v);
         imgCommentFrom2.setVisibility(v);
@@ -1538,15 +1572,16 @@ public class ActivityCity extends BaseActivity {
         viewTo2.setVisibility(v);
 
         v = View.GONE;
-        if (j.has("full_address_to")) {
-            String info = infoFullAddress(j.getAsJsonObject("full_address_to"));
-            v = info.isEmpty() ? View.GONE : View.VISIBLE;
-            tvCommentTo2.setText(Html.fromHtml(info, Html.FROM_HTML_MODE_COMPACT));
+        if (tvAddressTo2.getVisibility() == View.VISIBLE) {
+            if (j.has("full_address_to")) {
+                String info = infoFullAddress(j.getAsJsonObject("full_address_to"));
+                v = info.isEmpty() ? View.GONE : View.VISIBLE;
+                tvCommentTo2.setText(Html.fromHtml(info, Html.FROM_HTML_MODE_COMPACT));
+            }
         }
         tvCommentToText2.setVisibility(v);
         imgCommentTo2.setVisibility(v);
         tvCommentTo2.setVisibility(v);
-        //animateHeight(tvCommentTo2, 1);
     }
     
     private void beforeOrderStartPage(JsonObject j) {
@@ -1599,21 +1634,23 @@ public class ActivityCity extends BaseActivity {
         viewTo3.setVisibility(v);
 
         v = View.GONE;
-        if (j.has("full_address_to")) {
-            String info = infoFullAddress(j.getAsJsonObject("full_address_to"));
-            v = info.isEmpty() ? View.GONE : View.VISIBLE;
-            tvCommentTo3.setText(Html.fromHtml(info, Html.FROM_HTML_MODE_COMPACT));
+        if (tvTo3.getVisibility() == View.VISIBLE) {
+            if (j.has("full_address_to")) {
+                String info = infoFullAddress(j.getAsJsonObject("full_address_to"));
+                v = info.isEmpty() ? View.GONE : View.VISIBLE;
+                tvCommentTo3.setText(Html.fromHtml(info, Html.FROM_HTML_MODE_COMPACT));
+            }
         }
         tvCommentToText3.setVisibility(v);
         imgCommentTo3.setVisibility(v);
         tvCommentTo3.setVisibility(v);
-        //animateHeight(tvCommentTo3, 1);
     }
     
     private void ridePage(JsonObject j) {
         if (!showNothings()) {
             return;
         }
+
         btnProfile2.setImageAlpha(30);
         btnHistory.setImageAlpha(30);
         j = j.getAsJsonObject("payload");
@@ -1623,10 +1660,8 @@ public class ActivityCity extends BaseActivity {
         mCancelHash = mWebHash;
         tvWaitTime4.setText(UPref.getString("waittime"));
 
-        llRide.setVisibility(View.VISIBLE);
         //llMissOrder.setVisibility(View.VISIBLE);
         tvMissOrder.setText(getString(R.string.CANCELORDER));
-        llOrderOptions4.setVisibility(View.VISIBLE);
 
         j = j.getAsJsonObject("order");
         if (j.get("cash").getAsBoolean()) {
@@ -1663,11 +1698,14 @@ public class ActivityCity extends BaseActivity {
         //animateHeight(findViewById(R.id.llCommentTo4), 1);
 
         v = View.GONE;
-        tvCommentTo4.setText("");
-        if (j.has("full_address_to")) {
-            String info = infoFullAddress(j.getAsJsonObject("full_address_to"));
-            v = info.isEmpty() ? View.GONE : View.VISIBLE;
-            tvCommentTo4.setText(Html.fromHtml(info, Html.FROM_HTML_MODE_COMPACT));
+        if (tvTo4.getVisibility() == View.VISIBLE) {
+            tvCommentTo4.setText("");
+            if (j.has("full_address_to")) {
+                String info = infoFullAddress(j.getAsJsonObject("full_address_to"));
+                v = info.isEmpty() ? View.GONE : View.VISIBLE;
+                tvCommentTo4.setText(Html.fromHtml(info, Html.FROM_HTML_MODE_COMPACT));
+            }
+
         }
         tvCommentToText4.setVisibility(v);
         imgCommentTo4.setVisibility(v);
@@ -1675,6 +1713,13 @@ public class ActivityCity extends BaseActivity {
         btnEndOrder.setVisibility(View.VISIBLE);
         btnEndOrder.setEnabled(true);
         btnOrderDone.setVisibility(View.GONE);
+
+        if (!mCanPressFinish) {
+            llWaitForPriceData.setVisibility(View.VISIBLE);
+            return;
+        }
+        llRide.setVisibility(View.VISIBLE);
+        llOrderOptions4.setVisibility(View.VISIBLE);
     }
 
     private void lastPage(JsonObject j) {
@@ -1727,10 +1772,12 @@ public class ActivityCity extends BaseActivity {
 
         v = View.GONE;
         tvCommentTo4.setText("");
-        if (j.has("full_address_to")) {
-            String info = infoFullAddress(j.getAsJsonObject("full_address_to"));
-            v = info.isEmpty() ? View.GONE : View.VISIBLE;
-            tvCommentTo4.setText(Html.fromHtml(info, Html.FROM_HTML_MODE_COMPACT));
+        if (tvTo4.getVisibility() == View.VISIBLE) {
+            if (j.has("full_address_to")) {
+                String info = infoFullAddress(j.getAsJsonObject("full_address_to"));
+                v = info.isEmpty() ? View.GONE : View.VISIBLE;
+                tvCommentTo4.setText(Html.fromHtml(info, Html.FROM_HTML_MODE_COMPACT));
+            }
         }
         tvCommentToText4.setVisibility(v);
         imgCommentTo4.setVisibility(v);
@@ -1961,6 +2008,7 @@ public class ActivityCity extends BaseActivity {
     public void event(String e) {
         JsonObject jdata = JsonParser.parseString(e).getAsJsonObject();
         if (e.contains("PassLivePrice")) {
+            coordinateSended();
             jdata = JsonParser.parseString(jdata.get("data").getAsString()).getAsJsonObject();
             tvRideAmount.setText(String.format("%.0f%s", jdata.get("price").getAsDouble(), getString(R.string.RubSymbol)));
             tvKm.setText(UText.valueOf(jdata.get("distance").getAsDouble()));
@@ -2669,5 +2717,18 @@ public class ActivityCity extends BaseActivity {
 //            }
 //        });
 //        heightAnimator.start();
+    }
+
+    @Override
+    protected void coordinateSended() {
+        super.coordinateSended();
+        if (!mCanPressFinish) {
+            mCanPressFinish = true;
+            llWaitForPriceData.setVisibility(View.GONE);
+            if (mDriverState == DriverState.DriverInRide) {
+                llRide.setVisibility(View.VISIBLE);
+                llOrderOptions4.setVisibility(View.VISIBLE);
+            }
+        }
     }
 }

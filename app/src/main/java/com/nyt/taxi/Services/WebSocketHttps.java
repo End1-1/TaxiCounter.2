@@ -324,6 +324,10 @@ public class WebSocketHttps extends Service {
                             continue;
                         }
                         if (msg.contains("client-broadcast-api/update-coordinate")) {
+//                            Intent coorIntent = new Intent("event_listener");
+//                            coorIntent.putExtra("msg", "");
+//                            coorIntent.putExtra("send_coordinate", true);
+//                            LocalBroadcastManager.getInstance(WebSocketHttps.this).sendBroadcast(coorIntent);
                             FileLogger.write(msg);
 //                            if (!UPref.getBoolean("is_ready")) {
 //                                continue;

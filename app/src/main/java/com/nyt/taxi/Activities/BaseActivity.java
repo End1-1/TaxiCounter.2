@@ -155,7 +155,10 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     protected BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getBooleanExtra("OrderUpdated", false)) {
+            if (intent.getBooleanExtra("send_coordinate", false)) {
+                coordinateSended();
+                return;
+            } else if (intent.getBooleanExtra("OrderUpdated", false)) {
                 orderUpdated();
             } else if (intent.getBooleanExtra("BroadwayClientTalk", false)) {
                 JsonObject jo = JsonParser.parseString(intent.getStringExtra("data")).getAsJsonObject();
@@ -432,6 +435,10 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     protected void orderUpdated() {
+
+    }
+
+    protected  void coordinateSended() {
 
     }
 }
