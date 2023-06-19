@@ -29,6 +29,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -314,6 +315,8 @@ public class ActivityCity extends BaseActivity {
         rvNotifications = findViewById(R.id.rvNotifications);
         rvNotifications.setLayoutManager(new LinearLayoutManager(this));
         rvNotifications.setAdapter( new ChatAdapter(this));
+        ((Switch) findViewById(R.id.swAutologin)).setChecked(UPref.getBoolean("rememberme"));
+        (findViewById(R.id.swAutologin)).setOnClickListener(this);
 
         llWaitForPriceData = findViewById(R.id.llWaitForPrice);
 
@@ -599,6 +602,14 @@ public class ActivityCity extends BaseActivity {
     @Override
     public void handleClick(int id) {
         switch (id) {
+            case R.id.swAutologin: {
+                boolean autologin = ((Switch) findViewById(R.id.swAutologin)).isChecked();
+                UPref.setBoolean("rememberme", autologin);
+                if (!autologin) {
+                    UPref.setString("password", "");
+                }
+                break;
+            }
             case R.id.imgSelectOperator:
                 selectChatOperator();
                 break;

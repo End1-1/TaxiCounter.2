@@ -2805,6 +2805,26 @@
                             android:visibility="gone" />
                     </RelativeLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="22dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/marginStandardLeftRight"
+                            android:textSize="@dimen/middleFont"
+                            android:text="@string/Autologin" />
+
+                        <Switch
+                            android:id="@+id/swAutologin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
                     <TextView
                         android:id="@+id/txtVersionInProfile"
                         android:layout_width="match_parent"

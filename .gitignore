@@ -10,8 +10,11 @@ gradle
 /.idea/assetWizardSettings.xml
 .DS_Store
 /build
+/caches
 /wrapper
 /app/release
 /captures
 .externalNativeBuild
+/app/build
+/native
 *.apk

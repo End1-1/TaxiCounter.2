@@ -17,6 +17,7 @@ import android.provider.Settings;
 import android.text.InputType;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -157,6 +158,12 @@ public class MainActivity extends BaseActivity implements
             System.exit(0);
             return;
         }
+        ((CheckBox) findViewById(R.id.checkBox)).setChecked(UPref.getBoolean("rememberme"));
+        if (UPref.getBoolean("rememberme")) {
+            mEdtUsername.setText(UPref.getString("username"));
+            mEdtPassword.setText(UPref.getString("password"));
+            handleClick(R.id.btnLogin);
+        }
     }
 
     @Override
@@ -164,6 +171,11 @@ public class MainActivity extends BaseActivity implements
         super.handleClick(id);
         switch (id) {
             case R.id.btnLogin:
+                UPref.setBoolean("rememberme", ((CheckBox) findViewById(R.id.checkBox)).isChecked());
+                if (((CheckBox) findViewById(R.id.checkBox)).isChecked()) {
+                    UPref.setString("username", mEdtUsername.getText().toString());
+                    UPref.setString("password", mEdtPassword.getText().toString());
+                }
                 if (mEdtUsername.getText().toString().equalsIgnoreCase("server")) {
                     startActivity(new Intent(this, ActivityServer.class));
                     return;
