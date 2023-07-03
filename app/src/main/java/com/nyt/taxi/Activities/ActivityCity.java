@@ -23,6 +23,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,6 +48,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.nyt.taxi.Adapters.ChatAdapter;
@@ -64,6 +66,7 @@ import com.nyt.taxi.Services.WebSocketHttps;
 import com.nyt.taxi.Utils.CarOptionsAdapter;
 import com.nyt.taxi.Utils.DownloadControllerVer;
 import com.nyt.taxi.Utils.DriverState;
+import com.nyt.taxi.Utils.MultiAddress;
 import com.nyt.taxi.Utils.ProfileMenuAdapter;
 import com.nyt.taxi.Utils.UConfig;
 import com.nyt.taxi.Utils.UDialog;
@@ -277,6 +280,10 @@ public class ActivityCity extends BaseActivity {
     private LinearLayout llHistory;
     private RecyclerView rvOrdersHistory;
     private ConstraintLayout clUp;
+
+    private MultiAddress multiAddress;
+    private RecyclerView rvMultiAddress;
+    private MultiAddressAdapter adMultiAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -516,6 +523,11 @@ public class ActivityCity extends BaseActivity {
         tvCommentFrom4.setOnClickListener(navClickListener);
         tvTo4.setOnClickListener(navClickListener);
         tvCommentTo4.setOnClickListener(navClickListener);
+
+        adMultiAddress = new MultiAddressAdapter();
+        rvMultiAddress = findViewById(R.id.rvMultiAddres);
+        rvMultiAddress.setLayoutManager(new LinearLayoutManager(this));
+        rvMultiAddress.setAdapter(adMultiAddress);
 
         authToSocket();
         showNothings();
@@ -1479,8 +1491,6 @@ public class ActivityCity extends BaseActivity {
         tvMin.setText("00:00");
         tvRideAmount.setText("0" + getString(R.string.RubSymbol));
         llWaitForPriceData.setVisibility(View.GONE);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) clFirstPage.getLayoutParams();
-        params.addRule(RelativeLayout.ABOVE, R.id.llDownMenu);
         if (!WebSocketHttps.WEBSOCKET_CONNECTED) {
             llNoInet.setVisibility(View.VISIBLE);
             mCanPressFinish = false;
@@ -1968,12 +1978,22 @@ public class ActivityCity extends BaseActivity {
     private void setStartAndFinishPoints(JsonObject j) {
         mDestinationPoint = null;
         mSourcePoint = null;
+        multiAddress = null;
         try {
             JsonObject jfrom = j.getAsJsonObject("order").getAsJsonObject("from_coordinates");
-            JsonObject jto = j.getAsJsonObject("order").getAsJsonObject("to_coordinates");
+            JsonObject jto = null;
+            if (!j.getAsJsonObject("order").get("multi_addresses").isJsonNull()) {
+               multiAddress = new MultiAddress(j.getAsJsonObject("order").get("multi_addresses").getAsJsonArray());
+            }
+            adMultiAddress.notifyDataSetChanged();
+            if (!j.getAsJsonObject("order").get("to_coordinates").isJsonNull()) {
+                jto = j.getAsJsonObject("order").getAsJsonObject("to_coordinates");
+            }
             if (jfrom != null) {
-                mDestinationPoint = new GDriverStatus.Point(jto.get("lat").getAsDouble(), jto.get("lut").getAsDouble());
                 mSourcePoint = new GDriverStatus.Point(jfrom.get("lat").getAsDouble(), jfrom.get("lut").getAsDouble());
+            }
+            if (jto != null) {
+                mDestinationPoint = new GDriverStatus.Point(jto.get("lat").getAsDouble(), jto.get("lut").getAsDouble());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -2740,6 +2760,53 @@ public class ActivityCity extends BaseActivity {
                 llRide.setVisibility(View.VISIBLE);
                 llOrderOptions4.setVisibility(View.VISIBLE);
             }
+        }
+    }
+
+    class MultiAddressAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+        class VH extends RecyclerView.ViewHolder implements View.OnClickListener {
+            TextView address;
+            double lat;
+            double lon;
+            public VH(@NonNull View itemView) {
+                super(itemView);
+                address = itemView.findViewById(R.id.txtAddress);
+                itemView.setOnClickListener(this);
+            }
+
+            public void bind(int pos) {
+                MultiAddress.Address a = multiAddress.addresses.get(pos);
+                address.setText(a.address);
+                address.setOnClickListener(this);
+                lat = a.lat;
+                lon = a.lon;
+            }
+
+            @Override
+            public void onClick(View view) {
+                openYandexNavigator(new GDriverStatus.Point(lat, lon));
+            }
+        }
+
+        @NonNull
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            VH vh = new VH(getLayoutInflater().inflate(R.layout.item_multi_address, parent, false));
+            return vh;
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+            ((VH) holder).bind(position);
+        }
+
+        @Override
+        public int getItemCount() {
+            if (multiAddress == null) {
+                return 0;
+            }
+            return multiAddress.addresses.size();
         }
     }
 }

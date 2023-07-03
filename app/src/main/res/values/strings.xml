@@ -195,5 +195,6 @@
     <string name="BALANCE">ОБОРОТ</string>
     <string name="RATE">ОЦЕНКА</string>
     <string name="Remember">Запомнить</string>
+    <string name="Stop">Остановка</string>
 
 </resources>
