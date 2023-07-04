@@ -569,7 +569,7 @@
         android:layout_marginBottom="0dp"
         android:background="@drawable/login_down"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/textView14"
@@ -751,9 +751,8 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="4dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/viewTo"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAddressToText"
                     app:srcCompat="@drawable/location" />
 
                 <TextView
@@ -795,14 +794,19 @@
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imgAddressTo"
-                    app:layout_constraintTop_toBottomOf="@+id/viewTo" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvAddressToText" />
 
                 <LinearLayout
                     android:id="@+id/llMulti1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
                     android:orientation="vertical"
-                    app:layout_constraintTop_toTopOf="@id/tvAddressCommentFrom"></LinearLayout>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvAddressCommentFrom"></LinearLayout>
 
                 <View
                     android:id="@+id/viewTo"
