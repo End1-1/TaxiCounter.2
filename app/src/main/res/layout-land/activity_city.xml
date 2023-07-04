@@ -960,7 +960,7 @@
             android:layout_marginBottom="0dp"
             android:background="@drawable/login_down"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/textView14"
@@ -1237,7 +1237,7 @@
                         android:text="@string/To"
                         android:textAllCaps="true"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvAddressCommentFrom" />
+                        app:layout_constraintTop_toBottomOf="@id/llMulti1" />
 
                     <TextView
                         android:id="@+id/tvCommentToText"
@@ -1298,6 +1298,18 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvAddressFrom"
                         app:srcCompat="@drawable/information" />
+
+                    <LinearLayout
+                        android:id="@+id/llMulti1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvAddressCommentFrom"></LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -1621,7 +1633,7 @@
                         android:text="@string/To"
                         android:textAllCaps="true"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvCommentFrom3" />
+                        app:layout_constraintTop_toBottomOf="@id/llMulti3" />
 
                     <TextView
                         android:id="@+id/tvCommentToText3"
@@ -1682,6 +1694,18 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvAddressFrom3"
                         app:srcCompat="@drawable/information" />
+
+                    <LinearLayout
+                        android:id="@+id/llMulti3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvCommentFrom3"></LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -2007,7 +2031,7 @@
                         android:text="@string/To"
                         android:textAllCaps="true"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvCommentFrom2" />
+                        app:layout_constraintTop_toBottomOf="@id/llMulti2" />
 
                     <ImageView
                         android:id="@+id/imgCommentTo2"
@@ -2044,6 +2068,18 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/imgCommentFrom2"
                         app:layout_constraintTop_toBottomOf="@+id/imgCommentFrom2" />
+
+                    <LinearLayout
+                        android:id="@+id/llMulti2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvCommentFrom2"></LinearLayout>
 
                     <ImageView
                         android:id="@+id/imgCommentFrom2"
@@ -2232,6 +2268,18 @@
                             app:layout_constraintStart_toEndOf="@+id/imageView20_4"
                             app:layout_constraintTop_toBottomOf="@+id/view14_4" />
 
+                        <LinearLayout
+                            android:id="@+id/llMulti4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/llCommentFrom4"></LinearLayout>
+
                         <TextView
                             android:id="@+id/tvTo4"
                             android:layout_width="0dp"
@@ -2266,7 +2314,7 @@
                             android:text="@string/To"
                             android:textAllCaps="true"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/llCommentFrom4" />
+                            app:layout_constraintTop_toBottomOf="@id/llMulti4" />
 
                         <TextView
                             android:id="@+id/tvCommentToText4"
@@ -2344,8 +2392,8 @@
                                     android:id="@+id/tvPaymentMethod4"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginEnd="24dp"
                                     android:layout_marginTop="8dp"
+                                    android:layout_marginEnd="24dp"
                                     android:text="@string/Cash"
                                     android:textSize="18sp"
                                     android:textStyle="bold" />
@@ -2353,51 +2401,51 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/llCompany4"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                android:id="@+id/llCompany4"
                                 android:visibility="gone">
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="2dp"
-                                android:layout_marginStart="13dp"
-                                android:layout_marginTop="3dp"
-                                android:layout_marginEnd="13dp"
-                                android:layout_marginBottom="3dp"
-                                android:background="@color/colorYellow" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="24dp"
-                                    android:layout_marginTop="12dp"
-                                    android:text="@string/Company"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
 
                                 <View
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1" />
+                                    android:layout_height="2dp"
+                                    android:layout_marginStart="13dp"
+                                    android:layout_marginTop="3dp"
+                                    android:layout_marginEnd="13dp"
+                                    android:layout_marginBottom="3dp"
+                                    android:background="@color/colorYellow" />
 
-                                <TextView
-                                    android:id="@+id/tvCompanyName4"
-                                    android:layout_width="wrap_content"
+                                <LinearLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="12dp"
-                                    android:layout_marginEnd="24dp"
-                                    android:text="@string/Company"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
+                                    android:orientation="horizontal">
 
-                            </LinearLayout>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="24dp"
+                                        android:layout_marginTop="12dp"
+                                        android:text="@string/Company"
+                                        android:textSize="18sp"
+                                        android:textStyle="bold" />
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1" />
+
+                                    <TextView
+                                        android:id="@+id/tvCompanyName4"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="12dp"
+                                        android:layout_marginEnd="24dp"
+                                        android:text="@string/Company"
+                                        android:textSize="18sp"
+                                        android:textStyle="bold" />
+
+                                </LinearLayout>
                             </LinearLayout>
 
                             <View
@@ -2440,7 +2488,6 @@
                                     android:textSize="18sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
-
 
 
                         </LinearLayout>

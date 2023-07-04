@@ -281,7 +281,7 @@ public class ActivityCity extends BaseActivity {
     private RecyclerView rvOrdersHistory;
     private ConstraintLayout clUp;
 
-    private MultiAddress multiAddress;
+    static private MultiAddress multiAddress;
     private RecyclerView rvMultiAddress;
     private MultiAddressAdapter adMultiAddress;
 
@@ -527,7 +527,7 @@ public class ActivityCity extends BaseActivity {
         adMultiAddress = new MultiAddressAdapter();
 
         authToSocket();
-        showNothings();
+        showNothings(true);
         imgOnlineAnim.setBackgroundResource(R.drawable.online_anim);
         ((AnimationDrawable) imgOnlineAnim.getBackground()).start();
         new Timer().schedule(ttIconOfDay, 10000);
@@ -1127,7 +1127,7 @@ public class ActivityCity extends BaseActivity {
     @Override
     protected void connectionChanged(boolean v) {
         super.connectionChanged(v);
-        showNothings();
+        showNothings(true);
         queryState();
     }
 
@@ -1139,7 +1139,7 @@ public class ActivityCity extends BaseActivity {
         if (!mQueryStateAllowed) {
             return;
         }
-        showNothings();
+        showNothings(true);
         if (t != null) {
             t.cancel();
             t = null;
@@ -1327,7 +1327,9 @@ public class ActivityCity extends BaseActivity {
                 totalTimes.put(this.toString(), currentdate - startdate);
             }
         }
-        setStartAndFinishPoints(ord);
+        JsonObject jooo = new JsonObject();
+        jooo.add("order", ord);
+        setStartAndFinishPoints(jooo);
         if (multiAddress != null) {
             if (multiAddress.addresses.isEmpty() == false) {
                 addMulti(R.id.llMulti1);
@@ -1470,11 +1472,13 @@ public class ActivityCity extends BaseActivity {
         return info;
     }
 
-    private boolean showNothings() {
-        removeMulti(R.id.llMulti1);
-        removeMulti(R.id.llMulti2);
-        removeMulti(R.id.llMulti3);
-        removeMulti(R.id.llMulti4);
+    private boolean showNothings(boolean removemulti1) {
+        if (removemulti1) {
+            removeMulti(R.id.llMulti1);
+            removeMulti(R.id.llMulti2);
+            removeMulti(R.id.llMulti3);
+            removeMulti(R.id.llMulti4);
+        }
 
         btnProfile2.setImageAlpha(100);
         btnHistory.setImageAlpha(100);
@@ -1510,7 +1514,7 @@ public class ActivityCity extends BaseActivity {
     }
 
     private void homePage() {
-        if (!showNothings()) {
+        if (!showNothings(true)) {
             return;
         }
         btnProfile2.setImageAlpha(500);
@@ -1537,7 +1541,7 @@ public class ActivityCity extends BaseActivity {
     }
 
     private void newOrderPage() {
-        if (!showNothings()) {
+        if (!showNothings(false)) {
             return;
         }
         llMissOrder.setVisibility(View.GONE);
@@ -1546,7 +1550,7 @@ public class ActivityCity extends BaseActivity {
     }
 
     private void afterAcceptPage(JsonObject j) {
-        if (!showNothings()) {
+        if (!showNothings(true)) {
             return;
         }
         btnProfile2.setImageAlpha(30);
@@ -1618,7 +1622,7 @@ public class ActivityCity extends BaseActivity {
     }
     
     private void beforeOrderStartPage(JsonObject j) {
-        if (!showNothings()) {
+        if (!showNothings(true)) {
             return;
         }
         btnProfile2.setImageAlpha(30);
@@ -1686,7 +1690,7 @@ public class ActivityCity extends BaseActivity {
     }
     
     private void ridePage(JsonObject j) {
-        if (!showNothings()) {
+        if (!showNothings(true)) {
             return;
         }
 
@@ -1768,7 +1772,7 @@ public class ActivityCity extends BaseActivity {
     }
 
     private void lastPage(JsonObject j) {
-        if (!showNothings()) {
+        if (!showNothings(true)) {
             return;
         }
         btnProfile2.setImageAlpha(30);
@@ -1843,7 +1847,7 @@ public class ActivityCity extends BaseActivity {
     }
 
     private void showProfilePage() {
-        showNothings();
+        showNothings(true);
         btnProfile2.setImageAlpha(500);
         btnHistory.setImageAlpha(500);
         createProgressDialog();
@@ -1882,7 +1886,7 @@ public class ActivityCity extends BaseActivity {
     private void showChatPage() {
         hideDownMenuBackgrounds();
         llbtnChat.setBackground(getDrawable(R.drawable.btn_home_menu_bg));
-        showNothings();
+        showNothings(true);
         if (mDriverState < 2) {
             btnProfile2.setImageAlpha(500);
             btnHistory.setImageAlpha(500);
@@ -1927,7 +1931,7 @@ public class ActivityCity extends BaseActivity {
     }
 
     public void showDriverInfo() {
-        showNothings();
+        showNothings(true);
         btnProfile2.setImageAlpha(500);
         btnHistory.setImageAlpha(500);
         createProgressDialog();
@@ -1971,7 +1975,7 @@ public class ActivityCity extends BaseActivity {
     }
 
     private void showHistoryPage() {
-        showNothings();
+        showNothings(true);
         mCurrentSkip = 0;
         mHistoryOrderAdapter.mOrders.clear();
         mHistoryOrderAdapter.notifyDataSetChanged();
@@ -2009,14 +2013,20 @@ public class ActivityCity extends BaseActivity {
         mSourcePoint = null;
         multiAddress = null;
         try {
-            JsonObject jfrom = j.getAsJsonObject("order").getAsJsonObject("from_coordinates");
-            JsonObject jto = null;
-            if (!j.getAsJsonObject("order").get("multi_addresses").isJsonNull()) {
-               multiAddress = new MultiAddress(j.getAsJsonObject("order").get("multi_addresses").getAsJsonArray());
+            JsonObject jfrom = null;
+            if (!j.getAsJsonObject("order").get("from_coordinates").isJsonNull()) {
+                jfrom = j.getAsJsonObject("order").getAsJsonObject("from_coordinates");
             }
-            adMultiAddress.notifyDataSetChanged();
-            if (!j.getAsJsonObject("order").get("to_coordinates").isJsonNull()) {
-                jto = j.getAsJsonObject("order").getAsJsonObject("to_coordinates");
+            JsonObject jto = null;
+            if (j.getAsJsonObject("order").has("multi_addresses")) {
+                if (!j.getAsJsonObject("order").get("multi_addresses").isJsonNull()) {
+                    multiAddress = new MultiAddress(j.getAsJsonObject("order").get("multi_addresses").getAsJsonArray());
+                }
+            }
+            if (j.getAsJsonObject("order").has("to_coordinates")) {
+                if (!j.getAsJsonObject("order").get("to_coordinates").isJsonNull()) {
+                    jto = j.getAsJsonObject("order").getAsJsonObject("to_coordinates");
+                }
             }
             if (jfrom != null) {
                 mSourcePoint = new GDriverStatus.Point(jfrom.get("lat").getAsDouble(), jfrom.get("lut").getAsDouble());
@@ -2814,7 +2824,17 @@ public class ActivityCity extends BaseActivity {
 
             @Override
             public void onClick(View view) {
-                openYandexNavigator(new GDriverStatus.Point(lat, lon));
+                new UDialog(ActivityCity.this, mSourcePoint, mDestinationPoint, new DialogInterface() {
+                    @Override
+                    public void cancel() {
+
+                    }
+
+                    @Override
+                    public void dismiss() {
+                        openYandexNavigator(new GDriverStatus.Point(lat, lon));
+                    }
+                }).show();
             }
         }
 
@@ -2854,5 +2874,6 @@ public class ActivityCity extends BaseActivity {
         rvMultiAddress = ml.findViewById(R.id.rvMultiAddres);
         rvMultiAddress.setLayoutManager(new LinearLayoutManager(this));
         rvMultiAddress.setAdapter(adMultiAddress);
+        adMultiAddress.notifyDataSetChanged();
     }
 }
