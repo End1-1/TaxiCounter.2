@@ -1510,7 +1510,7 @@
         android:layout_marginBottom="0dp"
         android:background="@drawable/login_down"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/textView14_2"
@@ -2030,7 +2030,7 @@
         android:layout_marginBottom="0dp"
         android:background="@drawable/login_down"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/tvRideAmount"
@@ -2179,7 +2179,7 @@
                         android:text="@string/To"
                         android:textAllCaps="true"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/llCommentFrom4" />
+                        app:layout_constraintTop_toBottomOf="@id/llMulti4" />
 
                     <TextView
                         android:id="@+id/tvCommentToText4"
@@ -2510,6 +2510,18 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvAddressFrom4"
                         app:srcCompat="@drawable/information" />
+
+                    <LinearLayout
+                        android:id="@+id/llMulti4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/llCommentFrom4"></LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/linearLayout7"
