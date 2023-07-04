@@ -525,9 +525,6 @@ public class ActivityCity extends BaseActivity {
         tvCommentTo4.setOnClickListener(navClickListener);
 
         adMultiAddress = new MultiAddressAdapter();
-        rvMultiAddress = findViewById(R.id.rvMultiAddres);
-        rvMultiAddress.setLayoutManager(new LinearLayoutManager(this));
-        rvMultiAddress.setAdapter(adMultiAddress);
 
         authToSocket();
         showNothings();
@@ -1330,6 +1327,12 @@ public class ActivityCity extends BaseActivity {
                 totalTimes.put(this.toString(), currentdate - startdate);
             }
         }
+        setStartAndFinishPoints(ord);
+        if (multiAddress != null) {
+            if (multiAddress.addresses.isEmpty() == false) {
+                addMulti(R.id.llMulti1);
+            }
+        }
         UPref.setString("waittime", "00:00");
         tvAddressFrom.setText(ord.get("address_from").getAsString().replace("Москва, ", "").replace("Moscow, ", "").replace("Russia, ", "").replace("Россия, ", ""));
         tvAddressTo.setText(ord.get("address_to").getAsString().replace("Москва, ", "").replace("Moscow, ", "").replace("Russia, ", "").replace("Россия, ", ""));
@@ -1468,6 +1471,8 @@ public class ActivityCity extends BaseActivity {
     }
 
     private boolean showNothings() {
+        removeMulti(R.id.llMulti1);
+
         btnProfile2.setImageAlpha(100);
         btnHistory.setImageAlpha(100);
         clUp.setVisibility(View.GONE);
@@ -2808,5 +2813,22 @@ public class ActivityCity extends BaseActivity {
             }
             return multiAddress.addresses.size();
         }
+    }
+
+    private void removeMulti(int id) {
+        LinearLayout ll = findViewById(id);
+        LinearLayout lm = ll.findViewById(R.id.llMultiaddress);
+        if (lm != null) {
+            ll.removeView(lm);
+        }
+    }
+
+    private void addMulti(int id) {
+        LinearLayout ll = findViewById(id);
+        View ml = getLayoutInflater().inflate(R.layout.activity_city_multiaddress, ll,false);
+        ll.addView(ml);
+        rvMultiAddress = ml.findViewById(R.id.rvMultiAddres);
+        rvMultiAddress.setLayoutManager(new LinearLayoutManager(this));
+        rvMultiAddress.setAdapter(adMultiAddress);
     }
 }
