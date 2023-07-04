@@ -1474,6 +1474,7 @@ public class ActivityCity extends BaseActivity {
         removeMulti(R.id.llMulti1);
         removeMulti(R.id.llMulti2);
         removeMulti(R.id.llMulti3);
+        removeMulti(R.id.llMulti4);
 
         btnProfile2.setImageAlpha(100);
         btnHistory.setImageAlpha(100);
@@ -1693,6 +1694,12 @@ public class ActivityCity extends BaseActivity {
         btnHistory.setImageAlpha(30);
         j = j.getAsJsonObject("payload");
         setStartAndFinishPoints(j);
+        if (multiAddress != null) {
+            if (multiAddress.addresses.isEmpty() == false) {
+                addMulti(R.id.llMulti4);
+            }
+        }
+
         mCurrentOrderId = j.get("order_id").getAsInt();
         mWebHash = j.get("hash_end").getAsString();
         mCancelHash = mWebHash;
@@ -1768,6 +1775,11 @@ public class ActivityCity extends BaseActivity {
         btnHistory.setImageAlpha(30);
         j = j.getAsJsonObject("payload");
         setStartAndFinishPoints(j);
+        if (multiAddress != null) {
+            if (multiAddress.addresses.isEmpty() == false) {
+                addMulti(R.id.llMulti4);
+            }
+        }
 
         mWebHash = j.get("hash_end").getAsString();
         llRide.setVisibility(View.VISIBLE);
