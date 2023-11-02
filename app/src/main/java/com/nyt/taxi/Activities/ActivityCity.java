@@ -1417,7 +1417,7 @@ public class ActivityCity extends BaseActivity {
                         }
                     }).request();
                 } else {
-                    System.out.println("ANIMAATOR" + this.toString());
+                    System.out.println("ANIMAATOR" + this);
                     long tt = 0;
                     totalTimes.put(this.toString(), totalTime);
                     for (Map.Entry<String, Long> e: totalTimes.entrySet()) {
