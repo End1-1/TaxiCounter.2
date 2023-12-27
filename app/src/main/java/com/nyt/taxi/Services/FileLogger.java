@@ -21,7 +21,7 @@ public class FileLogger {
     static final int debug = 1;
 
     synchronized static public void write(String data)  {
-        Log.d("FILELOGGER", data);
+        System.out.print(String.format("FILELOGGER %s", data));
         if (debug == 0) {
             return;
         }

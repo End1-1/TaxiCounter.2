@@ -176,6 +176,7 @@ public class WebSocketHttps extends Service {
         mStopped = true;
         stopForeground(true);
         stopSelf();
+        unregisterReceiver(brGPS);
         unregisterReceiver(mScreenReceiver);
         NotificationManager nMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         nMgr.cancelAll();

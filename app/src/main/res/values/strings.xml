@@ -196,5 +196,6 @@
     <string name="RATE">ОЦЕНКА</string>
     <string name="Remember">Запомнить</string>
     <string name="Stop">Остановка</string>
+    <string name="OrderCanceldByDispatcher">Заказ был отменен диспетчером</string>
 
 </resources>

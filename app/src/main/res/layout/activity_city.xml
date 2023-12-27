@@ -8,7 +8,6 @@
     android:keepScreenOn="true"
     tools:context=".Activities.ActivityCity">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clUp"
         android:layout_width="match_parent"
@@ -2004,8 +2003,8 @@
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
         android:background="@drawable/login_down"
-        android:orientation="vertical"
         android:gravity="center"
+        android:orientation="vertical"
         android:visibility="gone">
 
         <pl.droidsonroids.gif.GifImageView
@@ -2859,17 +2858,17 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/marginStandardLeftRight"
-                        android:textSize="@dimen/middleFont"
-                        android:text="@string/Autologin" />
+                        android:layout_weight="1"
+                        android:text="@string/Autologin"
+                        android:textSize="@dimen/middleFont" />
 
                     <Switch
                         android:id="@+id/swAutologin"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <TextView
@@ -2897,9 +2896,9 @@
                     android:id="@+id/btnGoOnline"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
+                    android:layout_marginBottom="10dp"
                     android:background="@drawable/gradient_green"
                     android:text="@string/Online"
                     android:textColor="@color/colorWhite" />

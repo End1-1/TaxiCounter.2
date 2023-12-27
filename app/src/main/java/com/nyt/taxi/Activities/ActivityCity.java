@@ -554,7 +554,7 @@ public class ActivityCity extends BaseActivity {
         }
         btnHome.callOnClick();
         startChatTimer();
-        queryState();
+        //queryState();
     }
 
     @Override
@@ -1145,7 +1145,7 @@ public class ActivityCity extends BaseActivity {
             t = null;
         }
 
-        createProgressDialog(R.string.Empty, R.string.Wait);
+        //createProgressDialog(R.string.Empty, R.string.Wait);
         WebQuery webQuery = new WebQuery(UConfig.mHostUrl + "/api/driver/real_state", WebQuery.HttpMethod.GET, WebResponse.mResponseDriverOn, new WebResponse() {
             @Override
             public void webResponse(int code, int webResponse, String s) {
@@ -1400,7 +1400,6 @@ public class ActivityCity extends BaseActivity {
                 }
                 mClipDrawable.setLevel(mCurrentLevel);
                 if (mCurrentLevel < 0) {
-                    System.out.println("ANIMAATOR" + this.toString());
                     mQueryStateAllowed = true;
                     mAnimator.cancel();
                     stopPlay();
@@ -1417,7 +1416,6 @@ public class ActivityCity extends BaseActivity {
                         }
                     }).request();
                 } else {
-                    System.out.println("ANIMAATOR" + this);
                     long tt = 0;
                     totalTimes.put(this.toString(), totalTime);
                     for (Map.Entry<String, Long> e: totalTimes.entrySet()) {
@@ -2086,11 +2084,18 @@ public class ActivityCity extends BaseActivity {
             long hour = time / 60;
             long min = time - (hour * 60);
             tvMin.setText(String.format("%02d:%02d", hour, min));
-        } else if (e.contains("ClientOrderCancel")) {
+        } else if (e.contains("ClientOrderCancel") || e.contains("DispatcherOrderCancel")) {
             playSound(0);
             mQueryStateAllowed = true;
             queryState();
-            UDialog.alertDialog(this, R.string.Empty, R.string.OrderCanceled);
+            UDialog.alertDialog(this, R.string.Empty, e.contains("ClientOrderCancel") ? R.string.OrderCanceled : R.string.OrderCanceldByDispatcher);
+        } else if (e.contains("DispatcherOrderUpdateState")) {
+            if (mAnimator.isRunning()) {
+                mAnimator.cancel();
+            }
+            playSound(R.raw.preorder);
+            mQueryStateAllowed = true;
+            queryState();
         } else if (e.contains("refresh_profile_image")) {
             imgProfile.setImageBitmap(ProfileActivity.getProfileImage());
         } else if (e.contains("CallCenterWorkerDriverChat")) {
